@@ -92,6 +92,34 @@ ThreadTest3()
     SimpleThread(0);
 }
 
+//
+void
+ComplexThread(int which)
+{
+    int num;
+    
+    for (num = 1; num <= 30; num++) {
+	printf("*** thread %d looped %d times\n", which, num);
+        interrupt->OneTick();
+    }
+}
+
+
+//----------------------------------------------------------------------
+// ThreadTest4
+//----------------------------------------------------------------------
+void
+ThreadTest4()
+{
+    DEBUG('t', "Entering ThreadTest1");
+
+    Thread *t = new Thread("forked thread");
+
+    t->Fork(ComplexThread, (void*)1);
+    
+    ComplexThread(0);
+}
+
 //----------------------------------------------------------------------
 // ThreadTest
 // 	Invoke a test routine.
@@ -102,13 +130,16 @@ ThreadTest()
 {
     switch (testnum) {
     case 1:
-	    ThreadTest1();
+	    ThreadTest4();
 	    break;
     case 2:
 	    ThreadTest2();
 	    break;
     case 3:
 	    ThreadTest3();
+	    break;
+    case 4:
+	    ThreadTest4();
 	    break;
     default:
 	    printf("No test specified.\n");

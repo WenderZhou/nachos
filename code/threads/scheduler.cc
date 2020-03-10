@@ -105,6 +105,8 @@ Scheduler::Run (Thread *nextThread)
     currentThread = nextThread;		    // switch to the next thread
     currentThread->setStatus(RUNNING);      // nextThread is now running
     
+    currentThread->setStartTime(stats->totalTicks);
+
     DEBUG('t', "Switching from thread \"%s\" to thread \"%s\"\n",
 	  oldThread->getName(), nextThread->getName());
     

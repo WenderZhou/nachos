@@ -41,12 +41,12 @@ static void TimerHandler(int arg)
 //		at random, instead of fixed, intervals.
 //----------------------------------------------------------------------
 
-Timer::Timer(VoidFunctionPtr timerHandler, int callArg, bool doRandom)
+Timer::Timer::Timer(VoidFunctionPtr timerHandler, int callArg, bool doRandom, TimerType timerType = DEFAULT)
 {
     randomize = doRandom;
     handler = timerHandler;
     arg = callArg; 
-
+    type = timerType;
     // schedule the first interrupt from the timer device
     interrupt->Schedule(TimerHandler, (int) this, TimeOfNextInterrupt(), 
 		TimerInt); 
@@ -78,8 +78,18 @@ Timer::TimerExpired()
 int 
 Timer::TimeOfNextInterrupt() 
 {
-    if (randomize)
-	return 1 + (Random() % (TimerTicks * 2));
-    else
-	return TimerTicks; 
+    switch (type)
+    {
+    case DEFAULT:
+        if (randomize)
+	        return 1 + (Random() % (TimerTicks * 2));
+        else
+	        return TimerTicks;
+    case RR_TIMER:
+        return RRTimerTicks;
+        break;
+    default:
+        break;
+    }
+     
 }

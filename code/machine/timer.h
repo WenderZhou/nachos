@@ -23,10 +23,12 @@
 #include "copyright.h"
 #include "utility.h"
 
+enum TimerType{DEFAULT,RR_TIMER};
+
 // The following class defines a hardware timer. 
 class Timer {
   public:
-    Timer(VoidFunctionPtr timerHandler, int callArg, bool doRandom);
+    Timer::Timer(VoidFunctionPtr timerHandler, int callArg, bool doRandom, TimerType timerType = DEFAULT);
 				// Initialize the timer, to call the interrupt
 				// handler "timerHandler" every time slice.
     ~Timer() {}
@@ -43,7 +45,7 @@ class Timer {
     bool randomize;		// set if we need to use a random timeout delay
     VoidFunctionPtr handler;	// timer interrupt handler 
     int arg;			// argument to pass to interrupt handler
-
+    TimerType type;  // the typer of timer
 };
 
 #endif // TIMER_H

@@ -18,6 +18,7 @@ Interrupt *interrupt;			// interrupt status
 Statistics *stats;			// performance metrics
 Timer *timer;				// the hardware timer device,
 					// for invoking context switches
+Timer *RRTimer;     // timer for RR scheduling
 List *threadList;   // a list of threads
 
 #ifdef FILESYS_NEEDED
@@ -62,8 +63,21 @@ static void
 TimerInterruptHandler(int dummy)
 {
     if (interrupt->getStatus() != IdleMode)
-	interrupt->YieldOnReturn();
+	    interrupt->YieldOnReturn();
 }
+
+#define TIME_SLICE 150
+
+static void
+RRTimerInterruptHandler(int dummy)
+{
+    if (interrupt->getStatus() != IdleMode)
+    {
+        if(stats->totalTicks > currentThread->getStartTime() + TIME_SLICE)
+            interrupt->YieldOnReturn();
+    }
+}
+
 
 //----------------------------------------------------------------------
 // Initialize
@@ -135,8 +149,11 @@ Initialize(int argc, char **argv)
     interrupt = new Interrupt;			// start up interrupt handling
     scheduler = new Scheduler();		// initialize the ready queue
     if (randomYield)				// start the timer (if needed)
-	timer = new Timer(TimerInterruptHandler, 0, randomYield);
+	    timer = new Timer(TimerInterruptHandler, 0, randomYield);
     threadList = new List;    // initialize the list of threads
+
+    // initialize a timer for RR
+    RRTimer = new Timer(RRTimerInterruptHandler, 0, false, RR_TIMER);
 
     threadToBeDestroyed = NULL;
 

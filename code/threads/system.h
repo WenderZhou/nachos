@@ -28,6 +28,7 @@ extern Scheduler *scheduler;			// the ready list
 extern Interrupt *interrupt;			// interrupt status
 extern Statistics *stats;			// performance metrics
 extern Timer *timer;				// the hardware alarm clock
+extern Timer *RRTimer;     // timer for RR scheduling
 extern List *threadList;   // a list of threads
 
 #ifdef USER_PROGRAM

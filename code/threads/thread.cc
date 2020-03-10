@@ -47,6 +47,7 @@ Thread::Thread(char* debugName, int priorityLevel = LowestPriority)
     stack = NULL;
     status = JUST_CREATED;
     threadList->Append((void *)this);
+    startTime = 0;
 #ifdef USER_PROGRAM
     space = NULL;
 #endif

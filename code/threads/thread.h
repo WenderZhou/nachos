@@ -115,6 +115,9 @@ class Thread {
     void setPriority(int priorityLevel){ priority = priorityLevel; }
     int getPriority(){ return priority; }
 
+    void setStartTime(int time){ startTime = time; }
+    int getStartTime(){ return startTime; }
+    
   private:
     // some of the private data for this class is listed above
     
@@ -127,6 +130,8 @@ class Thread {
     int tid;  // thread id
     int priority; // thread priority
     static int threadSeq; // tid for next thread
+
+    int startTime;  // time of being scheduled
 
     void StackAllocate(VoidFunctionPtr func, void *arg);
     					// Allocate a stack for thread.
