@@ -56,8 +56,11 @@
 #define StackSize	(4 * 1024)	// in words
 
 // max number of threads existing
-#define threadListSize 5
+#define ThreadListSize 5
 
+// priority level
+#define PriorityLevelSize 32
+#define LowestPriority PriorityLevelSize - 1
 // Thread state
 enum ThreadStatus { JUST_CREATED, RUNNING, READY, BLOCKED };
 
@@ -83,7 +86,8 @@ class Thread {
     void *machineState[MachineStateSize];  // all registers except for stackTop
 
   public:
-    Thread(char* debugName);		// initialize a Thread 
+    // initialize a Thread
+    Thread(char* debugName, int priorityLevel = LowestPriority);		 
     ~Thread(); 				// deallocate a Thread
 					// NOTE -- thread being deleted
 					// must not be running when delete 
@@ -108,6 +112,9 @@ class Thread {
     void Print() { printf("%s, ", name); }
     void StatePrint() { printf("%-6d%-6d%-20s\n", tid, uid, name); }
 
+    void setPriority(int priorityLevel){ priority = priorityLevel; }
+    int getPriority(){ return priority; }
+
   private:
     // some of the private data for this class is listed above
     
@@ -118,6 +125,7 @@ class Thread {
     char* name;
     int uid;  // user id
     int tid;  // thread id
+    int priority; // thread priority
     static int threadSeq; // tid for next thread
 
     void StackAllocate(VoidFunctionPtr func, void *arg);
@@ -153,7 +161,7 @@ void SWITCH(Thread *oldThread, Thread *newThread);
 }
 
 // create a Thread
-Thread* createThread(char* threadName);
+Thread* createThread(char* threadName, int priorityLevel = LowestPriority);
 
 // report thread states
 void TS();

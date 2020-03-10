@@ -65,7 +65,7 @@ ThreadTest2()
 
     
 
-    for(int i = 1; i <= threadListSize; ++i)
+    for(int i = 1; i <= ThreadListSize; ++i)
     {
         Thread *t = createThread("forked thread");
         if(t)
@@ -74,6 +74,21 @@ ThreadTest2()
 
     TS();
 
+    SimpleThread(0);
+}
+
+
+//----------------------------------------------------------------------
+// ThreadTest3
+//----------------------------------------------------------------------
+void
+ThreadTest3()
+{
+    DEBUG('t', "Entering ThreadTest3");
+    Thread *t1 = createThread("forked thread 1",0);
+    t1->Fork(SimpleThread, (void*)1);
+    Thread *t2 = createThread("forked thread 2",1);
+    t2->Fork(SimpleThread, (void*)2);
     SimpleThread(0);
 }
 
@@ -91,6 +106,9 @@ ThreadTest()
 	    break;
     case 2:
 	    ThreadTest2();
+	    break;
+    case 3:
+	    ThreadTest3();
 	    break;
     default:
 	    printf("No test specified.\n");

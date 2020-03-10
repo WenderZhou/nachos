@@ -32,11 +32,17 @@
 //	"threadName" is an arbitrary string, useful for debugging.
 //----------------------------------------------------------------------
 
-Thread::Thread(char* threadName)
+Thread::Thread(char* debugName, int priorityLevel = LowestPriority)
 {
-    name = threadName;
+    name = debugName;
     uid = 0;
     tid = threadSeq++;
+    if(LowestPriority < 0)
+        priority = 0;
+    else if(LowestPriority > PriorityLevelSize)
+        priority = LowestPriority;
+    else
+        priority = priorityLevel;
     stackTop = NULL;
     stack = NULL;
     status = JUST_CREATED;
@@ -104,6 +110,11 @@ Thread::Fork(VoidFunctionPtr func, void *arg)
     scheduler->ReadyToRun(this);	// ReadyToRun assumes that interrupts 
 					// are disabled!
     (void) interrupt->SetLevel(oldLevel);
+
+    if(priority < currentThread->getPriority()){
+        currentThread->Yield();
+    }
+        
 }    
 
 //----------------------------------------------------------------------
@@ -191,10 +202,13 @@ Thread::Yield ()
     DEBUG('t', "Yielding thread \"%s\"\n", getName());
 
     nextThread = scheduler->FindNextToRun();
-    if (nextThread != NULL) {
-	scheduler->ReadyToRun(this);
-	scheduler->Run(nextThread);
+
+    if(nextThread != NULL)
+    {
+        scheduler->ReadyToRun(this);
+        scheduler->Run(nextThread);
     }
+    
     (void) interrupt->SetLevel(oldLevel);
 }
 
@@ -302,14 +316,14 @@ int Thread::threadSeq = 0;
 // to a new Thread, else return NULL, the caller should use this function
 // instead of Thread::Thread and should check the return value
 //----------------------------------------------------------------------
-Thread* createThread(char* threadName)
+Thread* createThread(char* threadName, int priorityLevel = LowestPriority)
 {
-    if(threadList->NumInList() == threadListSize)
+    if(threadList->NumInList() == ThreadListSize)
     {   
         DEBUG('t', "thread count exceeds\n");
         return NULL;
     }
-    return new Thread(threadName);
+    return new Thread(threadName, priorityLevel);
 }
 
 //----------------------------------------------------------------------
