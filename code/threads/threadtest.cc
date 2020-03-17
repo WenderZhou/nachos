@@ -55,7 +55,7 @@ ThreadTest1()
 }
 
 //----------------------------------------------------------------------
-// ThreadTest2
+// ThreadTest2 
 //----------------------------------------------------------------------
 
 void
@@ -106,18 +106,189 @@ ComplexThread(int which)
 
 
 //----------------------------------------------------------------------
-// ThreadTest4
+// ThreadTest4: test RR
 //----------------------------------------------------------------------
 void
 ThreadTest4()
 {
-    DEBUG('t', "Entering ThreadTest1");
+    DEBUG('t', "Entering ThreadTest4");
 
     Thread *t = new Thread("forked thread");
 
     t->Fork(ComplexThread, (void*)1);
     
     ComplexThread(0);
+}
+
+
+//----------------------------------------------------------------------
+// ThreadTest5: consumer and producer problem semaphore version
+//----------------------------------------------------------------------
+Semaphore *load;
+Semaphore *vacancy;
+Lock    *bufferLock;
+int in,out;
+#define bufferSize 10
+
+void Producer_sem(int which)
+{
+    for(int i = 0; i < 20; ++i)
+    {
+        vacancy->P();
+        bufferLock->Acquire();
+        printf("Producer %d produce in buffer %d\n", which, in);
+        in = (in + 1) % bufferSize;
+        bufferLock->Release();
+        load->V();
+    }
+}
+
+void Consumer_sem(int which)
+{
+    for(int i = 0; i < 20; ++i)
+    {
+        load->P();
+        bufferLock->Acquire();
+        printf("Consumer %d consume in buffer %d\n", which, out);
+        out = (out + 1) % bufferSize;
+        bufferLock->Release();
+        vacancy->V();
+    }
+}
+
+
+void
+ThreadTest5()
+{
+    DEBUG('t', "Entering ThreadTest5");
+
+    load = new Semaphore("load", 0);
+    vacancy = new Semaphore("vacancy", bufferSize);
+    bufferLock = new Lock("bufferLock");
+    in = 0;
+    out = 0;
+
+    Thread *t = new Thread("forked thread");
+
+    t->Fork(Producer_sem, (void*)1);
+    
+    Consumer_sem(0);
+}
+
+//----------------------------------------------------------------------
+// ThreadTest6: consumer and producer problem condition variable version
+//----------------------------------------------------------------------
+Condition *notEmpty;
+Condition *notFull;
+int things;
+
+void Producer_cond(int which)
+{
+    for(int i = 0; i < 20; ++i)
+    {
+        bufferLock->Acquire();
+        if(things == bufferSize)
+            notFull->Wait(bufferLock);
+        printf("Producer %d produce in buffer %d\n", which, in);
+        in = (in + 1) % bufferSize;
+        things++;
+        notEmpty->Signal(bufferLock);
+        bufferLock->Release();
+    }
+}
+
+void Consumer_cond(int which)
+{
+    for(int i = 0; i < 20; ++i)
+    {
+        bufferLock->Acquire();
+        if(things == 0)
+            notEmpty->Wait(bufferLock);
+        printf("Consumer %d consume in buffer %d\n", which, out);
+        out = (out + 1) % bufferSize;
+        things--;
+        notFull->Signal(bufferLock);
+        bufferLock->Release();
+    }
+}
+
+
+void
+ThreadTest6()
+{
+    DEBUG('t', "Entering ThreadTest6");
+
+    notEmpty = new Condition("notEmpty");
+    notFull = new Condition("notFull");
+    bufferLock = new Lock("bufferLock");
+    in = 0;
+    out = 0;
+    things = 0;
+
+    Thread *t = new Thread("forked thread");
+
+    t->Fork(Consumer_cond, (void*)1);
+    
+    Producer_cond(0);
+}
+
+
+//----------------------------------------------------------------------
+// ThreadTest7: read/write lock
+//----------------------------------------------------------------------
+ReadWriteLock *rwlock;
+
+void Reader(int which)
+{
+    
+    for(int i = 0; i < 100; ++i)
+    {
+        printf("reader %d wants to read\n", which);
+        rwlock->Acquire(MYREAD);
+
+        printf("reader %d start reading\n", which);
+
+        for(int j = 0; j < 30; ++j)
+            interrupt->OneTick();
+
+        printf("reader %d finish reading\n", which);
+
+        rwlock->Release(MYREAD);
+    }
+}
+
+void Writer(int which)
+{
+    
+    for(int i = 0; i < 100; ++i)
+    {
+        printf("writer %d wants to write\n", which);
+        rwlock->Acquire(MYWRITE);
+
+        printf("writer %d start writing\n", which);
+
+        for(int j = 0; j < 5; ++j)
+            interrupt->OneTick();
+            
+        printf("writer %d finish writing\n", which);
+
+        rwlock->Release(MYWRITE);
+    }
+}
+
+void
+ThreadTest7()
+{
+    DEBUG('t', "Entering ThreadTest7");
+
+    rwlock = new ReadWriteLock("ReadWriteLock");
+
+    Thread *r1 = new Thread("reader1");
+    Thread *r2 = new Thread("reader2");
+
+    r1->Fork(Reader, (void*)1);
+    r2->Fork(Reader, (void*)2);
+    Writer(0);
 }
 
 //----------------------------------------------------------------------
@@ -130,7 +301,7 @@ ThreadTest()
 {
     switch (testnum) {
     case 1:
-	    ThreadTest4();
+	    ThreadTest7();
 	    break;
     case 2:
 	    ThreadTest2();
@@ -140,6 +311,15 @@ ThreadTest()
 	    break;
     case 4:
 	    ThreadTest4();
+	    break;
+    case 5:
+	    ThreadTest5();
+	    break;
+    case 6:
+	    ThreadTest6();
+	    break;
+    case 7:
+	    ThreadTest7();
 	    break;
     default:
 	    printf("No test specified.\n");
