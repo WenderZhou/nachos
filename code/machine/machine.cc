@@ -69,6 +69,8 @@ Machine::Machine(bool debug)
     pageTable = NULL;
 #endif
 
+    memBitMap = new BitMap(NumPhysPages);
+
     singleStep = debug;
     CheckEndian();
 }
@@ -81,6 +83,7 @@ Machine::Machine(bool debug)
 Machine::~Machine()
 {
     delete [] mainMemory;
+    delete memBitMap;
     if (tlb != NULL)
         delete tlb;
 }
@@ -209,3 +212,13 @@ void Machine::WriteRegister(int num, int value)
 	// DEBUG('m', "WriteRegister %d, value %d\n", num, value);
 	registers[num] = value;
     }
+
+void Machine::MemRecycle()
+{
+    for(int i = 0; i < pageTableSize; ++i)
+    {
+        int pageFrame = pageTable[i].physicalPage;
+        memBitMap->Clear(pageFrame);
+        printf("Recycle %d\n",pageFrame);
+    }
+}

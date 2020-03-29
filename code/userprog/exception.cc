@@ -62,11 +62,12 @@ ExceptionHandler(ExceptionType which)
             {
                 case SC_Halt:
                     DEBUG('a', "Shutdown, initiated by user program.\n");
-   	                interrupt->Halt();
+   	                machine->MemRecycle();
+                    interrupt->Halt();
                     break;
                 case SC_Exit:
-                    DEBUG('a', "Exit, initiated by user program.\n");
                     printf("Exit!\n");
+                    machine->MemRecycle();
    	                interrupt->Halt();
                     break;
                 default:
