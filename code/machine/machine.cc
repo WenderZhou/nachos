@@ -62,9 +62,7 @@ Machine::Machine(bool debug)
     for (i = 0; i < MemorySize; i++)
       	mainMemory[i] = 0;
 #ifdef USE_TLB
-    tlb = new TranslationEntry[TLBSize];
-    for (i = 0; i < TLBSize; i++)
-	tlb[i].valid = FALSE;
+    tlb = new TLB(TLBSize, TLBStrategy);
     pageTable = NULL;
 #else	// use linear page table
     tlb = NULL;
@@ -84,7 +82,7 @@ Machine::~Machine()
 {
     delete [] mainMemory;
     if (tlb != NULL)
-        delete [] tlb;
+        delete tlb;
 }
 
 //----------------------------------------------------------------------
@@ -211,4 +209,3 @@ void Machine::WriteRegister(int num, int value)
 	// DEBUG('m', "WriteRegister %d, value %d\n", num, value);
 	registers[num] = value;
     }
-

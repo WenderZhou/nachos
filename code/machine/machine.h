@@ -24,6 +24,7 @@
 #include "copyright.h"
 #include "utility.h"
 #include "translate.h"
+#include "tlb.h"
 #include "disk.h"
 
 // Definitions related to the size, and format of user memory
@@ -32,9 +33,10 @@
 					// the disk sector size, for
 					// simplicity
 
-#define NumPhysPages    32
+#define NumPhysPages    64
 #define MemorySize 	(NumPhysPages * PageSize)
-#define TLBSize		4		// if there is a TLB, make it small
+#define TLBSize		8		// if there is a TLB, make it small
+
 
 enum ExceptionType { NoException,           // Everything ok!
 		     SyscallException,      // A program executed a system call.
@@ -176,7 +178,7 @@ class Machine {
 // Thus the TLB pointer should be considered as *read-only*, although 
 // the contents of the TLB are free to be modified by the kernel software.
 
-    TranslationEntry *tlb;		// this pointer should be considered 
+    TLB *tlb;		// this pointer should be considered 
 					// "read-only" to Nachos kernel code
 
     TranslationEntry *pageTable;
