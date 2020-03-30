@@ -109,7 +109,7 @@ Scheduler::Run (Thread *nextThread)
 
     DEBUG('t', "Switching from thread \"%s\" to thread \"%s\"\n",
 	  oldThread->getName(), nextThread->getName());
-    
+    printf("run thread: %d\n",nextThread->getTid());
     // This is a machine-dependent assembly language routine defined 
     // in switch.s.  You may have to think
     // a bit to figure out what happens after this, both from the point

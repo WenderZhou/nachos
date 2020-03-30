@@ -21,7 +21,7 @@
 //----------------------------------------------------------------------
 
 void
-StartProcess(char *filename)
+OriginalStartProcess(char *filename)
 {
     OpenFile *executable = fileSystem->Open(filename);
     AddrSpace *space;
@@ -37,6 +37,50 @@ StartProcess(char *filename)
 
     space->InitRegisters();		// set the initial register values
     space->RestoreState();		// load page table register
+
+    machine->Run();			// jump to the user progam
+    ASSERT(FALSE);			// machine->Run never returns;
+					// the address space exits
+					// by doing the syscall "exit"
+}
+
+void
+StartAnotherProcess()
+{
+    printf("user process 2 start running\n");
+    currentThread->space->InitRegisters();
+    currentThread->space->RestoreState();
+    machine->Run();
+}
+
+void
+StartProcess(char *filename)
+{
+    OpenFile *executable = fileSystem->Open(filename);
+    AddrSpace *space1,*space2;
+
+    if (executable == NULL) 
+    {
+	    printf("Unable to open file %s\n", filename);
+	    return;
+    }
+    space1 = new AddrSpace(executable);
+    space2 = new AddrSpace(executable);
+
+    currentThread->space = space1;
+
+    Thread *Thread2 = createThread("second user process");
+    Thread2->space = space2;
+    Thread2->Fork(StartAnotherProcess, (void*)1);
+
+    delete executable;			// close file
+
+    currentThread->Yield();
+
+    space1->InitRegisters();		// set the initial register values
+    space1->RestoreState();		// load page table register
+
+    printf("user process 1 start running\n");
 
     machine->Run();			// jump to the user progam
     ASSERT(FALSE);			// machine->Run never returns;

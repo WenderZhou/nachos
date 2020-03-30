@@ -68,7 +68,9 @@ ExceptionHandler(ExceptionType which)
                 case SC_Exit:
                     printf("Exit!\n");
                     machine->MemRecycle();
-   	                interrupt->Halt();
+                    // int NextPC = machine->ReadRegister(NextPCReg);
+                    // machine->WriteRegister(PCReg, NextPC);
+                    currentThread->Finish();
                     break;
                 default:
                     printf("meet a strange thing\n");

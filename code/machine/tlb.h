@@ -12,6 +12,7 @@ class TLB{
     ~TLB();
     void tlbMissHandler(int vpn);
     TranslationEntry* findEnrty(int vpn);
+    void Clear();
   private:
     TranslationEntry *entry;
     TLBStrategyType strategy;

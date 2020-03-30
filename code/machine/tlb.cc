@@ -70,3 +70,9 @@ TLB::tlbMissHandler(int vpn)
     tlbtime++;
     return;
 }
+
+void TLB::Clear()
+{
+    for(int i = 0; i < size; ++i)
+        entry[i].valid = false;
+}
