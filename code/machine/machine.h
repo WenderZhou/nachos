@@ -27,6 +27,7 @@
 #include "tlb.h"
 #include "disk.h"
 #include "bitmap.h"
+#include "swapspace.h"
 
 // Definitions related to the size, and format of user memory
 
@@ -38,6 +39,7 @@
 #define MemorySize 	(NumPhysPages * PageSize)
 #define TLBSize		8		// if there is a TLB, make it small
 
+class Thread; // to use class Thread
 
 enum ExceptionType { NoException,           // Everything ok!
 		     SyscallException,      // A program executed a system call.
@@ -158,6 +160,8 @@ class Machine {
 
     char *mainMemory;		// physical memory to store user program,
 				// code and data, while executing
+	Thread* pageOwner[NumPhysPages];
+
     int registers[NumTotalRegs]; // CPU registers, for executing user programs
 
 
@@ -186,6 +190,14 @@ class Machine {
     unsigned int pageTableSize;
 	BitMap	*memBitMap;
 	void MemRecycle();
+
+	SwapSpace *swapSpace;
+	unsigned int swapPosition;
+	void pageFaultHandler(int virtualPage);
+
+#ifdef INVERTED_PAGETABLE
+	InvertedPageTableEntry *ipt;
+#endif
 
   private:
     bool singleStep;		// drop back into the debugger after each

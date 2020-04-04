@@ -15,9 +15,6 @@
 int
 main()
 {
-    //Halt();
-int i;
-for(i = 0; i < 100; ++i);
-Exit(0);
+    Halt();
     /* not reached */
 }

@@ -20,7 +20,7 @@
 
 class AddrSpace {
   public:
-    AddrSpace(OpenFile *executable);	// Create an address space,
+    AddrSpace(OpenFile *executable, char *filename);	// Create an address space,
 					// initializing it with the program
 					// stored in the file "executable"
     ~AddrSpace();			// De-allocate an address space
@@ -31,11 +31,21 @@ class AddrSpace {
     void SaveState();			// Save/restore address space-specific
     void RestoreState();		// info on a context switch 
 
+#ifndef INVERTED_PAGETABLE
+    TranslationEntry *getPageTable(){ return pageTable; }
+    unsigned int getNumPages(){ return numPages; }
+    int ppn2vpn(int physicalPage);
+#endif
+    char *getFileName(){ return execFileName; }
+
   private:
+#ifndef INVERTED_PAGETABLE
     TranslationEntry *pageTable;	// Assume linear page table translation
 					// for now!
+#endif
     unsigned int numPages;		// Number of pages in the virtual 
 					// address space
+    char *execFileName;
 };
 
 #endif // ADDRSPACE_H

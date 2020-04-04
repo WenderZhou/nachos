@@ -188,9 +188,13 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
 {
     int i;
     unsigned int vpn, offset;
-    TranslationEntry *entry;
-    unsigned int pageFrame;
+	unsigned int pageFrame;
 
+#ifdef INVERTED_PAGETABLE
+	InvertedPageTableEntry *entry = NULL;
+#else
+    TranslationEntry *entry;
+#endif
     DEBUG('a', "\tTranslate 0x%x, %s: ", virtAddr, writing ? "write" : "read");
 
 // check for alignment errors
@@ -207,10 +211,13 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
 // from the virtual address
     vpn = (unsigned) virtAddr / PageSize;
     offset = (unsigned) virtAddr % PageSize;
-    
-    if (tlb == NULL) {		// => page table => vpn is index into table
+
+#ifndef INVERTED_PAGETABLE
+	#ifndef USE_TLB
 		if (vpn >= pageTableSize) {
 			DEBUG('a', "virtual page # %d too large for page table size %d!\n", 
+				virtAddr, pageTableSize);
+			printf("virtual page # %d too large for page table size %d!\n", 
 				virtAddr, pageTableSize);
 			return AddressErrorException;
 		} else if (!pageTable[vpn].valid) {
@@ -219,10 +226,8 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
 			return PageFaultException;
 		}
 		entry = &pageTable[vpn];
-    }
-	else 
-	{
-		entry = tlb->findEnrty(vpn); // use tlb
+	#else
+		entry = tlb->findEntry(vpn); // use tlb
 
 		if (entry == NULL)
 		{				// not found
@@ -231,7 +236,14 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
 			// the page may be in memory,
 			// but not in the TLB
 		}
-    }
+	#endif
+#else
+	for(int i = 0; i < NumPhysPages; ++i)
+		if(ipt[i].valid && ipt[i].virtualPage == vpn && ipt[i].owner == currentThread)
+			entry = &ipt[i];
+	if(entry == NULL)
+		return PageFaultException;	
+#endif
 
     if (entry->readOnly && writing) {	// trying to write to a read-only page
 	DEBUG('a', "%d mapped read-only at %d in TLB!\n", virtAddr, i);

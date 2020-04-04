@@ -60,8 +60,11 @@ SwapHeader (NoffHeader *noffH)
 //	"executable" is the file containing the object code to load into memory
 //----------------------------------------------------------------------
 
-AddrSpace::AddrSpace(OpenFile *executable)
+AddrSpace::AddrSpace(OpenFile *executable, char *filename)
 {
+    execFileName = filename;
+
+
     NoffHeader noffH;
     unsigned int i, size;
 
@@ -78,7 +81,8 @@ AddrSpace::AddrSpace(OpenFile *executable)
     numPages = divRoundUp(size, PageSize);
     size = numPages * PageSize;
 
-    ASSERT(numPages <= NumPhysPages);		// check we're not trying
+#ifndef INVERTED_PAGETABLE
+    // ASSERT(numPages <= NumPhysPages);		// check we're not trying
 						// to run anything too big --
 						// at least until we have
 						// virtual memory
@@ -87,19 +91,29 @@ AddrSpace::AddrSpace(OpenFile *executable)
 					numPages, size);
 // first, set up the translation 
     pageTable = new TranslationEntry[numPages];
-    for (i = 0; i < numPages; i++) {
-	pageTable[i].virtualPage = i;
-	pageTable[i].physicalPage = machine->memBitMap->Find();
-    ASSERT(pageTable[i].physicalPage != -1);
-    printf("allocate page frame %d\n", pageTable[i].physicalPage);
-	pageTable[i].valid = TRUE;
-	pageTable[i].use = FALSE;
-	pageTable[i].dirty = FALSE;
-	pageTable[i].readOnly = FALSE;  // if the code segment was entirely on 
+    for (i = 0; i < numPages; i++) 
+    {
+	    pageTable[i].virtualPage = i;
+#ifdef LAZY_LOADING
+        pageTable[i].valid == false;
+        pageTable[i].physicalPage = -1;
+#else
+        int physicalPage = machine->memBitMap->Find();
+        ASSERT(physicalPage != -1);
+	    pageTable[i].physicalPage = physicalPage;
+        printf("allocate page frame %d\n", physicalPage);
+	    pageTable[i].valid = TRUE;
+        machine->pageOwner[physicalPage] = currentThread;
+#endif
+	    pageTable[i].use = FALSE;
+	    pageTable[i].dirty = FALSE;
+	    pageTable[i].readOnly = FALSE;  // if the code segment was entirely on 
 					// a separate page, we could set its 
 					// pages to be read-only
+        pageTable[i].swapPage = -1;
     }
     
+#ifndef LAZY_LOADING
 // zero out the entire address space, to zero the unitialized data segment 
 // and the stack segment
     // bzero(machine->mainMemory, size);
@@ -133,7 +147,8 @@ AddrSpace::AddrSpace(OpenFile *executable)
             executable->ReadAt(&(machine->mainMemory[physAddr]),1, noffH.initData.inFileAddr + i);
         }
     }
-
+#endif
+#endif
 }
 
 //----------------------------------------------------------------------
@@ -143,7 +158,9 @@ AddrSpace::AddrSpace(OpenFile *executable)
 
 AddrSpace::~AddrSpace()
 {
+#ifndef INVERTED_PAGETABLE
    delete pageTable;
+#endif
 }
 
 //----------------------------------------------------------------------
@@ -188,7 +205,9 @@ AddrSpace::InitRegisters()
 
 void AddrSpace::SaveState() 
 {
+#ifdef USE_TLB
     machine->tlb->Clear();
+#endif
 }
 
 //----------------------------------------------------------------------
@@ -201,6 +220,23 @@ void AddrSpace::SaveState()
 
 void AddrSpace::RestoreState() 
 {
+#ifndef INVERTED_PAGETABLE
     machine->pageTable = pageTable;
     machine->pageTableSize = numPages;
+#endif
 }
+
+//----------------------------------------------------------------------
+// AddrSpace::ppn2vpn
+// 	translate physical page number to virtual page number
+//	if the addrspace owns the physical page
+//----------------------------------------------------------------------
+#ifndef INVERTED_PAGETABLE
+int AddrSpace::ppn2vpn(int physicalPage)
+{
+    for(int i = 0; i < numPages; i++)
+        if(pageTable[i].valid && pageTable[i].physicalPage == physicalPage)
+            return i;
+    return -1;
+}
+#endif

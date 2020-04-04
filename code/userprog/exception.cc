@@ -62,14 +62,13 @@ ExceptionHandler(ExceptionType which)
             {
                 case SC_Halt:
                     DEBUG('a', "Shutdown, initiated by user program.\n");
+                    printf("Shutdown, initiated by user program.\n");
    	                machine->MemRecycle();
                     interrupt->Halt();
                     break;
                 case SC_Exit:
                     printf("Exit!\n");
                     machine->MemRecycle();
-                    // int NextPC = machine->ReadRegister(NextPCReg);
-                    // machine->WriteRegister(PCReg, NextPC);
                     currentThread->Finish();
                     break;
                 default:
@@ -93,7 +92,27 @@ void PageFaultExceptionHandler()
 {
     int virtAddr = machine->ReadRegister(BadVAddrReg);
     int vpn = (unsigned) virtAddr / PageSize;
-    if(machine->tlb != NULL)
-        machine->tlb->tlbMissHandler(vpn);
+    
+#ifdef INVERTED_PAGETABLE
+    machine->pageFaultHandler(vpn);
+#else
+    if(machine->pageTable[vpn].valid == false)
+    {
+#ifdef SHOW_INFO
+        printf("visit virtual page %d cause page fault\n", vpn);
+#endif
+        machine->pageFaultHandler(vpn);
+#ifdef SHOW_INFO
+        printf("----------------------------------------\n");
+#endif
+    }
+#endif
+        
+    // by now the page is in memory
+
+#ifdef USE_TLB
+    machine->tlb->tlbMissHandler(vpn);
+#endif
+
     stats->numPageFaults++;
 }

@@ -23,7 +23,7 @@ TLB::~TLB()
 }
 
 TranslationEntry*
-TLB::findEnrty(int vpn)
+TLB::findEntry(int vpn)
 {
     for (int i = 0; i < size; i++)
     	if (entry[i].valid && (entry[i].virtualPage == vpn))
@@ -62,6 +62,8 @@ TLB::tlbMissHandler(int vpn)
                         position = i;
             break;
         }
+        int displayVpn = entry[position].virtualPage;
+        machine->pageTable[displayVpn] = entry[position];
     }
     entry[position] = machine->pageTable[vpn];
     entry[position].valid = true;
@@ -74,5 +76,28 @@ TLB::tlbMissHandler(int vpn)
 void TLB::Clear()
 {
     for(int i = 0; i < size; ++i)
-        entry[i].valid = false;
+        if(entry[i].valid)
+        {
+            machine->pageTable[entry[i].virtualPage] = entry[i];
+            entry[i].valid = false;
+        }
+}
+
+void TLB::writeBack(int vpn)
+{
+    for(int i = 0; i < size; ++i)
+        if(entry[i].virtualPage == vpn && entry[i].valid)
+        {
+            machine->pageTable[entry[i].virtualPage] = entry[i];
+            entry[i].valid = false;
+            return;
+        }
+}
+
+bool TLB::isDirty(int vpn)
+{
+    for(int i = 0; i < size; ++i)
+        if(entry[i].virtualPage == vpn && entry[i].valid)
+            return entry[i].dirty;     
+    return false;
 }
