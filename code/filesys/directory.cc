@@ -34,20 +34,18 @@
 //
 //	"size" is the number of entries in the directory
 //----------------------------------------------------------------------
-
 Directory::Directory(int size)
 {
     table = new DirectoryEntry[size];
     tableSize = size;
     for (int i = 0; i < tableSize; i++)
-	table[i].inUse = FALSE;
+	    table[i].inUse = FALSE;
 }
 
 //----------------------------------------------------------------------
 // Directory::~Directory
 // 	De-allocate directory data structure.
 //----------------------------------------------------------------------
-
 Directory::~Directory()
 { 
     delete [] table;
@@ -59,7 +57,6 @@ Directory::~Directory()
 //
 //	"file" -- file containing the directory contents
 //----------------------------------------------------------------------
-
 void
 Directory::FetchFrom(OpenFile *file)
 {
@@ -72,7 +69,6 @@ Directory::FetchFrom(OpenFile *file)
 //
 //	"file" -- file to contain the new directory contents
 //----------------------------------------------------------------------
-
 void
 Directory::WriteBack(OpenFile *file)
 {
@@ -86,13 +82,12 @@ Directory::WriteBack(OpenFile *file)
 //
 //	"name" -- the file name to look up
 //----------------------------------------------------------------------
-
 int
 Directory::FindIndex(char *name)
 {
     for (int i = 0; i < tableSize; i++)
         if (table[i].inUse && !strncmp(table[i].name, name, FileNameMaxLen))
-	    return i;
+	        return i;
     return -1;		// name not in directory
 }
 
@@ -104,14 +99,13 @@ Directory::FindIndex(char *name)
 //
 //	"name" -- the file name to look up
 //----------------------------------------------------------------------
-
 int
 Directory::Find(char *name)
 {
     int i = FindIndex(name);
 
     if (i != -1)
-	return table[i].sector;
+	    return table[i].sector;
     return -1;
 }
 
@@ -125,20 +119,19 @@ Directory::Find(char *name)
 //	"name" -- the name of the file being added
 //	"newSector" -- the disk sector containing the added file's header
 //----------------------------------------------------------------------
-
 bool
 Directory::Add(char *name, int newSector)
 { 
     if (FindIndex(name) != -1)
-	return FALSE;
+	    return FALSE;
 
     for (int i = 0; i < tableSize; i++)
         if (!table[i].inUse) {
             table[i].inUse = TRUE;
             strncpy(table[i].name, name, FileNameMaxLen); 
             table[i].sector = newSector;
-        return TRUE;
-	}
+            return TRUE;
+	    }
     return FALSE;	// no space.  Fix when we have extensible files.
 }
 
@@ -149,14 +142,13 @@ Directory::Add(char *name, int newSector)
 //
 //	"name" -- the file name to be removed
 //----------------------------------------------------------------------
-
 bool
 Directory::Remove(char *name)
 { 
     int i = FindIndex(name);
 
     if (i == -1)
-	return FALSE; 		// name not in directory
+	    return FALSE; 		// name not in directory
     table[i].inUse = FALSE;
     return TRUE;	
 }
@@ -165,13 +157,12 @@ Directory::Remove(char *name)
 // Directory::List
 // 	List all the file names in the directory. 
 //----------------------------------------------------------------------
-
 void
 Directory::List()
 {
-   for (int i = 0; i < tableSize; i++)
-	if (table[i].inUse)
-	    printf("%s\n", table[i].name);
+    for (int i = 0; i < tableSize; i++)
+	    if (table[i].inUse)
+	        printf("%s\n", table[i].name);
 }
 
 //----------------------------------------------------------------------
@@ -179,7 +170,6 @@ Directory::List()
 // 	List all the file names in the directory, their FileHeader locations,
 //	and the contents of each file.  For debugging.
 //----------------------------------------------------------------------
-
 void
 Directory::Print()
 { 

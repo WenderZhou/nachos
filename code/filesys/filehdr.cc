@@ -37,17 +37,16 @@
 //	"freeMap" is the bit map of free disk sectors
 //	"fileSize" is the bit map of free disk sectors
 //----------------------------------------------------------------------
-
 bool
 FileHeader::Allocate(BitMap *freeMap, int fileSize)
 { 
     numBytes = fileSize;
     numSectors  = divRoundUp(fileSize, SectorSize);
     if (freeMap->NumClear() < numSectors)
-	return FALSE;		// not enough space
+	    return FALSE;		// not enough space
 
     for (int i = 0; i < numSectors; i++)
-	dataSectors[i] = freeMap->Find();
+	    dataSectors[i] = freeMap->Find();
     return TRUE;
 }
 
@@ -57,7 +56,6 @@ FileHeader::Allocate(BitMap *freeMap, int fileSize)
 //
 //	"freeMap" is the bit map of free disk sectors
 //----------------------------------------------------------------------
-
 void 
 FileHeader::Deallocate(BitMap *freeMap)
 {
@@ -73,7 +71,6 @@ FileHeader::Deallocate(BitMap *freeMap)
 //
 //	"sector" is the disk sector containing the file header
 //----------------------------------------------------------------------
-
 void
 FileHeader::FetchFrom(int sector)
 {
@@ -86,7 +83,6 @@ FileHeader::FetchFrom(int sector)
 //
 //	"sector" is the disk sector to contain the file header
 //----------------------------------------------------------------------
-
 void
 FileHeader::WriteBack(int sector)
 {
@@ -102,7 +98,6 @@ FileHeader::WriteBack(int sector)
 //
 //	"offset" is the location within the file of the byte in question
 //----------------------------------------------------------------------
-
 int
 FileHeader::ByteToSector(int offset)
 {
@@ -113,7 +108,6 @@ FileHeader::ByteToSector(int offset)
 // FileHeader::FileLength
 // 	Return the number of bytes in the file.
 //----------------------------------------------------------------------
-
 int
 FileHeader::FileLength()
 {
@@ -125,7 +119,6 @@ FileHeader::FileLength()
 // 	Print the contents of the file header, and the contents of all
 //	the data blocks pointed to by the file header.
 //----------------------------------------------------------------------
-
 void
 FileHeader::Print()
 {
