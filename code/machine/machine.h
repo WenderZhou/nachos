@@ -35,7 +35,7 @@
 					// the disk sector size, for
 					// simplicity
 
-#define NumPhysPages    64
+#define NumPhysPages    32
 #define MemorySize 	(NumPhysPages * PageSize)
 #define TLBSize		8		// if there is a TLB, make it small
 
@@ -191,8 +191,11 @@ class Machine {
 	BitMap	*memBitMap;
 	void MemRecycle();
 
+#ifdef USE_SWAPSPACE
 	SwapSpace *swapSpace;
 	unsigned int swapPosition;
+#endif
+
 	void pageFaultHandler(int virtualPage);
 
 #ifdef INVERTED_PAGETABLE

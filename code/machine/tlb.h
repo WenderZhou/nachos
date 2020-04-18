@@ -1,3 +1,6 @@
+#ifndef MYTLB_H
+#define MYTLB_H
+
 #include "copyright.h"
 #include "utility.h"
 #include "translate.h"
@@ -24,3 +27,5 @@ class TLB{
     int tlbtime;
     int size;
 };
+
+#endif

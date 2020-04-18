@@ -80,8 +80,12 @@ Machine::Machine(bool debug)
 #endif
 
     memBitMap = new BitMap(NumPhysPages);
+
+#ifdef USE_SWAPSPACE
     swapSpace = new SwapSpace();
     swapPosition = 0;
+#endif
+
     for(i = 0; i < NumPhysPages; i++)
         pageOwner[i] = NULL;
 
@@ -98,8 +102,13 @@ Machine::~Machine()
 {
     delete [] mainMemory;
     delete memBitMap;
+
 #ifdef USE_TLB
     delete tlb;
+#endif
+
+#ifdef USE_SWAPSPACE
+    delete swapSpace;
 #endif
 }
 
@@ -216,17 +225,17 @@ Machine::DumpState()
 //----------------------------------------------------------------------
 
 int Machine::ReadRegister(int num)
-    {
+{
 	ASSERT((num >= 0) && (num < NumTotalRegs));
 	return registers[num];
-    }
+}
 
 void Machine::WriteRegister(int num, int value)
-    {
+{
 	ASSERT((num >= 0) && (num < NumTotalRegs));
 	// DEBUG('m', "WriteRegister %d, value %d\n", num, value);
 	registers[num] = value;
-    }
+}
 
 void Machine::MemRecycle()
 {
@@ -246,11 +255,13 @@ void Machine::MemRecycle()
             memBitMap->Clear(pageFrame);
             printf("Recycle %d in main memory page %d\n",i,pageFrame);
         }
+    #ifdef USE_SWAPSPACE
         else if(pageTable[i].swapPage != -1)    // in swap space
         {
             swapSpace->Clear(pageTable[i].swapPage);
             printf("Recycle %d in swap space page %d\n",i,pageTable[i].swapPage);
         }
+    #endif
     }
 #endif
 }
@@ -272,7 +283,7 @@ void Machine::pageFaultHandler(int virtualPage)
     ipt[page].dirty = false;
     ipt[page].readOnly = false;
 }
-#else
+#elif defined USE_SWAPSPACE
 void Machine::pageFaultHandler(int virtualPage)
 {
     int page = memBitMap->Find();
@@ -344,5 +355,10 @@ void Machine::pageFaultHandler(int virtualPage)
 #ifdef SHOW_INFO
     printf("virtual page %d now in physical page %d\n",virtualPage,page);
 #endif
+}
+#else
+void Machine::pageFaultHandler(int virtualPage)
+{
+    // do nothing, this is a default version so that filesys can work
 }
 #endif

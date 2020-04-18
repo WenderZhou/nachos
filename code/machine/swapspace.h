@@ -1,3 +1,6 @@
+#ifndef SWAPSPACE_H
+#define SWAPSPACE_H
+
 #include "copyright.h"
 #include "utility.h"
 #include "translate.h"
@@ -18,3 +21,5 @@ private:
     OpenFile *file; // swap space file on disk
     BitMap *bitMap; // recode the usage of swap space
 };
+
+#endif
