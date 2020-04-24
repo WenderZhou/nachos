@@ -86,8 +86,22 @@ int
 Directory::FindIndex(char *name)
 {
     for (int i = 0; i < tableSize; i++)
-        if (table[i].inUse && !strncmp(table[i].name, name, FileNameMaxLen))
-	        return i;
+        if (table[i].inUse)
+        {
+            if(table[i].name[FileNameMaxLen] == '\0'){
+                if(!strncmp(table[i].name, name, FileNameMaxLen))
+	                return i;
+            }
+            else
+            {
+                OpenFile *ffln = new OpenFile(Find("FFLN"));
+                char buf[128];
+                ffln->ReadAt(buf, 128, *(int*)table[i].name);
+                delete ffln;
+                if(!strncmp(buf, name, strlen(name)))
+	                return i;
+            }
+        }
     return -1;		// name not in directory
 }
 
@@ -128,7 +142,19 @@ Directory::Add(char *name, int newSector)
     for (int i = 0; i < tableSize; i++)
         if (!table[i].inUse) {
             table[i].inUse = TRUE;
-            strncpy(table[i].name, name, FileNameMaxLen); 
+            if(strlen(name) <= FileNameMaxLen)
+            {
+                strncpy(table[i].name, name, FileNameMaxLen);
+                table[i].name[FileNameMaxLen] = '\0';
+            }
+            else
+            {
+                OpenFile *ffln = new OpenFile(Find("FFLN"));
+                *(int*)table[i].name = ffln->Length();
+                table[i].name[FileNameMaxLen] = 1;
+                ffln->WriteAt(name, strlen(name) + 1, ffln->Length());
+                delete ffln;
+            }
             table[i].sector = newSector;
             return TRUE;
 	    }
@@ -149,6 +175,8 @@ Directory::Remove(char *name)
 
     if (i == -1)
 	    return FALSE; 		// name not in directory
+    memset(table[i].name, 0, sizeof(table[i].name));
+    table[i].sector = 0;
     table[i].inUse = FALSE;
     return TRUE;	
 }
@@ -178,7 +206,16 @@ Directory::Print()
     printf("Directory contents:\n");
     for (int i = 0; i < tableSize; i++)
 	if (table[i].inUse) {
-	    printf("Name: %s, Sector: %d\n", table[i].name, table[i].sector);
+        if(table[i].name[FileNameMaxLen] == '\0')
+	        printf("Name: %s, Sector: %d\n", table[i].name, table[i].sector);
+        else
+        {
+            OpenFile *ffln = new OpenFile(Find("FFLN"));
+            char buf[128];
+            ffln->ReadAt(buf, 128, *(int*)table[i].name);
+            printf("Name: %s, Sector: %d\n", buf, table[i].sector);
+            delete ffln;
+        }
 	    hdr->FetchFrom(table[i].sector);
 	    hdr->Print();
 	}

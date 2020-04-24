@@ -133,6 +133,8 @@ FileSystem::FileSystem(bool format)
             delete mapHdr; 
             delete dirHdr;
         }
+        
+        Create("FFLN",0);   // file for long name
     }
     else {
         // if we are not formatting the disk, just open the files representing
@@ -192,21 +194,28 @@ FileSystem::Create(char *name, int initialSize)
         sector = freeMap->Find();	// find a sector to hold the file header
     	if (sector == -1) 		
             success = FALSE;		// no free block for file header 
-        else if (!directory->Add(name, sector))
-            success = FALSE;	// no space in directory
-	    else {
-    	    hdr = new FileHeader;
-	        if (!hdr->Allocate(freeMap, initialSize))
-            	success = FALSE;	// no space on disk for data
-	        else {	
-	    	    success = TRUE;
-		        // everthing worked, flush all changes back to disk
-    	    	hdr->WriteBack(sector); 		
-    	    	directory->WriteBack(directoryFile);
-    	    	freeMap->WriteBack(freeMapFile);
-	        }
+        else
+        {
+             // NOTE: Writeback first because directory add may need it
+            freeMap->WriteBack(freeMapFile);
+            if (!directory->Add(name, sector))
+                success = FALSE;	// no space in directory
+            else {
+                hdr = new FileHeader;
+                // NOTE: freeMap read back again
+                freeMap->FetchFrom(freeMapFile);
+                if (!hdr->Allocate(freeMap, initialSize))
+                    success = FALSE;	// no space on disk for data
+                else {	
+                    success = TRUE;
+                    // everthing worked, flush all changes back to disk
+                    hdr->WriteBack(sector); 		
+    	    	    directory->WriteBack(directoryFile);
+    	    	    freeMap->WriteBack(freeMapFile);    
+                }
             delete hdr;
-	    }
+	        }
+        }
         delete freeMap;
     }
     delete directory;

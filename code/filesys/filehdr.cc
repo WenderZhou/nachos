@@ -27,6 +27,18 @@
 #include "system.h"
 #include "filehdr.h"
 
+void SetTime(int* Time)
+{
+    time_t timep;
+    time(&timep);
+    struct tm *p = gmtime(&timep);
+    Time[0] = 1900 + p->tm_year;
+    Time[1] = 1 + p->tm_mon;
+    Time[2] = p->tm_mday;
+    Time[3] = 8 + p->tm_hour;
+    Time[4] = p->tm_min;
+}
+
 //----------------------------------------------------------------------
 // FileHeader::Allocate
 // 	Initialize a fresh file header for a newly created file.
@@ -42,11 +54,38 @@ FileHeader::Allocate(BitMap *freeMap, int fileSize)
 { 
     numBytes = fileSize;
     numSectors  = divRoundUp(fileSize, SectorSize);
+
+    SetTime(createTime);
+    memcpy(visitTime,createTime,sizeof(createTime));
+    memcpy(modifyTime,createTime,sizeof(createTime));
+
     if (freeMap->NumClear() < numSectors)
 	    return FALSE;		// not enough space
+    
+    for (int i = 0; i < numSectors && i < NumDirect; i++)
+        dataSectors[i] = freeMap->Find();
+    extraSector = -1;
+    if(numSectors > NumDirect)
+        extraSector = freeMap->Find();
 
-    for (int i = 0; i < numSectors; i++)
-	    dataSectors[i] = freeMap->Find();
+    int sector = extraSector;
+    int rest = numSectors - NumDirect;
+    while(rest > 0)
+    {
+        ExtraFileHeader *extraHdr = new ExtraFileHeader();
+        for (int i = 0; i < rest && i < NumIndirect; i++)
+            extraHdr->dataSectors[i] = freeMap->Find();
+        extraHdr->extraSector = -1;
+        if(rest > NumIndirect)
+            extraHdr->extraSector = freeMap->Find();
+
+        extraHdr->WriteBack(sector);
+
+        rest -= NumIndirect;
+        sector = extraHdr->extraSector;
+        delete extraHdr;
+    }
+
     return TRUE;
 }
 
@@ -59,9 +98,28 @@ FileHeader::Allocate(BitMap *freeMap, int fileSize)
 void 
 FileHeader::Deallocate(BitMap *freeMap)
 {
-    for (int i = 0; i < numSectors; i++) {
-	ASSERT(freeMap->Test((int) dataSectors[i]));  // ought to be marked!
-	freeMap->Clear((int) dataSectors[i]);
+    for (int i = 0; i < NumDirect && i < numSectors; i++) {
+        ASSERT(freeMap->Test((int) dataSectors[i]));  // ought to be marked!
+        freeMap->Clear((int) dataSectors[i]);
+    }
+    int sector = extraSector;
+    int rest = numSectors - NumDirect;
+    while(sector != -1)
+    {
+        ExtraFileHeader *extraHdr = new ExtraFileHeader();
+        extraHdr->FetchFrom(sector);
+
+        for (int i = 0; i < NumIndirect && i < rest; i++)
+        {
+            ASSERT(freeMap->Test((int) extraHdr->dataSectors[i]));
+            freeMap->Clear((int) extraHdr->dataSectors[i]);
+        }
+        ASSERT(freeMap->Test(sector));
+        freeMap->Clear(sector);
+        
+        rest -= NumIndirect;
+        sector = extraHdr->extraSector;
+        delete extraHdr;
     }
 }
 
@@ -86,6 +144,7 @@ FileHeader::FetchFrom(int sector)
 void
 FileHeader::WriteBack(int sector)
 {
+    hdrSector = sector;
     synchDisk->WriteSector(sector, (char *)this); 
 }
 
@@ -101,7 +160,25 @@ FileHeader::WriteBack(int sector)
 int
 FileHeader::ByteToSector(int offset)
 {
-    return(dataSectors[offset / SectorSize]);
+    int idx = offset / SectorSize;
+    if(idx < NumDirect)
+        return dataSectors[idx];
+
+    idx -= NumDirect;
+    int sector = extraSector;
+    ExtraFileHeader *extraHdr = new ExtraFileHeader();
+    extraHdr->FetchFrom(sector);
+    while(idx >= NumIndirect)
+    {
+        sector = extraHdr->extraSector;
+        extraHdr->FetchFrom(sector);
+        idx -= NumIndirect;
+    }
+    int result = extraHdr->dataSectors[idx];
+    delete extraHdr;
+    
+    ASSERT(result != 0);
+    return result;
 }
 
 //----------------------------------------------------------------------
@@ -112,6 +189,87 @@ int
 FileHeader::FileLength()
 {
     return numBytes;
+}
+
+bool FileHeader::Extend(BitMap *freeMap, int extraSize)
+{
+    numBytes += extraSize;
+    int numSectorsNew = divRoundUp(numBytes, SectorSize);
+    if (numBytes == numSectorsNew)  // need no more space
+        return TRUE;
+    if (freeMap->NumClear() < numSectorsNew - numSectors)
+	    return FALSE;		// not enough space
+    if (numSectorsNew < NumDirect)
+    {
+        for (int i = numSectors; i < numSectorsNew; i++)
+            dataSectors[i] = freeMap->Find();
+    }
+    else if(numSectors < NumDirect && numSectorsNew >= NumDirect)
+    {
+        for (int i = numSectors; i < NumDirect; i++)
+            dataSectors[i] = freeMap->Find();
+        extraSector = freeMap->Find();
+        int sector = extraSector;
+        int rest = numSectorsNew - NumDirect;
+        while(rest > 0)
+        {
+            ExtraFileHeader *extraHdr = new ExtraFileHeader();
+            for (int i = 0; i < rest && i < NumIndirect; i++)
+                extraHdr->dataSectors[i] = freeMap->Find();
+            extraHdr->extraSector = -1;
+            if(rest > NumIndirect)
+                freeMap->Find();
+            extraHdr->WriteBack(sector);
+            rest -= NumIndirect;
+            sector = extraHdr->extraSector;
+            delete extraHdr;
+        }
+    }
+    else
+    {
+        int rest1 = numSectors - NumDirect;
+        int rest2 = numSectorsNew - NumDirect;
+        int sector = extraSector;
+        ExtraFileHeader *extraHdr = new ExtraFileHeader();
+        extraHdr->FetchFrom(sector);
+        while(rest1 > NumIndirect)
+        {
+            sector = extraHdr->extraSector;
+            extraHdr->FetchFrom(sector);
+            rest1 -= NumIndirect;
+            rest2 -= NumIndirect;
+        }
+
+        for (int i = rest1; i < rest2 && i < NumIndirect; i++)
+            extraHdr->dataSectors[i] = freeMap->Find();
+        extraHdr->extraSector = -1;
+        if(rest2 > NumIndirect)
+            extraHdr->extraSector = freeMap->Find();
+        
+        extraHdr->WriteBack(sector);
+
+        sector = extraHdr->extraSector;
+        rest2 -= NumIndirect;
+        while(rest2 > 0)
+        {
+            extraHdr->FetchFrom(sector);
+
+            for (int i = 0; i < rest2 && i < NumIndirect; i++)
+                extraHdr->dataSectors[i] = freeMap->Find();
+            extraHdr->extraSector = -1;
+            if(rest2 > NumIndirect)
+                extraHdr->extraSector = freeMap->Find();
+
+            extraHdr->WriteBack(sector);
+
+            rest2 -= NumIndirect;
+            sector = extraHdr->extraSector;
+        }
+        delete extraHdr;
+    }
+
+    numSectors = numSectorsNew;
+    return TRUE;
 }
 
 //----------------------------------------------------------------------
@@ -126,18 +284,77 @@ FileHeader::Print()
     char *data = new char[SectorSize];
 
     printf("FileHeader contents.  File size: %d.  File blocks:\n", numBytes);
-    for (i = 0; i < numSectors; i++)
-	printf("%d ", dataSectors[i]);
+    for (i = 0; i < NumDirect && i < numSectors; i++)
+        printf("%d ", dataSectors[i]);
+    int sector = extraSector;
+    int rest = numSectors - NumDirect;
+    while(sector != -1)
+    {
+        ExtraFileHeader *extraHdr = new ExtraFileHeader();
+        extraHdr->FetchFrom(sector);
+        for(int i = 0; i < rest && i < NumIndirect; i++)
+            printf("%d ", extraHdr->dataSectors[i]);
+        sector = extraHdr->extraSector;
+        rest -= NumIndirect;
+    }
+    
+    // printf("\nCreate time:  %d.%d.%d %d:%02d",createTime[0],createTime[1],
+    //                 createTime[2],createTime[3],createTime[4]);
+    // printf("\nLast visit:   %d.%d.%d %d:%02d",visitTime[0],visitTime[1],
+    //                 visitTime[2],visitTime[3],visitTime[4]);
+    // printf("\nLast modify:  %d.%d.%d %d:%02d",modifyTime[0],modifyTime[1],
+    //                 modifyTime[2],modifyTime[3],modifyTime[4]);
     printf("\nFile contents:\n");
-    for (i = k = 0; i < numSectors; i++) {
-	synchDisk->ReadSector(dataSectors[i], data);
+    for (i = k = 0; i < NumDirect && i < numSectors; i++) {
+	    synchDisk->ReadSector(dataSectors[i], data);
         for (j = 0; (j < SectorSize) && (k < numBytes); j++, k++) {
-	    if ('\040' <= data[j] && data[j] <= '\176')   // isprint(data[j])
-		printf("%c", data[j]);
+	        if ('\040' <= data[j] && data[j] <= '\176')   // isprint(data[j])
+		        printf("%c", data[j]);
             else
-		printf("\\%x", (unsigned char)data[j]);
-	}
+		        printf("\\%x", (unsigned char)data[j]);
+	    }
         printf("\n"); 
     }
+    sector = extraSector;
+    rest = numSectors - NumDirect;
+    while(sector != -1)
+    {
+        ExtraFileHeader *extraHdr = new ExtraFileHeader();
+        extraHdr->FetchFrom(sector);
+        for(int i = 0; i < rest && i < NumIndirect; i++)
+        {
+            synchDisk->ReadSector(extraHdr->dataSectors[i], data);
+            for (j = 0; (j < SectorSize) && (k < numBytes); j++, k++) {
+                if ('\040' <= data[j] && data[j] <= '\176')   // isprint(data[j])
+                    printf("%c", data[j]);
+                else
+                    printf("\\%x", (unsigned char)data[j]);
+	        }
+            printf("\n"); 
+        }
+        rest -= NumIndirect;
+        sector = extraHdr->extraSector;
+    }
+
     delete [] data;
+}
+
+int FileHeader::GetHdrSector()
+{
+    return hdrSector;
+}
+
+void FileHeader::UpdateVisitTime(){ SetTime(visitTime); }
+void FileHeader::UpdateModifyTime(){ SetTime(modifyTime); }
+
+void
+ExtraFileHeader::FetchFrom(int sector)
+{
+    synchDisk->ReadSector(sector, (char *)this);
+}
+
+void
+ExtraFileHeader::WriteBack(int sector)
+{
+    synchDisk->WriteSector(sector, (char *)this); 
 }

@@ -120,6 +120,9 @@ OpenFile::ReadAt(char *into, int numBytes, int position)
     int i, firstSector, lastSector, numSectors;
     char *buf;
 
+    hdr->UpdateVisitTime();
+    hdr->WriteBack(hdr->GetHdrSector());
+
     if ((numBytes <= 0) || (position >= fileLength))
     	return 0; 				// check request
     if ((position + numBytes) > fileLength)		
@@ -151,10 +154,26 @@ OpenFile::WriteAt(char *from, int numBytes, int position)
     bool firstAligned, lastAligned;
     char *buf;
 
-    if ((numBytes <= 0) || (position >= fileLength))
+    hdr->UpdateVisitTime();
+
+    if (numBytes <= 0)
 	    return 0;				// check request
+    if (position >= fileLength)
+        position = fileLength;
     if ((position + numBytes) > fileLength)
-	    numBytes = fileLength - position;
+    {
+        OpenFile *freeMapFile = new OpenFile(0);
+        BitMap *freeMap = new BitMap(NumSectors);
+        freeMap->FetchFrom(freeMapFile);
+        
+        hdr->Extend(freeMap, position + numBytes - fileLength);
+        ASSERT(freeMap->Test(1));
+        hdr->WriteBack(hdr->GetHdrSector());
+        freeMap->WriteBack(freeMapFile);
+    
+        delete freeMapFile;
+        delete freeMap;
+    } 
     DEBUG('f', "Writing %d bytes at %d, from file of length %d.\n", 	
 			numBytes, position, fileLength);
 
@@ -181,6 +200,10 @@ OpenFile::WriteAt(char *from, int numBytes, int position)
     for (i = firstSector; i <= lastSector; i++)	
         synchDisk->WriteSector(hdr->ByteToSector(i * SectorSize), 
 					&buf[(i - firstSector) * SectorSize]);
+
+    hdr->UpdateModifyTime();
+    hdr->WriteBack(hdr->GetHdrSector());
+
     delete [] buf;
     return numBytes;
 }
