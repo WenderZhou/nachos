@@ -170,7 +170,8 @@ FileSystem::FileSystem(bool format)
 //	to the file system!
 //
 //	"name" -- name of file to be created
-//	"initialSize" -- size of file to be created
+//	"initialSize" -- size of file to be created,
+//                   -1 if want to create a directory
 //----------------------------------------------------------------------
 bool
 FileSystem::Create(char *name, int initialSize)
@@ -183,10 +184,17 @@ FileSystem::Create(char *name, int initialSize)
 
     DEBUG('f', "Creating file %s, size %d\n", name, initialSize);
 
-    directory = new Directory(NumDirEntries);
-    directory->FetchFrom(directoryFile);
+    Path* path = new Path(name);
+    directory = path->GetDirectory(directoryFile);
 
-    if (directory->Find(name) != -1)
+    FileType fileType = REGULAR;
+    if(initialSize == -1)
+    {
+        initialSize = DirectoryFileSize;
+        fileType = DIRECTORY;
+    }
+
+    if (directory->Find(path->GetName()) != -1)
         success = FALSE;			// file is already in directory
     else {	
         freeMap = new BitMap(NumSectors);
@@ -198,7 +206,7 @@ FileSystem::Create(char *name, int initialSize)
         {
              // NOTE: Writeback first because directory add may need it
             freeMap->WriteBack(freeMapFile);
-            if (!directory->Add(name, sector))
+            if (!directory->Add(path->GetName(), sector, fileType))
                 success = FALSE;	// no space in directory
             else {
                 hdr = new FileHeader;
@@ -209,8 +217,9 @@ FileSystem::Create(char *name, int initialSize)
                 else {	
                     success = TRUE;
                     // everthing worked, flush all changes back to disk
+                    // hdr->SetPath(path->GetPath());
                     hdr->WriteBack(sector); 		
-    	    	    directory->WriteBack(directoryFile);
+    	    	    directory->WriteBack(path->GetDirOpenFile(directoryFile));
     	    	    freeMap->WriteBack(freeMapFile);    
                 }
             delete hdr;
@@ -219,6 +228,7 @@ FileSystem::Create(char *name, int initialSize)
         delete freeMap;
     }
     delete directory;
+    delete path;
     return success;
 }
 
@@ -239,11 +249,15 @@ FileSystem::Open(char *name)
     int sector;
 
     DEBUG('f', "Opening file %s\n", name);
-    directory->FetchFrom(directoryFile);
-    sector = directory->Find(name); 
+
+    Path* path = new Path(name);
+    directory = path->GetDirectory(directoryFile);
+    
+    sector = directory->Find(path->GetName()); 
     if (sector >= 0) 		
 	    openFile = new OpenFile(sector);	// name was found in directory 
     delete directory;
+    delete path;
     return openFile;				// return NULL if not found
 }
 
@@ -269,8 +283,11 @@ FileSystem::Remove(char *name)
     int sector;
     
     directory = new Directory(NumDirEntries);
-    directory->FetchFrom(directoryFile);
-    sector = directory->Find(name);
+
+    Path* path = new Path(name);
+    directory = path->GetDirectory(directoryFile);
+    
+    sector = directory->Find(path->GetName());
     if (sector == -1) {
        delete directory;
        return FALSE;			 // file not found 
@@ -283,10 +300,10 @@ FileSystem::Remove(char *name)
 
     fileHdr->Deallocate(freeMap);  		// remove data blocks
     freeMap->Clear(sector);			// remove header block
-    directory->Remove(name);
+    directory->Remove(path->GetName());
 
     freeMap->WriteBack(freeMapFile);		// flush to disk
-    directory->WriteBack(directoryFile);        // flush to disk
+    directory->WriteBack(path->GetDirOpenFile(directoryFile));        // flush to disk
     delete fileHdr;
     delete directory;
     delete freeMap;
@@ -343,3 +360,81 @@ FileSystem::Print()
     delete freeMap;
     delete directory;
 } 
+
+Path::Path(char* name)
+{
+    int length = strlen(name);
+    char* temp;
+    int i = 0;
+    while(i <= length)
+    {
+        temp = new char[length + 1];
+        int j;
+        for(j = 0; i <= length; i++,j++)
+        {
+            if(name[i] == '/')
+            {
+                temp[j] = '\0';
+                break;
+            }
+            else
+                temp[j] = name[i];
+        }
+        i++;
+        path.push_back(temp);
+    }
+}
+
+Path::~Path()
+{
+    for(int i = 0; i < path.size(); i++)
+        delete path[i];
+}
+
+char* Path::GetPath()
+{
+    char* filePath = new char[100];
+    strcat(filePath,"/");
+    for(int i = 0; i < path.size() - 1; i++)
+    {
+        strcat(filePath,path[i]);
+        strcat(filePath,"/");
+    }
+    return filePath;
+}
+
+Directory* Path::GetDirectory(OpenFile* directoryFile)
+{       
+    Directory *directory = new Directory(NumDirEntries);
+    directory->FetchFrom(directoryFile);
+    for(int i = 0; i < path.size() - 1; i++)
+    {
+        int sector = directory->FindDir(path[i]);
+        OpenFile* openfile = new OpenFile(sector);
+        directory->FetchFrom(openfile);
+        delete openfile;
+    }
+    return directory;
+}
+
+OpenFile* Path::GetDirOpenFile(OpenFile* directoryFile)
+{
+    Directory *directory = new Directory(NumDirEntries);
+    directory->FetchFrom(directoryFile);
+    for(int i = 0; i < path.size() - 1; i++)
+    {
+        int sector = directory->FindDir(path[i]);
+        OpenFile* openfile = new OpenFile(sector);
+        if(i == path.size() - 2)
+            return openfile;
+        directory->FetchFrom(openfile);
+        delete openfile;
+    }
+    delete directory;
+    return directoryFile;
+}
+
+char* Path::GetName()
+{
+    return path[path.size() - 1];
+}

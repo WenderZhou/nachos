@@ -141,11 +141,20 @@ main(int argc, char **argv)
 	    fileSystem->Remove(*(argv + 1));
 	    argCount = 2;
 	} else if (!strcmp(*argv, "-l")) {	// list Nachos directory
-            fileSystem->List();
+		fileSystem->List();
 	} else if (!strcmp(*argv, "-D")) {	// print entire filesystem
-            fileSystem->Print();
+		fileSystem->Print();
 	} else if (!strcmp(*argv, "-t")) {	// performance test
-            PerformanceTest();
+		PerformanceTest();
+	} else if (!strcmp(*argv, "-mkdir")) {	// create directory
+	    ASSERT(argc > 1);
+	    fileSystem->Create(*(argv + 1), -1);
+	    argCount = 2;
+	}
+	else if (!strcmp(*argv, "-cf")) {	// create file
+	    ASSERT(argc > 1);
+	    fileSystem->Create(*(argv + 1), 0);
+	    argCount = 2;
 	}
 #endif // FILESYS
 #ifdef NETWORK

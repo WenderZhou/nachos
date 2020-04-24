@@ -18,7 +18,8 @@
 #include "bitmap.h"
 #include "time.h"
 
-#define NumDirect 	((SectorSize - 19 * sizeof(int)) / sizeof(int))
+#define FilePathLen 24
+#define NumDirect 	((SectorSize - 19 * sizeof(int) - FilePathLen * sizeof(char)) / sizeof(int))
 #define NumIndirect 	((SectorSize - 1 * sizeof(int)) / sizeof(int))
 #define MaxFileSize 	(NumDirect * SectorSize)
 
@@ -65,10 +66,13 @@ class FileHeader {
     void UpdateVisitTime();
     void UpdateModifyTime();
 
+    void SetPath(char* filePath);
+
   private:
     int numBytes;			// Number of bytes in the file
     int numSectors;			// Number of data sectors in the file
     int hdrSector;    // sector number of the header
+    char path[FilePathLen];      // sector of directory on the path
     int createTime[5];
     int visitTime[5];
     int modifyTime[5];

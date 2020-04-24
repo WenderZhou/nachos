@@ -37,6 +37,8 @@
 
 #include "copyright.h"
 #include "openfile.h"
+#include "directory.h"
+#include <vector>
 
 #ifdef FILESYS_STUB 		// Temporarily implement file system calls as 
 				// calls to UNIX, until the real file system
@@ -90,6 +92,18 @@ class FileSystem {
 					// represented as a file
 	OpenFile* directoryFile;		// "Root" directory -- list of 
 					// file names, represented as a file
+};
+
+class Path{
+  public:
+	Path(char* name);
+	~Path();
+	char* Path::GetPath();
+	Directory* GetDirectory(OpenFile* directoryFile);
+	OpenFile* GetDirOpenFile(OpenFile* directoryFile);
+	char* GetName();
+  private:
+	std::vector<char*> path;
 };
 
 #endif // FILESYS

@@ -59,6 +59,9 @@ FileHeader::Allocate(BitMap *freeMap, int fileSize)
     memcpy(visitTime,createTime,sizeof(createTime));
     memcpy(modifyTime,createTime,sizeof(createTime));
 
+    memset(path,0,sizeof(path));
+    strcpy(path,"/");
+
     if (freeMap->NumClear() < numSectors)
 	    return FALSE;		// not enough space
     
@@ -283,6 +286,7 @@ FileHeader::Print()
     int i, j, k;
     char *data = new char[SectorSize];
 
+    printf("path: %s\n",path);
     printf("FileHeader contents.  File size: %d.  File blocks:\n", numBytes);
     for (i = 0; i < NumDirect && i < numSectors; i++)
         printf("%d ", dataSectors[i]);
@@ -342,6 +346,14 @@ FileHeader::Print()
 int FileHeader::GetHdrSector()
 {
     return hdrSector;
+}
+
+void FileHeader::SetPath(char* filePath)
+{
+    ASSERT(strlen(filePath) < FilePathLen - 1);
+    strcpy(path,filePath);
+    // NOTE: filePath was new by Path::GetPath()
+    delete filePath;
 }
 
 void FileHeader::UpdateVisitTime(){ SetTime(visitTime); }

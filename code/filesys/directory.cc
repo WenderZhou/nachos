@@ -123,6 +123,18 @@ Directory::Find(char *name)
     return -1;
 }
 
+int
+Directory::FindDir(char* name)
+{
+    int i = FindIndex(name);
+    if(i != -1)
+    {
+        ASSERT(table[i].type == DIRECTORY);
+        return table[i].sector;
+    }
+    return -1;
+}
+
 //----------------------------------------------------------------------
 // Directory::Add
 // 	Add a file into the directory.  Return TRUE if successful;
@@ -134,10 +146,12 @@ Directory::Find(char *name)
 //	"newSector" -- the disk sector containing the added file's header
 //----------------------------------------------------------------------
 bool
-Directory::Add(char *name, int newSector)
+Directory::Add(char *name, int newSector, FileType filetype)
 { 
     if (FindIndex(name) != -1)
 	    return FALSE;
+
+printf("add %s\n",name);
 
     for (int i = 0; i < tableSize; i++)
         if (!table[i].inUse) {
@@ -156,6 +170,7 @@ Directory::Add(char *name, int newSector)
                 delete ffln;
             }
             table[i].sector = newSector;
+            table[i].type = filetype;
             return TRUE;
 	    }
     return FALSE;	// no space.  Fix when we have extensible files.
@@ -175,6 +190,22 @@ Directory::Remove(char *name)
 
     if (i == -1)
 	    return FALSE; 		// name not in directory
+    
+    if(table[i].type == DIRECTORY)
+    {
+        OpenFile* dirFile = new OpenFile(table[i].sector);
+        Directory* dir = new Directory(10);
+        dir->FetchFrom(dirFile);
+
+        for(int j = 0; j < 10; j++)
+            if(dir->table[j].inUse)
+                dir->Remove(dir->table[j].name);
+                
+        dir->WriteBack(dirFile);
+        delete dir;
+        delete dirFile;
+    }
+
     memset(table[i].name, 0, sizeof(table[i].name));
     table[i].sector = 0;
     table[i].inUse = FALSE;
@@ -186,11 +217,27 @@ Directory::Remove(char *name)
 // 	List all the file names in the directory. 
 //----------------------------------------------------------------------
 void
-Directory::List()
+Directory::List(int depth)
 {
     for (int i = 0; i < tableSize; i++)
 	    if (table[i].inUse)
-	        printf("%s\n", table[i].name);
+        {
+            int j;
+            for(j = 0; j < depth - 1; j++)
+                printf("  ");
+            for(; j < depth; j++)
+                printf("|-");
+            printf("%s\n", table[i].name);
+            if(table[i].type == DIRECTORY)
+            {
+                Directory* dir = new Directory(10);
+                OpenFile* openfile = new OpenFile(table[i].sector);
+                dir->FetchFrom(openfile);
+                dir->List(depth + 1);
+                delete openfile;
+            }
+        }
+	        
 }
 
 //----------------------------------------------------------------------
@@ -216,6 +263,10 @@ Directory::Print()
             printf("Name: %s, Sector: %d\n", buf, table[i].sector);
             delete ffln;
         }
+        if(table[i].type == REGULAR)
+            printf("type: regular file\n");
+        else
+            printf("type: directory\n");
 	    hdr->FetchFrom(table[i].sector);
 	    hdr->Print();
 	}
