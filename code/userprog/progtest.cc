@@ -90,6 +90,7 @@ StartProcess2(char *filename)
 // I/O requests wait on a Semaphore to delay until the I/O completes.
 
 static Console *console;
+static SynchConsole *synchConsole;
 static Semaphore *readAvail;
 static Semaphore *writeDone;
 
@@ -122,5 +123,19 @@ ConsoleTest (char *in, char *out)
 	console->PutChar(ch);	// echo it!
 	writeDone->P() ;        // wait for write to finish
 	if (ch == 'q') return;  // if q, quit
+    }
+}
+
+void
+SynchConsoleTest (char *in, char *out)
+{
+    char ch;
+
+    synchConsole = new SynchConsole(in, out);
+    
+    for (;;) {
+        ch = synchConsole->GetChar();
+        synchConsole->PutChar(ch);	// echo it!
+        if (ch == 'q') return;  // if q, quit
     }
 }
