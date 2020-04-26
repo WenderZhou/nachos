@@ -136,6 +136,7 @@ FileSystem::FileSystem(bool format)
         }
         
         Create("FFLN",0);   // file for long name
+        Create("PIPE",0);
     }
     else {
         // if we are not formatting the disk, just open the files representing

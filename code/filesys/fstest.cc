@@ -108,7 +108,7 @@ Print(char *name)
 //	  PerformanceTest -- overall control, and print out performance #'s
 //----------------------------------------------------------------------
 
-#define FileName 	"TestFile"
+#define FileName 	"dir1/dir2/TestFile"
 #define Contents 	"1234567890"
 #define ContentSize 	strlen(Contents)
 #define FileSize 	((int)(ContentSize * 5))
@@ -137,8 +137,8 @@ FileWrite()
             delete openFile;
             return;
         }
-        else
-            printf("%s finish write at %d\n",currentThread->getName(),i);
+        // else
+        //     printf("%s finish write at %d\n",currentThread->getName(),i);
     }
     delete openFile;	// close file
 }
@@ -166,8 +166,8 @@ FileRead()
             delete [] buffer;
             return;
         }
-        else
-            printf("%s finish read at %d\n",currentThread->getName(),i);
+        // else
+        //     printf("%s finish read at %d\n",currentThread->getName(),i);
     }
     delete [] buffer;
     delete openFile;	// close file
@@ -187,13 +187,48 @@ void
 PerformanceTest()
 {
     printf("Starting file system performance test:\n");
-    Thread* thread1 = new Thread("Thread1");
-    thread1->Fork(ForkPerformance,1);
+    // Thread* thread1 = new Thread("Thread1");
+    // thread1->Fork(ForkPerformance,1);
     FileWrite();
     FileRead();
-    if (!fileSystem->Remove(FileName)) {
-      printf("Perf test: unable to remove %s\n", FileName);
-      return;
+    // if (!fileSystem->Remove(FileName)) {
+    //   printf("Perf test: unable to remove %s\n", FileName);
+    //   return;
+    // }
+}
+
+Semaphore *full = new Semaphore("full",0);
+Semaphore *empty = new Semaphore("empty",1);
+
+void
+Pipe1()
+{
+    while(true){
+        OpenFile* pipe = fileSystem->Open("PIPE");
+        char str[100];
+        memset(str,0,sizeof(str));
+        full->P();
+        pipe->Read(str,100);
+        printf("%s\n",str);
+        empty->V();
+        delete pipe;
     }
 }
 
+void
+PipeTest()
+{
+    Thread* thread1 = new Thread("Thread1");
+    thread1->Fork(Pipe1,1);
+
+    while(true){
+        OpenFile* pipe = fileSystem->Open("PIPE");
+        char str[100];
+        memset(str,0,sizeof(str));
+        scanf("%s",str);
+        empty->P();
+        pipe->Write(str,strlen(str) + 1);
+        full->V();
+        delete pipe;
+    }
+}

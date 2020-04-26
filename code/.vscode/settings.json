@@ -4,6 +4,7 @@
         "vector": "cpp",
         "algorithm": "cpp",
         "*.tcc": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "string": "cpp"
     }
 }

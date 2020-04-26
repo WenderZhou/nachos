@@ -302,12 +302,12 @@ FileHeader::Print()
         rest -= NumIndirect;
     }
     
-    // printf("\nCreate time:  %d.%d.%d %d:%02d",createTime[0],createTime[1],
-    //                 createTime[2],createTime[3],createTime[4]);
-    // printf("\nLast visit:   %d.%d.%d %d:%02d",visitTime[0],visitTime[1],
-    //                 visitTime[2],visitTime[3],visitTime[4]);
-    // printf("\nLast modify:  %d.%d.%d %d:%02d",modifyTime[0],modifyTime[1],
-    //                 modifyTime[2],modifyTime[3],modifyTime[4]);
+    printf("\nCreate time:  %d.%d.%d %d:%02d",createTime[0],createTime[1],
+                    createTime[2],createTime[3],createTime[4]);
+    printf("\nLast visit:   %d.%d.%d %d:%02d",visitTime[0],visitTime[1],
+                    visitTime[2],visitTime[3],visitTime[4]);
+    printf("\nLast modify:  %d.%d.%d %d:%02d",modifyTime[0],modifyTime[1],
+                    modifyTime[2],modifyTime[3],modifyTime[4]);
     printf("\nFile contents:\n");
     for (i = k = 0; i < NumDirect && i < numSectors; i++) {
 	    synchDisk->ReadSector(dataSectors[i], data);

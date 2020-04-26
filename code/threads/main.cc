@@ -64,6 +64,7 @@ extern void Print(char *file), PerformanceTest(void);
 extern void StartProcess(char *file);
 extern void ConsoleTest(char *in, char *out);
 extern void SynchConsoleTest(char *in, char *out);
+extern void PipeTest();
 extern void MailTest(int networkID);
 
 //----------------------------------------------------------------------
@@ -159,6 +160,8 @@ main(int argc, char **argv)
 		fileSystem->Print();
 	} else if (!strcmp(*argv, "-t")) {	// performance test
 		PerformanceTest();
+	} else if (!strcmp(*argv, "-pt")) {	// performance test
+		PipeTest();
 	} else if (!strcmp(*argv, "-mkdir")) {	// create directory
 	    ASSERT(argc > 1);
 	    fileSystem->Create(*(argv + 1), -1);
