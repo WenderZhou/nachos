@@ -45,6 +45,11 @@ SynchDisk::SynchDisk(char* name)
     semaphore = new Semaphore("synch disk", 0);
     lock = new Lock("synch disk lock");
     disk = new Disk(name, DiskRequestDone, (int) this);
+    for(int i = 0; i < NumSectors; i++)
+    {
+        rwLock[i] = new ReadWriteLock("filesys rwLock");
+        visiter[i] = 0;
+    }
 }
 
 //----------------------------------------------------------------------
@@ -58,6 +63,8 @@ SynchDisk::~SynchDisk()
     delete disk;
     delete lock;
     delete semaphore;
+    for(int i = 0; i < NumSectors; i++)
+        delete rwLock[i];
 }
 
 //----------------------------------------------------------------------
@@ -106,4 +113,28 @@ void
 SynchDisk::RequestDone()
 { 
     semaphore->V();
+}
+
+void
+SynchDisk::StartRead(int sector)
+{
+    rwLock[sector]->Acquire(MYREAD);
+}
+
+void
+SynchDisk::FinishRead(int sector)
+{
+    rwLock[sector]->Release(MYREAD);
+}
+
+void
+SynchDisk::StartWrite(int sector)
+{
+    rwLock[sector]->Acquire(MYWRITE);
+}
+
+void
+SynchDisk::FinishWrite(int sector)
+{
+    rwLock[sector]->Release(MYWRITE);
 }

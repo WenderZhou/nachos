@@ -32,6 +32,7 @@ OpenFile::OpenFile(int sector)
     hdr = new FileHeader;
     hdr->FetchFrom(sector);
     seekPosition = 0;
+    synchDisk->visiter[sector]++;
 }
 
 //----------------------------------------------------------------------
@@ -41,6 +42,7 @@ OpenFile::OpenFile(int sector)
 
 OpenFile::~OpenFile()
 {
+    synchDisk->visiter[hdr->GetHdrSector()]--;
     delete hdr;
 }
 
@@ -74,16 +76,32 @@ OpenFile::Seek(int position)
 int
 OpenFile::Read(char *into, int numBytes)
 {
-   int result = ReadAt(into, numBytes, seekPosition);
-   seekPosition += result;
-   return result;
+    synchDisk->StartRead(hdr->GetHdrSector());
+
+    Update();
+
+    int result = ReadAt(into, numBytes, seekPosition);
+    currentThread->Yield();
+    seekPosition += result;
+
+    synchDisk->FinishRead(hdr->GetHdrSector());
+
+    return result;
 }
 
 int
 OpenFile::Write(char *into, int numBytes)
 {
-   int result = WriteAt(into, numBytes, seekPosition);
-   seekPosition += result;
+    synchDisk->StartWrite(hdr->GetHdrSector());
+
+    Update();
+
+    int result = WriteAt(into, numBytes, seekPosition);
+    currentThread->Yield();
+    seekPosition += result;
+
+    synchDisk->FinishWrite(hdr->GetHdrSector());
+
    return result;
 }
 
@@ -124,7 +142,7 @@ OpenFile::ReadAt(char *into, int numBytes, int position)
     hdr->WriteBack(hdr->GetHdrSector());
 
     if ((numBytes <= 0) || (position >= fileLength))
-    	return 0; 				// check request
+        return 0; 			// check request
     if ((position + numBytes) > fileLength)		
 	    numBytes = fileLength - position;
     DEBUG('f', "Reading %d bytes at %d, from file of length %d.\n", 	
@@ -217,4 +235,10 @@ int
 OpenFile::Length() 
 { 
     return hdr->FileLength(); 
+}
+
+void
+OpenFile::Update()
+{
+    hdr->FetchFrom(hdr->GetHdrSector());
 }

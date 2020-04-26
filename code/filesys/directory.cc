@@ -151,8 +151,6 @@ Directory::Add(char *name, int newSector, FileType filetype)
     if (FindIndex(name) != -1)
 	    return FALSE;
 
-printf("add %s\n",name);
-
     for (int i = 0; i < tableSize; i++)
         if (!table[i].inUse) {
             table[i].inUse = TRUE;

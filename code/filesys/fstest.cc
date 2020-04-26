@@ -108,7 +108,7 @@ Print(char *name)
 //	  PerformanceTest -- overall control, and print out performance #'s
 //----------------------------------------------------------------------
 
-#define FileName 	"dir/TestFile"
+#define FileName 	"TestFile"
 #define Contents 	"1234567890"
 #define ContentSize 	strlen(Contents)
 #define FileSize 	((int)(ContentSize * 5))
@@ -137,6 +137,8 @@ FileWrite()
             delete openFile;
             return;
         }
+        else
+            printf("%s finish write at %d\n",currentThread->getName(),i);
     }
     delete openFile;	// close file
 }
@@ -152,34 +154,46 @@ FileRead()
 	FileSize, ContentSize);
 
     if ((openFile = fileSystem->Open(FileName)) == NULL) {
-	printf("Perf test: unable to open file %s\n", FileName);
-	delete [] buffer;
-	return;
+        printf("Perf test: unable to open file %s\n", FileName);
+        delete [] buffer;
+        return;
     }
     for (i = 0; i < FileSize; i += ContentSize) {
         numBytes = openFile->Read(buffer, ContentSize);
-	if ((numBytes < 10) || strncmp(buffer, Contents, ContentSize)) {
-	    printf("Perf test: unable to read %s\n", FileName);
-	    delete openFile;
-	    delete [] buffer;
-	    return;
-	}
+        if ((numBytes < 10) || strncmp(buffer, Contents, ContentSize)) {
+            printf("Perf test: unable to read %s\n", FileName);
+            delete openFile;
+            delete [] buffer;
+            return;
+        }
+        else
+            printf("%s finish read at %d\n",currentThread->getName(),i);
     }
     delete [] buffer;
     delete openFile;	// close file
+}
+
+void ForkPerformance()
+{
+    // printf("%s start read\n", currentThread->getName());
+    // FileRead();
+    if (!fileSystem->Remove(FileName)) {
+      printf("Perf test: unable to remove %s\n", FileName);
+      return;
+    }
 }
 
 void
 PerformanceTest()
 {
     printf("Starting file system performance test:\n");
-    stats->Print();
+    Thread* thread1 = new Thread("Thread1");
+    thread1->Fork(ForkPerformance,1);
     FileWrite();
     FileRead();
     if (!fileSystem->Remove(FileName)) {
       printf("Perf test: unable to remove %s\n", FileName);
       return;
     }
-    stats->Print();
 }
 

@@ -50,6 +50,7 @@
 #include "directory.h"
 #include "filehdr.h"
 #include "filesys.h"
+#include "system.h"
 
 // Sectors containing the file headers for the bitmap of free sectors,
 // and the directory of files.  These file headers are placed in well-known 
@@ -218,8 +219,11 @@ FileSystem::Create(char *name, int initialSize)
                     success = TRUE;
                     // everthing worked, flush all changes back to disk
                     // hdr->SetPath(path->GetPath());
-                    hdr->WriteBack(sector); 		
-    	    	    directory->WriteBack(path->GetDirOpenFile(directoryFile));
+                    hdr->WriteBack(sector);
+                    OpenFile *temp = path->GetDirOpenFile(directoryFile);
+                    directory->WriteBack(temp);
+                    if(temp != directoryFile)
+                        delete temp;
     	    	    freeMap->WriteBack(freeMapFile);    
                 }
             delete hdr;
@@ -292,6 +296,11 @@ FileSystem::Remove(char *name)
        delete directory;
        return FALSE;			 // file not found 
     }
+    if (synchDisk->visiter[sector] != 0)
+    {
+        delete directory;
+        return FALSE;
+    }
     fileHdr = new FileHeader;
     fileHdr->FetchFrom(sector);
 
@@ -303,7 +312,12 @@ FileSystem::Remove(char *name)
     directory->Remove(path->GetName());
 
     freeMap->WriteBack(freeMapFile);		// flush to disk
-    directory->WriteBack(path->GetDirOpenFile(directoryFile));        // flush to disk
+
+    OpenFile *temp = path->GetDirOpenFile(directoryFile);
+    directory->WriteBack(temp);
+    if(temp != directoryFile)
+        delete temp;       // flush to disk
+
     delete fileHdr;
     delete directory;
     delete freeMap;
