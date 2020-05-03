@@ -5,6 +5,8 @@
         "algorithm": "cpp",
         "*.tcc": "cpp",
         "optional": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "fstream": "c",
+        "syscall.h": "c"
     }
 }

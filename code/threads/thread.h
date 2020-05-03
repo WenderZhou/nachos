@@ -67,6 +67,14 @@ enum ThreadStatus { JUST_CREATED, RUNNING, READY, BLOCKED };
 // external function, dummy routine whose sole job is to call Thread::Print
 extern void ThreadPrint(int arg);	 
 extern void ThreadStatePrint(int arg);
+
+#define OpenFileTableSize 32
+
+typedef struct{
+  bool valid;
+  void* openFile;
+} OpenFileTableEntry;
+
 // The following class defines a "thread control block" -- which
 // represents a single thread of execution.
 //
@@ -77,7 +85,6 @@ extern void ThreadStatePrint(int arg);
 //    
 //  Some threads also belong to a user address space; threads
 //  that only run in the kernel have a NULL address space.
-
 class Thread {
   private:
     // NOTE: DO NOT CHANGE the order of these first two members.
@@ -118,6 +125,10 @@ class Thread {
     void setStartTime(int time){ startTime = time; }
     int getStartTime(){ return startTime; }
     
+    int OpenFileTableAdd(void* _openFile);
+    void* OpenFileTableFind(int _openFileId);
+    bool OpenFileTableRemove(int _openFileId);
+
   private:
     // some of the private data for this class is listed above
     
@@ -132,6 +143,8 @@ class Thread {
     static int threadSeq; // tid for next thread
 
     int startTime;  // time of being scheduled
+
+    OpenFileTableEntry openFileTable[OpenFileTableSize];
 
     void StackAllocate(VoidFunctionPtr func, void *arg);
     					// Allocate a stack for thread.

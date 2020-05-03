@@ -15,6 +15,16 @@
 int
 main()
 {
-    Halt();
+    // Halt();
+    OpenFileId openFileId;
+    char result[10];
+
+    Create("helloworld.txt");
+    openFileId = Open("helloworld.txt");
+    Write("helloworld",10,openFileId);
+    Close(openFileId);
+    openFileId = Open("helloworld.txt");
+    Read(result,10,openFileId);
+    Close(openFileId);
     /* not reached */
 }

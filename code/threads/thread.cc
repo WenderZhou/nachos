@@ -51,6 +51,8 @@ Thread::Thread(char* debugName, int priorityLevel = LowestPriority)
 #ifdef USER_PROGRAM
     space = NULL;
 #endif
+    for(int i = 0; i < OpenFileTableSize; i++)
+        openFileTable[i].valid = false;
 }
 
 //----------------------------------------------------------------------
@@ -336,6 +338,38 @@ void TS()
 {
     printf("%-6s%-6s%-20s\n", "tid", "uid", "name");
     threadList->Mapcar((VoidFunctionPtr) ThreadStatePrint);
+}
+
+int
+Thread::OpenFileTableAdd(void* _openFile)
+{
+    for(int i = 0; i < OpenFileTableSize; i++)
+    {
+        if(openFileTable[i].valid == false)
+        {
+            openFileTable[i].valid = true;
+            openFileTable[i].openFile = _openFile;
+            return i;
+        }
+    }
+    return -1;
+}
+
+void*
+Thread::OpenFileTableFind(int _openFileId)
+{
+    if(openFileTable[_openFileId].valid)
+        return openFileTable[_openFileId].openFile;
+    else
+        return NULL;
+}
+
+bool
+Thread::OpenFileTableRemove(int _openFileId)
+{
+    ASSERT(openFileTable[_openFileId].valid);
+    openFileTable[_openFileId].valid = false;
+    return true;
 }
 
 #ifdef USER_PROGRAM

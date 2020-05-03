@@ -26,7 +26,11 @@
 #include "syscall.h"
 
 void PageFaultExceptionHandler();
-
+void CreateHandler();
+void OpenHandler();
+void CloseHandler();
+void ReadHandler();
+void WriteHandler();
 //----------------------------------------------------------------------
 // ExceptionHandler
 // 	Entry point into the Nachos kernel.  Called when a user program
@@ -54,7 +58,6 @@ void
 ExceptionHandler(ExceptionType which)
 {
     int type = machine->ReadRegister(2);
-
     switch(which){
         case SyscallException:
         {
@@ -70,6 +73,19 @@ ExceptionHandler(ExceptionType which)
                     printf("Exit!\n");
                     machine->MemRecycle();
                     currentThread->Finish();
+                    break;
+                case SC_Exec:
+                    break;
+                case SC_Join:
+                    break;
+                case SC_Create:CreateHandler();break;
+                case SC_Open:OpenHandler();break;
+                case SC_Read:ReadHandler();break;
+                case SC_Write:WriteHandler();break;
+                case SC_Close:CloseHandler();break;
+                case SC_Fork:
+                    break;
+                case SC_Yield:
                     break;
                 default:
                     printf("meet a strange thing\n");
@@ -87,6 +103,83 @@ ExceptionHandler(ExceptionType which)
     }
 }
 
+void CreateHandler()
+{
+    int nameIdx = machine->ReadRegister(4);
+    printf("Create %s\n", machine->mainMemory + nameIdx);
+    fileSystem->Create(machine->mainMemory + nameIdx, 0);
+    machine->PcPlus4();
+}
+
+void OpenHandler()
+{
+    int nameIdx = machine->ReadRegister(4);
+    printf("Open %s\n", machine->mainMemory + nameIdx);
+    OpenFile* openFile = fileSystem->Open(machine->mainMemory + nameIdx);
+    if(openFile != NULL)
+    {
+        printf("Open succeed!\n");
+        OpenFileId openFileId = currentThread->OpenFileTableAdd((void*)openFile);
+        machine->WriteRegister(2,openFileId);
+    }
+    else
+        printf("Open fail!\n");
+    machine->PcPlus4();
+}
+
+void CloseHandler()
+{
+    int openFileId = machine->ReadRegister(4);
+    printf("Close file with id %d\n", openFileId);
+    OpenFile* openFile = currentThread->OpenFileTableFind(openFileId);
+    currentThread->OpenFileTableRemove(openFileId);
+    if(openFile != NULL)
+    {
+        printf("Close succeed!\n");
+        delete openFile;
+    }
+    else
+        printf("Close fail!\n");
+    machine->PcPlus4();
+}
+
+void ReadHandler()
+{
+    int bufferIdx = machine->ReadRegister(4);
+    int size = machine->ReadRegister(5);
+    OpenFileId openFileId =  machine->ReadRegister(6);
+    char* buffer = machine->mainMemory + bufferIdx;
+    OpenFile* openFile = currentThread->OpenFileTableFind(openFileId);
+    if(openFile != NULL)
+    {
+        printf("Read succeed!\n");
+        openFile->Read(buffer,size);
+        for(int i = 0; i < size; i++)
+            printf("%c",buffer[i]);
+        printf("\n");
+    }
+    else
+        printf("Read fail!\n");
+    machine->PcPlus4();
+}
+
+void WriteHandler()
+{
+    int bufferIdx = machine->ReadRegister(4);
+    int size = machine->ReadRegister(5);
+    OpenFileId openFileId =  machine->ReadRegister(6);
+    char* buffer = machine->mainMemory + bufferIdx;
+    OpenFile* openFile = currentThread->OpenFileTableFind(openFileId);
+    if(openFile != NULL)
+    {
+        printf("Write succeed!\n");
+        openFile->Write(buffer,size);
+        printf("%s\n",buffer);
+    }
+    else
+        printf("Write fail!\n");
+    machine->PcPlus4();
+}
 
 void PageFaultExceptionHandler()
 {

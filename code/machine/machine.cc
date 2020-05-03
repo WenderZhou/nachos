@@ -219,6 +219,14 @@ Machine::DumpState()
     printf("\n");
 }
 
+void
+Machine::PcPlus4()
+{
+    registers[PrevPCReg] = registers[PCReg];	
+    registers[PCReg] = registers[NextPCReg];
+    registers[NextPCReg] += 4;
+}
+
 //----------------------------------------------------------------------
 // Machine::ReadRegister/WriteRegister
 //   	Fetch or write the contents of a user program register.

@@ -108,7 +108,7 @@ Print(char *name)
 //	  PerformanceTest -- overall control, and print out performance #'s
 //----------------------------------------------------------------------
 
-#define FileName 	"dir1/dir2/TestFile"
+#define FileName 	"TestFile"
 #define Contents 	"1234567890"
 #define ContentSize 	strlen(Contents)
 #define FileSize 	((int)(ContentSize * 5))
@@ -137,8 +137,8 @@ FileWrite()
             delete openFile;
             return;
         }
-        // else
-        //     printf("%s finish write at %d\n",currentThread->getName(),i);
+        else
+            printf("%s finish write at %d\n",currentThread->getName(),i);
     }
     delete openFile;	// close file
 }
@@ -166,8 +166,8 @@ FileRead()
             delete [] buffer;
             return;
         }
-        // else
-        //     printf("%s finish read at %d\n",currentThread->getName(),i);
+        else
+            printf("%s finish read at %d\n",currentThread->getName(),i);
     }
     delete [] buffer;
     delete openFile;	// close file
@@ -175,26 +175,26 @@ FileRead()
 
 void ForkPerformance()
 {
-    // printf("%s start read\n", currentThread->getName());
-    // FileRead();
-    if (!fileSystem->Remove(FileName)) {
-      printf("Perf test: unable to remove %s\n", FileName);
-      return;
-    }
+    printf("%s start read\n", currentThread->getName());
+    FileRead();
+    // if (!fileSystem->Remove(FileName)) {
+    //   printf("Perf test: unable to remove %s\n", FileName);
+    //   return;
+    // }
 }
 
 void
 PerformanceTest()
 {
     printf("Starting file system performance test:\n");
-    // Thread* thread1 = new Thread("Thread1");
-    // thread1->Fork(ForkPerformance,1);
+    Thread* thread1 = new Thread("Thread1");
+    thread1->Fork(ForkPerformance,1);
     FileWrite();
     FileRead();
-    // if (!fileSystem->Remove(FileName)) {
-    //   printf("Perf test: unable to remove %s\n", FileName);
-    //   return;
-    // }
+    if (!fileSystem->Remove(FileName)) {
+      printf("Perf test: unable to remove %s\n", FileName);
+      return;
+    }
 }
 
 Semaphore *full = new Semaphore("full",0);
