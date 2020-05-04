@@ -53,6 +53,13 @@ Thread::Thread(char* debugName, int priorityLevel = LowestPriority)
 #endif
     for(int i = 0; i < OpenFileTableSize; i++)
         openFileTable[i].valid = false;
+    for(int i = 0; i < ChildThreadSize; i++)
+        child[i] = NULL;
+    if(currentThread != NULL)
+    {
+        parent = currentThread;
+        currentThread->AddChild(this);
+    }
 }
 
 //----------------------------------------------------------------------
@@ -74,6 +81,9 @@ Thread::~Thread()
     ASSERT(this != currentThread);
 
     threadList->Remove((void *)this);
+
+    if(parent != NULL)
+        parent->RemoveChild(this);
 
     if (stack != NULL)
 	DeallocBoundedArray((char *) stack, StackSize * sizeof(int));
@@ -370,6 +380,58 @@ Thread::OpenFileTableRemove(int _openFileId)
     ASSERT(openFileTable[_openFileId].valid);
     openFileTable[_openFileId].valid = false;
     return true;
+}
+
+void
+Thread::WaitTid(int childTid)
+{
+    int idx = -1;
+    for(int i = 0; i < ChildThreadSize; i++)
+    {
+        if(child[i] != NULL)
+            if(child[i]->tid == childTid)
+            {
+                idx = i;
+                break;
+            }
+    }
+    if(idx == -1)
+    {
+        printf("Failed to find child thread #%d\n", childTid);
+        return;
+    }
+    while(child[idx] != NULL)
+        Yield();
+}
+
+void
+Thread::AddChild(Thread* childThread)
+{
+    for(int i = 0; i < ChildThreadSize; i++)
+    {
+        if(child[i] == NULL)
+        {
+            child[i] = childThread;
+            return;
+        }
+    }
+    printf("Failed to add a child!\n");
+    ASSERT(false);
+}
+
+void
+Thread::RemoveChild(Thread* childThread)
+{
+    for(int i = 0; i < ChildThreadSize; i++)
+    {
+        if(child[i] == childThread)
+        {
+            child[i] = NULL;
+            return;
+        }
+    }
+    printf("Failed to remove a child!\n");
+    ASSERT(false);
 }
 
 #ifdef USER_PROGRAM

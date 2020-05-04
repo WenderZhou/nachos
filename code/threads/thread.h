@@ -69,6 +69,7 @@ extern void ThreadPrint(int arg);
 extern void ThreadStatePrint(int arg);
 
 #define OpenFileTableSize 32
+#define ChildThreadSize 10
 
 typedef struct{
   bool valid;
@@ -129,6 +130,9 @@ class Thread {
     void* OpenFileTableFind(int _openFileId);
     bool OpenFileTableRemove(int _openFileId);
 
+    void AddChild(Thread* childThread);
+    void RemoveChild(Thread* childThread);
+    void WaitTid(int childTid);
   private:
     // some of the private data for this class is listed above
     
@@ -145,6 +149,9 @@ class Thread {
     int startTime;  // time of being scheduled
 
     OpenFileTableEntry openFileTable[OpenFileTableSize];
+
+    Thread* child[ChildThreadSize];
+    Thread* parent;
 
     void StackAllocate(VoidFunctionPtr func, void *arg);
     					// Allocate a stack for thread.

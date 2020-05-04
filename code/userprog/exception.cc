@@ -24,6 +24,7 @@
 #include "copyright.h"
 #include "system.h"
 #include "syscall.h"
+#include "addrspace.h"
 
 void PageFaultExceptionHandler();
 void CreateHandler();
@@ -31,6 +32,14 @@ void OpenHandler();
 void CloseHandler();
 void ReadHandler();
 void WriteHandler();
+void JoinHandler();
+void ExecHandler();
+void ForkHandler();
+void YieldHandler();
+void ExitHandler();
+
+void ExecFunc(int which);
+void ForkFunc(int which);
 //----------------------------------------------------------------------
 // ExceptionHandler
 // 	Entry point into the Nachos kernel.  Called when a user program
@@ -69,26 +78,18 @@ ExceptionHandler(ExceptionType which)
    	                machine->MemRecycle();
                     interrupt->Halt();
                     break;
-                case SC_Exit:
-                    printf("Exit!\n");
-                    machine->MemRecycle();
-                    currentThread->Finish();
-                    break;
-                case SC_Exec:
-                    break;
-                case SC_Join:
-                    break;
+                case SC_Exit:ExitHandler();break;
+                case SC_Exec:ExecHandler();break;
+                case SC_Join:JoinHandler();break;
                 case SC_Create:CreateHandler();break;
                 case SC_Open:OpenHandler();break;
                 case SC_Read:ReadHandler();break;
                 case SC_Write:WriteHandler();break;
                 case SC_Close:CloseHandler();break;
-                case SC_Fork:
-                    break;
-                case SC_Yield:
-                    break;
+                case SC_Fork:ForkHandler();break;
+                case SC_Yield:YieldHandler();break;
                 default:
-                    printf("meet a strange thing\n");
+                    printf("Undefined System Call with #%d!\n",type);
                     interrupt->Halt();
                     break;
             }
@@ -153,10 +154,11 @@ void ReadHandler()
     if(openFile != NULL)
     {
         printf("Read succeed!\n");
-        openFile->Read(buffer,size);
+        int readSize = openFile->Read(buffer,size);
         for(int i = 0; i < size; i++)
             printf("%c",buffer[i]);
         printf("\n");
+        machine->WriteRegister(2,readSize);
     }
     else
         printf("Read fail!\n");
@@ -179,6 +181,92 @@ void WriteHandler()
     else
         printf("Write fail!\n");
     machine->PcPlus4();
+}
+
+void JoinHandler()
+{
+    int childTid = machine->ReadRegister(4);
+    currentThread->WaitTid(childTid);
+    machine->PcPlus4();
+}
+
+void ExecHandler()
+{
+    int nameIdx = machine->ReadRegister(4);
+    char* name = machine->mainMemory + nameIdx;
+    OpenFile* executable = fileSystem->Open(name);
+    if(executable != NULL)
+    {
+        printf("Execute %s\n", name);
+        Thread *thread = createThread("ExecThread");
+        machine->WriteRegister(2,thread->getTid());
+        AddrSpace *space = new AddrSpace(executable,name);
+        thread->space = space;
+        thread->Fork(ExecFunc,(void*)1);
+        delete executable;
+    }
+    else
+    {
+        printf("Can not find file %s\n",name);
+        machine->WriteRegister(2,-1);
+    }
+    machine->PcPlus4();
+}
+
+void ForkHandler()
+{
+    char* name = currentThread->space->getFileName();
+    OpenFile* executable = fileSystem->Open(name);
+    Thread *thread = NULL;
+    if(executable != NULL)
+    {
+        thread = createThread("ForkThread");
+        AddrSpace *space = new AddrSpace(executable,name);
+        thread->space = space;
+        delete executable;
+    }
+    else
+    {
+        printf("Failed to open executable file!\n");
+        machine->WriteRegister(2,-1);
+    }
+
+    int PC = machine->ReadRegister(4);
+
+    thread->Fork(ForkFunc, (void*)PC);
+
+    machine->PcPlus4();
+}
+
+void YieldHandler()
+{
+    printf("%s Yield!\n", currentThread->getName());
+    machine->PcPlus4();
+    currentThread->Yield();
+}
+
+void ExitHandler()
+{
+    printf("Exit!\n");
+    machine->MemRecycle();
+    currentThread->Finish();
+}
+
+void ExecFunc(int which)
+{
+    currentThread->space->InitRegisters();
+    currentThread->space->RestoreState();
+    machine->Run();
+}
+
+void ForkFunc(int which)
+{
+    currentThread->space->RestoreState();
+
+    machine->WriteRegister(PCReg, which);
+    machine->WriteRegister(NextPCReg, which+4);
+
+    machine->Run();
 }
 
 void PageFaultExceptionHandler()
