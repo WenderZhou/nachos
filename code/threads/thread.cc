@@ -353,7 +353,7 @@ void TS()
 int
 Thread::OpenFileTableAdd(void* _openFile)
 {
-    for(int i = 0; i < OpenFileTableSize; i++)
+    for(int i = 2; i < OpenFileTableSize; i++)
     {
         if(openFileTable[i].valid == false)
         {

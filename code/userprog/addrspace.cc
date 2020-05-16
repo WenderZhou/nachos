@@ -101,7 +101,7 @@ AddrSpace::AddrSpace(OpenFile *executable, char *filename)
         int physicalPage = machine->memBitMap->Find();
         ASSERT(physicalPage != -1);
 	    pageTable[i].physicalPage = physicalPage;
-        printf("allocate page frame %d\n", physicalPage);
+        // printf("allocate page frame %d\n", physicalPage);
 	    pageTable[i].valid = TRUE;
         machine->pageOwner[physicalPage] = currentThread;
 #endif

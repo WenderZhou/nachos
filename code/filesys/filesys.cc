@@ -81,6 +81,11 @@ FileSystem::FileSystem(bool format)
 { 
     DEBUG('f', "Initializing the file system.\n");
     if (format) {
+        char emptySector[SectorSize];
+        memset(emptySector, 0, sizeof(emptySector));
+        for(int i = 0; i < NumSectors; i++)
+            synchDisk->WriteSector(i, emptySector);
+
         BitMap *freeMap = new BitMap(NumSectors);
         Directory *directory = new Directory(NumDirEntries);
         FileHeader *mapHdr = new FileHeader;

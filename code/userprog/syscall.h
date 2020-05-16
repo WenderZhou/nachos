@@ -29,6 +29,13 @@
 #define SC_Close	8
 #define SC_Fork		9
 #define SC_Yield	10
+#define SC_LS       11
+#define SC_MV       12
+#define SC_CP       13
+#define SC_RM       14
+#define SC_MKDIR    15
+#define SC_PS       16
+#define SC_CHECK    17
 
 #ifndef IN_ASM
 
@@ -123,6 +130,28 @@ void Fork(void (*func)());
  * or not. 
  */
 void Yield();		
+
+// list files and directories in current directory
+void Ls();
+
+// move a file srcName to dst
+void Mv(char* srcName, char* dst);
+
+// copy a file srcName to dst
+void Cp(char* srcName, char* dst);
+
+// remove a file or directory
+void Rm(char* name);
+
+// make a new directory
+void Mkdir(char* name);
+
+// list infomation about current processes(threads)
+void Ps();
+
+// check whether a file of directory exist
+int Check(char* name);
+
 
 #endif /* IN_ASM */
 

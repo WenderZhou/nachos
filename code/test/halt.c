@@ -12,46 +12,8 @@
 
 #include "syscall.h"
 
-void Test()
-{
-    int i;
-
-    // OpenFileId openFileId;
-    // char result[10];
-    // openFileId = Open("helloworld.txt");
-    // Read(result,10,openFileId);
-    // Close(openFileId);
-
-    for(i = 0; i < 3; i++)
-        Yield();
-    Exit(0);
-}
-
 int
 main()
 {
-    OpenFileId openFileId;
-    int tid, i;
-    char result[10];
-    // Halt();
-
-    Create("helloworld.txt");
-    
-    openFileId = Open("helloworld.txt");
-    Write("helloworld",10,openFileId);
-    Close(openFileId);
-
-    // Fork(Test);
-
-    // tid = Exec("../test/matmult");
-    // Join(tid);
-
-    openFileId = Open("helloworld.txt");
-    Read(result,10,openFileId);
-    Close(openFileId);
-
-    // for(i = 0; i < 3; i++)
-    //     Yield();
-
-    /* not reached */
+    Ps();
 }

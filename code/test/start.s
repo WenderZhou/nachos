@@ -130,6 +130,54 @@ Yield:
 	j	$31
 	.end Yield
 
+	.globl Ls
+	.ent	Ls
+Ls:
+	addiu $2,$0,SC_LS
+	syscall
+	j	$31
+	.end LS
+
+	.globl Mv
+	.ent	Mv
+Mv:
+	addiu $2,$0,SC_MV
+	syscall
+	j	$31
+	.end Mv
+
+	.globl Cp
+	.ent	Cp
+Cp:
+	addiu $2,$0,SC_CP
+	syscall
+	j	$31
+	.end Cp
+
+	.globl Rm
+	.ent	Rm
+Rm:
+	addiu $2,$0,SC_RM
+	syscall
+	j	$31
+	.end Rm
+
+	.globl Mkdir
+	.ent	Mkdir
+Mkdir:
+	addiu $2,$0,SC_MKDIR
+	syscall
+	j	$31
+	.end Mkdir
+
+	.globl Ps
+	.ent	Ps
+Ps:
+	addiu $2,$0,SC_PS
+	syscall
+	j	$31
+	.end Ps
+
 /* dummy function to keep gcc happy */
         .globl  __main
         .ent    __main

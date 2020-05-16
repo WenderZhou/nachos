@@ -37,6 +37,14 @@ void ExecHandler();
 void ForkHandler();
 void YieldHandler();
 void ExitHandler();
+void LsHandler();
+void MvHandler();
+void CpHandler();
+void RmHandler();
+void MkdirHandler();
+void PsHandler();
+void CheckHandler();
+
 
 void ExecFunc(int which);
 void ForkFunc(int which);
@@ -88,6 +96,13 @@ ExceptionHandler(ExceptionType which)
                 case SC_Close:CloseHandler();break;
                 case SC_Fork:ForkHandler();break;
                 case SC_Yield:YieldHandler();break;
+                case SC_LS:LsHandler();break;
+                case SC_MV:MvHandler();break;
+                case SC_CP:CpHandler;break;
+                case SC_RM:RmHandler();break;
+                case SC_MKDIR:MkdirHandler();break;
+                case SC_PS:PsHandler();break;
+                case SC_CHECK:CheckHandler();break;
                 default:
                     printf("Undefined System Call with #%d!\n",type);
                     interrupt->Halt();
@@ -150,6 +165,16 @@ void ReadHandler()
     int size = machine->ReadRegister(5);
     OpenFileId openFileId =  machine->ReadRegister(6);
     char* buffer = machine->mainMemory + bufferIdx;
+
+    if(openFileId == ConsoleInput)
+    {
+        for(int i = 0; i < size; i++)
+            scanf("%c",buffer + i);
+        machine->WriteRegister(2,size);
+        machine->PcPlus4();
+        return;
+    }
+
     OpenFile* openFile = currentThread->OpenFileTableFind(openFileId);
     if(openFile != NULL)
     {
@@ -171,6 +196,15 @@ void WriteHandler()
     int size = machine->ReadRegister(5);
     OpenFileId openFileId =  machine->ReadRegister(6);
     char* buffer = machine->mainMemory + bufferIdx;
+
+    if(openFileId == ConsoleOutput)
+    {
+        for(int i = 0; i < size; i++)
+            printf("%c", buffer[i]);
+        machine->PcPlus4();
+        return;
+    }    
+
     OpenFile* openFile = currentThread->OpenFileTableFind(openFileId);
     if(openFile != NULL)
     {
@@ -247,7 +281,7 @@ void YieldHandler()
 
 void ExitHandler()
 {
-    printf("Exit!\n");
+    // printf("Exit!\n");
     machine->MemRecycle();
     currentThread->Finish();
 }
@@ -267,6 +301,43 @@ void ForkFunc(int which)
     machine->WriteRegister(NextPCReg, which+4);
 
     machine->Run();
+}
+
+void LsHandler()
+{
+
+}
+
+void MvHandler()
+{
+
+}
+
+void CpHandler()
+{
+
+}
+
+void RmHandler()
+{
+
+}
+
+void MkdirHandler()
+{
+
+}
+
+void PsHandler()
+{
+    TS();
+    machine->PcPlus4();
+}
+
+void CheckHandler()
+{
+    
+    machine->PcPlus4();
 }
 
 void PageFaultExceptionHandler()

@@ -261,7 +261,7 @@ void Machine::MemRecycle()
         {
             int pageFrame = pageTable[i].physicalPage;
             memBitMap->Clear(pageFrame);
-            printf("Recycle %d in main memory page %d\n",i,pageFrame);
+            // printf("Recycle %d in main memory page %d\n",i,pageFrame);
         }
     #ifdef USE_SWAPSPACE
         else if(pageTable[i].swapPage != -1)    // in swap space
