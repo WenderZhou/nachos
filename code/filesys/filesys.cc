@@ -149,6 +149,8 @@ FileSystem::FileSystem(bool format)
         freeMapFile = new OpenFile(FreeMapSector);
         directoryFile = new OpenFile(DirectorySector);
     }
+    currentPath[0] = '~';
+    currentPath[1] = '\0';
 }
 
 //----------------------------------------------------------------------
@@ -193,6 +195,8 @@ FileSystem::Create(char *name, int initialSize)
 
     Path* path = new Path(name);
     directory = path->GetDirectory(directoryFile);
+    if(directory == -1 || directory == -2)
+        return;
 
     FileType fileType = REGULAR;
     if(initialSize == -1)
@@ -262,7 +266,9 @@ FileSystem::Open(char *name)
 
     Path* path = new Path(name);
     directory = path->GetDirectory(directoryFile);
-    
+    if(directory == -1 || directory == -2)
+        return;
+
     sector = directory->Find(path->GetName()); 
     if (sector >= 0) 		
 	    openFile = new OpenFile(sector);	// name was found in directory 
@@ -296,6 +302,8 @@ FileSystem::Remove(char *name)
 
     Path* path = new Path(name);
     directory = path->GetDirectory(directoryFile);
+    if(directory == -1 || directory == -2)
+        return;
     
     sector = directory->Find(path->GetName());
     if (sector == -1) {
@@ -381,6 +389,159 @@ FileSystem::Print()
     delete directory;
 } 
 
+void FileSystem::ChangePath(char* path, char* change)
+{
+    Path* cpath = new Path(change);
+    
+    int i = 0;
+
+    // absolute path
+    if(strcmp(cpath->path[0], "~") == 0)
+    {
+        strcpy(path, "~");
+        i++;
+    }
+
+    // relative path
+    for(; i < cpath->path.size(); i++)
+    {
+        if(strlen(cpath->path[i]) == 0)
+            continue;
+        if(strncmp(cpath->path[i], "..", 2) == 0)
+            PathRetreat(path);
+        else
+        {
+            strcpy(&path[strlen(path)], "/");
+            strcpy(&path[strlen(path)], cpath->path[i]);
+        }
+    }
+
+    delete cpath;
+}
+
+void FileSystem::PathRetreat(char* path)
+{
+    int length = strlen(path);
+    if(length == 1)
+        return;
+    int i;
+    for(i = length - 1; path[i] != '/'; i--);
+    path[i] = '\0';
+}
+
+bool FileSystem::ChangeCurrentPath(char* change)
+{
+    // cd without parameters will lead to ~
+    if(strlen(change) == 0) 
+        strcpy(change, "~");
+    char newPath[MAX_PATH_LENGTH];
+    strcpy(newPath, currentPath);
+    ChangePath(newPath, change);
+    // check the existence
+    if(strlen(newPath) > 1)
+    {
+        strcpy(newPath + strlen(newPath), PATH_PAD);
+        Path* path = new Path(newPath + 2);
+        newPath[strlen(newPath) - strlen(PATH_PAD)] = '\0';
+        Directory* dir = path->GetDirectory(directoryFile);
+        if(dir == -1)
+        {
+            printf("cd: %s: No such file or directory\n", newPath + 2);
+            return false;
+        }
+        if(dir == -2)
+        {
+            printf("cd: %s: Not a directory\n", newPath + 2);
+            return false;
+        }
+        delete dir;
+    }
+    
+    strcpy(currentPath, newPath);
+    return true;
+}
+
+void FileSystem::PrintCurrentPath()
+{
+    printf("%s", currentPath);
+}
+
+void FileSystem::ListCurrent()
+{
+    char newPath[MAX_PATH_LENGTH];
+    strcpy(newPath, currentPath);
+    strcpy(newPath + strlen(newPath), PATH_PAD);
+    Path* path = new Path(newPath + 2);
+    Directory* dir = path->GetDirectory(directoryFile);
+    dir->List();
+    delete dir;
+}
+
+bool FileSystem::touch(char* name)
+{
+    char newPath[MAX_PATH_LENGTH];
+    strcpy(newPath, currentPath);
+    ChangePath(newPath, name);
+    if(Create(newPath + 2, 0) == false)
+        return false;
+    return true;
+}
+
+bool FileSystem::mkdir(char* name)
+{
+    char newPath[MAX_PATH_LENGTH];
+    strcpy(newPath, currentPath);
+    ChangePath(newPath, name);
+    if(Create(newPath + 2, -1) == false)
+        return false;
+    return true;
+}
+
+bool FileSystem::mv(char* src, char* dst)
+{
+    char srcPath[MAX_PATH_LENGTH];
+    char dstPath[MAX_PATH_LENGTH];
+    strcpy(srcPath, currentPath);
+    strcpy(dstPath, currentPath);
+    ChangePath(srcPath, src);
+    ChangePath(dstPath, dst);
+    char* srcName = srcPath + 2;
+    char* dstName = dstPath + 2;
+    OpenFile* srcFile = Open(srcName);
+    if(srcFile == NULL)
+    {
+        printf("cp: cannot stat '%s': No such file or directory\n", srcName);
+        return;
+    }
+    OpenFile* dstFile = Open(dstName);
+    if(dstFile == NULL)
+    {
+        Create(dstName, 0);
+        dstFile = Open(dstName);
+    }
+
+    char c;
+    while(srcFile->Read(&c,1) != 0)
+    {
+        printf("%d\n", srcFile->GetSeekPosition());
+        dstFile->Write(&c,1);
+    }
+
+    delete srcFile;
+    delete dstFile;
+    Remove(srcName);
+}
+
+bool FileSystem::cp(char* src, char* dst)
+{
+
+}
+
+bool FileSystem::rm(char* name)
+{
+
+}
+
 Path::Path(char* name)
 {
     int length = strlen(name);
@@ -430,6 +591,10 @@ Directory* Path::GetDirectory(OpenFile* directoryFile)
     for(int i = 0; i < path.size() - 1; i++)
     {
         int sector = directory->FindDir(path[i]);
+        if(sector == -1)
+            return -1;
+        if(sector == -2)
+            return -2;
         OpenFile* openfile = new OpenFile(sector);
         directory->FetchFrom(openfile);
         delete openfile;
@@ -444,6 +609,8 @@ OpenFile* Path::GetDirOpenFile(OpenFile* directoryFile)
     for(int i = 0; i < path.size() - 1; i++)
     {
         int sector = directory->FindDir(path[i]);
+        if(sector == -1)
+            return NULL;
         OpenFile* openfile = new OpenFile(sector);
         if(i == path.size() - 2)
             return openfile;

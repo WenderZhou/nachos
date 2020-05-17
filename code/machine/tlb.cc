@@ -6,7 +6,7 @@ TLB::TLB(int tlbSize, TLBStrategyType displayStrategy)
 {
     size = tlbSize;
     strategy = displayStrategy;
-    printf("tlb size:%d,strategy:%s\n",size, TLBStrategyNames[strategy]);
+    // printf("tlb size:%d,strategy:%s\n",size, TLBStrategyNames[strategy]);
     entry = new TranslationEntry[size];
     for (int i = 0; i < size; i++)
 	    entry[i].valid = FALSE;

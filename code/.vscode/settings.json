@@ -7,6 +7,8 @@
         "optional": "cpp",
         "string": "cpp",
         "fstream": "c",
-        "syscall.h": "c"
+        "syscall.h": "c",
+        "typeinfo": "cpp",
+        "new": "cpp"
     }
 }

@@ -178,6 +178,22 @@ Ps:
 	j	$31
 	.end Ps
 
+	.globl Pwd
+	.ent	Pwd
+Pwd:
+	addiu $2,$0,SC_PWD
+	syscall
+	j	$31
+	.end Pwd
+
+	.globl Cd
+	.ent	Cd
+Cd:
+	addiu $2,$0,SC_CD
+	syscall
+	j	$31
+	.end Cd
+
 /* dummy function to keep gcc happy */
         .globl  __main
         .ent    __main

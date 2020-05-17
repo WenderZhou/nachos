@@ -35,7 +35,8 @@
 #define SC_RM       14
 #define SC_MKDIR    15
 #define SC_PS       16
-#define SC_CHECK    17
+#define SC_PWD      17
+#define SC_CD       18
 
 #ifndef IN_ASM
 
@@ -149,8 +150,11 @@ void Mkdir(char* name);
 // list infomation about current processes(threads)
 void Ps();
 
-// check whether a file of directory exist
-int Check(char* name);
+// print current path
+void Pwd();
+
+// change to directory
+void Cd(char *name);
 
 
 #endif /* IN_ASM */

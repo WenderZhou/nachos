@@ -37,13 +37,16 @@ void ExecHandler();
 void ForkHandler();
 void YieldHandler();
 void ExitHandler();
+#ifdef FILESYS
 void LsHandler();
 void MvHandler();
 void CpHandler();
 void RmHandler();
 void MkdirHandler();
 void PsHandler();
-void CheckHandler();
+void PwdHandler();
+void CdHandler();
+#endif
 
 
 void ExecFunc(int which);
@@ -96,13 +99,16 @@ ExceptionHandler(ExceptionType which)
                 case SC_Close:CloseHandler();break;
                 case SC_Fork:ForkHandler();break;
                 case SC_Yield:YieldHandler();break;
+#ifdef FILESYS
                 case SC_LS:LsHandler();break;
                 case SC_MV:MvHandler();break;
-                case SC_CP:CpHandler;break;
+                case SC_CP:CpHandler();break;
                 case SC_RM:RmHandler();break;
                 case SC_MKDIR:MkdirHandler();break;
                 case SC_PS:PsHandler();break;
-                case SC_CHECK:CheckHandler();break;
+                case SC_PWD:PwdHandler();break;
+                case SC_CD:CdHandler();break;
+#endif
                 default:
                     printf("Undefined System Call with #%d!\n",type);
                     interrupt->Halt();
@@ -122,8 +128,12 @@ ExceptionHandler(ExceptionType which)
 void CreateHandler()
 {
     int nameIdx = machine->ReadRegister(4);
+#ifdef FILESYS
+    fileSystem->touch(machine->mainMemory + nameIdx);
+#else
     printf("Create %s\n", machine->mainMemory + nameIdx);
     fileSystem->Create(machine->mainMemory + nameIdx, 0);
+#endif
     machine->PcPlus4();
 }
 
@@ -303,14 +313,22 @@ void ForkFunc(int which)
     machine->Run();
 }
 
+#ifdef FILESYS
+
 void LsHandler()
 {
-
+    fileSystem->ListCurrent();
+    machine->PcPlus4();
 }
 
 void MvHandler()
 {
-
+    int srcIdx = machine->ReadRegister(4);
+    char* src = machine->mainMemory + srcIdx;
+    int dstIdx = machine->ReadRegister(5);
+    char* dst = machine->mainMemory + dstIdx;
+    fileSystem->mv(src, dst);
+    machine->PcPlus4();
 }
 
 void CpHandler()
@@ -320,12 +338,18 @@ void CpHandler()
 
 void RmHandler()
 {
-
+    
 }
 
 void MkdirHandler()
 {
-
+    int nameIdx = machine->ReadRegister(4);
+    char* name = machine->mainMemory + nameIdx;
+    if(strlen(name) == 0)
+        printf("mkdir: missing operand\n");
+    if(fileSystem->mkdir(name) == false)
+        printf("mkdir: cannot create directory ‘%s’: File exists\n", name);
+    machine->PcPlus4();
 }
 
 void PsHandler()
@@ -334,11 +358,21 @@ void PsHandler()
     machine->PcPlus4();
 }
 
-void CheckHandler()
+void PwdHandler()
 {
-    
+    fileSystem->PrintCurrentPath();
     machine->PcPlus4();
 }
+
+void CdHandler()
+{
+    int nameIdx = machine->ReadRegister(4);
+    char* name = machine->mainMemory + nameIdx;
+    fileSystem->ChangeCurrentPath(name);
+    machine->PcPlus4();
+}
+
+#endif
 
 void PageFaultExceptionHandler()
 {

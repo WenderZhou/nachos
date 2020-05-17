@@ -18,31 +18,6 @@ void append(char* path, char* src)
     path[i] = '\0';
 }
 
-int len(char* str)
-{
-    int i;
-    for(i = 0; str[i] != '\0'; i++);
-    return i;
-}
-
-void remove(char* path)
-{
-    int length;
-    length = len(path);
-    if(length == 1)
-        return;
-    for(; path[length - 1] != '/'; length--);
-    path[length - 1] = '\0';
-}
-
-void cpy(char* src, char* dst)
-{
-    int i;
-    for(i = 0; src[i] != '\0'; i++)
-        dst[i] = src[i];
-    dst[i] = '\0';
-}
-
 int
 main()
 {
@@ -50,22 +25,21 @@ main()
     OpenFileId input = ConsoleInput;
     OpenFileId output = ConsoleOutput;
     char prompt[2], ch, buffer[60];
-    char path[60];
-    char newpath[60];
     int i;
     char* src;
     char* dst;
     int strlen;
 
-    path[0] = '~';
-    path[1] = '\0';
 
     prompt[0] = '$';
     prompt[1] = ' ';
 
     while( 1 )
     {
-        Write(path, len(path), output);
+        for(i = 0; i < 60; i++)
+            buffer[i] = '\0';
+
+        Pwd();
 	    Write(prompt, 2, output);
 
 	    i = 0;
@@ -91,6 +65,7 @@ main()
         {
             src = buffer + 3;
             for(dst = &buffer[3]; *dst != ' '; dst++);
+            *dst = '\0';
             dst++;
             Mv(src, dst);
         }
@@ -98,6 +73,7 @@ main()
         {
             src = buffer + 3;
             for(dst = &buffer[3]; *dst != ' '; dst++);
+            *dst = '\0';
             dst++;
             Cp(src, dst);
         }
@@ -119,12 +95,12 @@ main()
         }
         else if(cmp(buffer, "cd", 2) == 1)
         {
-            append(path, "/");
-            append(path, buffer + 3);
+            Cd(buffer + 3);
         }
         else if(cmp(buffer, "pwd", 3) == 1)
         {
-
+            Pwd();
+            Write("\n", 1, output);
         }
         else if(cmp(buffer, "ps", 2) == 1)
         {

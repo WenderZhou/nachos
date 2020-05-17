@@ -40,6 +40,21 @@
 #include "directory.h"
 #include <vector>
 
+#define MAX_PATH_LENGTH 80
+#define PATH_PAD "/ahh"
+
+class Path{
+  public:
+	Path(char* name);
+	~Path();
+	char* Path::GetPath();
+	Directory* GetDirectory(OpenFile* directoryFile);
+	OpenFile* GetDirOpenFile(OpenFile* directoryFile);
+	char* GetName();
+	std::vector<char*> path;
+};
+
+
 #ifdef FILESYS_STUB 		// Temporarily implement file system calls as 
 				// calls to UNIX, until the real file system
 				// implementation is available
@@ -87,23 +102,26 @@ class FileSystem {
 
     void Print();			// List all the files and their contents
 
+	void ChangePath(char* path, char* change);
+	void PathRetreat(char* path);
+
+	bool ChangeCurrentPath(char* change);
+	void PrintCurrentPath();
+
+	void ListCurrent();		// List all the files in current directory
+
+	bool touch(char* name);
+	bool mkdir(char* name);
+	bool mv(char* src, char* dst);
+	bool cp(char* src, char* dst);
+	bool rm(char* name);
+
   private:
 	OpenFile* freeMapFile;		// Bit map of free disk blocks,
 					// represented as a file
 	OpenFile* directoryFile;		// "Root" directory -- list of 
 					// file names, represented as a file
-};
-
-class Path{
-  public:
-	Path(char* name);
-	~Path();
-	char* Path::GetPath();
-	Directory* GetDirectory(OpenFile* directoryFile);
-	OpenFile* GetDirOpenFile(OpenFile* directoryFile);
-	char* GetName();
-  private:
-	std::vector<char*> path;
+	char currentPath[MAX_PATH_LENGTH];
 };
 
 #endif // FILESYS

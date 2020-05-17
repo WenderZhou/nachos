@@ -129,7 +129,8 @@ Directory::FindDir(char* name)
     int i = FindIndex(name);
     if(i != -1)
     {
-        ASSERT(table[i].type == DIRECTORY);
+        if(table[i].type != DIRECTORY)
+            return -2;
         return table[i].sector;
     }
     return -1;

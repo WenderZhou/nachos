@@ -198,10 +198,10 @@ bool FileHeader::Extend(BitMap *freeMap, int extraSize)
 {
     numBytes += extraSize;
     int numSectorsNew = divRoundUp(numBytes, SectorSize);
-    if (numBytes == numSectorsNew)  // need no more space
+    if (numSectors == numSectorsNew)  // need no more space
         return TRUE;
     if (freeMap->NumClear() < numSectorsNew - numSectors)
-	    return FALSE;		// not enough space
+        return FALSE;		// not enough space
     if (numSectorsNew < NumDirect)
     {
         for (int i = numSectors; i < numSectorsNew; i++)
