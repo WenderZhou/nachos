@@ -26,6 +26,14 @@
 #include "syscall.h"
 #include "addrspace.h"
 
+static void ReadBuffer(int virtualAddr, char* buffer)
+{
+    int i = 0;
+    do{
+        machine->ReadMem(virtualAddr + i, 1, (int*)&buffer[i]);
+    }while(buffer[i++] != '\0');
+}
+
 void PageFaultExceptionHandler();
 void CreateHandler();
 void OpenHandler();
@@ -127,13 +135,10 @@ ExceptionHandler(ExceptionType which)
 
 void CreateHandler()
 {
-    int nameIdx = machine->ReadRegister(4);
+    int virtualAddr = machine->ReadRegister(4);
 
-    int i = 0;
     char buffer[100];
-    do{
-        machine->ReadMem(nameIdx + i, 1, (int*)&buffer[i]);
-    }while(buffer[i++] != '\0');
+    ReadBuffer(virtualAddr, buffer);
 
 #ifdef SHOWTRACE
     printf("Create %s\n", buffer);
@@ -150,13 +155,10 @@ void CreateHandler()
 
 void OpenHandler()
 {
-    int nameIdx = machine->ReadRegister(4);
+    int virtualAddr = machine->ReadRegister(4);
     
-    int i = 0;
     char buffer[100];
-    do{
-        machine->ReadMem(nameIdx + i, 1, (int*)&buffer[i]);
-    }while(buffer[i++] != '\0');
+    ReadBuffer(virtualAddr, buffer);
 
 #ifdef SHOWTRACE
     printf("Open %s\n", buffer);
@@ -201,15 +203,12 @@ void CloseHandler()
 
 void ReadHandler()
 {
-    int bufferIdx = machine->ReadRegister(4);
+    int virtualAddr = machine->ReadRegister(4);
     int size = machine->ReadRegister(5);
     OpenFileId openFileId =  machine->ReadRegister(6);
 
-    int i = 0;
     char buffer[100];
-    do{
-        machine->ReadMem(bufferIdx + i, 1, (int*)&buffer[i]);
-    }while(buffer[i++] != '\0');
+    ReadBuffer(virtualAddr, buffer);
 
     if(openFileId == ConsoleInput)
     {
@@ -280,20 +279,17 @@ void JoinHandler()
 
 void ExecHandler()
 {
-    int nameIdx = machine->ReadRegister(4);
-    char name[100];
+    int virtualAddr = machine->ReadRegister(4);
     
-    int i = 0;
-    do{
-        machine->ReadMem(nameIdx + i, 1, (int*)&name[i]);
-    }while(name[i++] != '\0');
+    char buffer[100];
+    ReadBuffer(virtualAddr, buffer);
 
     char execName[MAX_PATH_LENGTH];
 
 #ifdef FILESYS
-    fileSystem->GetPath(name, execName);
+    fileSystem->GetPath(buffer, execName);
 #else
-    strcpy(execName, name);
+    strcpy(execName, buffer);
 #endif
 
 #ifdef SHOWTRACE
@@ -312,7 +308,7 @@ void ExecHandler()
     }
     else
     {
-        printf("Can not find file %s\n",name);
+        printf("Can not find file %s\n",buffer);
         machine->WriteRegister(2,-1);
     }
     machine->PcPlus4();
