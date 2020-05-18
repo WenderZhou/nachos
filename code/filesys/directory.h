@@ -72,6 +72,8 @@ class Directory {
 
     void List(int depth = 0);			// Print the names of all the files
 					//  in the directory
+    void ListCurrent();
+    
     void Print();			// Verbose print of the contents
 					//  of the directory -- all the file
 					//  names and their contents.

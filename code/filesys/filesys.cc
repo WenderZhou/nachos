@@ -466,6 +466,14 @@ void FileSystem::PrintCurrentPath()
     printf("%s", currentPath);
 }
 
+void FileSystem::GetPath(char* relativePath, char* path)
+{
+    char newPath[MAX_PATH_LENGTH];
+    strcpy(newPath, currentPath);
+    ChangePath(newPath, relativePath);
+    strcpy(path, newPath + 2);
+}
+
 void FileSystem::ListCurrent()
 {
     char newPath[MAX_PATH_LENGTH];
@@ -473,7 +481,7 @@ void FileSystem::ListCurrent()
     strcpy(newPath + strlen(newPath), PATH_PAD);
     Path* path = new Path(newPath + 2);
     Directory* dir = path->GetDirectory(directoryFile);
-    dir->List();
+    dir->ListCurrent();
     delete dir;
 }
 
@@ -499,6 +507,12 @@ bool FileSystem::mkdir(char* name)
 
 bool FileSystem::mv(char* src, char* dst)
 {
+    cp(src, dst);
+    rm(src);
+}
+
+bool FileSystem::cp(char* src, char* dst)
+{
     char srcPath[MAX_PATH_LENGTH];
     char dstPath[MAX_PATH_LENGTH];
     strcpy(srcPath, currentPath);
@@ -522,24 +536,20 @@ bool FileSystem::mv(char* src, char* dst)
 
     char c;
     while(srcFile->Read(&c,1) != 0)
-    {
-        printf("%d\n", srcFile->GetSeekPosition());
         dstFile->Write(&c,1);
-    }
 
     delete srcFile;
     delete dstFile;
-    Remove(srcName);
-}
-
-bool FileSystem::cp(char* src, char* dst)
-{
-
 }
 
 bool FileSystem::rm(char* name)
 {
+    char srcPath[MAX_PATH_LENGTH];
+    strcpy(srcPath, currentPath);
+    ChangePath(srcPath, name);
+    char* srcName = srcPath + 2;
 
+    Remove(srcName);
 }
 
 Path::Path(char* name)

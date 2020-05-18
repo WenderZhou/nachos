@@ -9,6 +9,8 @@
         "fstream": "c",
         "syscall.h": "c",
         "typeinfo": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "ostream": "c",
+        "sstream": "c"
     }
 }

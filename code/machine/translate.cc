@@ -121,6 +121,22 @@ Machine::ReadMem(int addr, int size, int *value)
     return (TRUE);
 }
 
+bool Machine::ReadMemChar(int addr, char* c)
+{
+    ExceptionType exception;
+    int physicalAddress;
+    
+    exception = Translate(addr, &physicalAddress, 1, FALSE);
+    if (exception != NoException) {
+		machine->RaiseException(exception, addr);
+		return FALSE;
+    }
+
+	*c = machine->mainMemory[physicalAddress];
+
+    return (TRUE);
+}
+
 //----------------------------------------------------------------------
 // Machine::WriteMem
 //      Write "size" (1, 2, or 4) bytes of the contents of "value" into

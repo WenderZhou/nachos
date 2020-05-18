@@ -108,6 +108,8 @@ class FileSystem {
 	bool ChangeCurrentPath(char* change);
 	void PrintCurrentPath();
 
+	void GetPath(char* relativePath, char* path);
+
 	void ListCurrent();		// List all the files in current directory
 
 	bool touch(char* name);

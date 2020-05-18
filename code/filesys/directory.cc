@@ -235,8 +235,14 @@ Directory::List(int depth)
                 dir->List(depth + 1);
                 delete openfile;
             }
-        }
-	        
+        }   
+}
+
+void Directory::ListCurrent()
+{
+    for (int i = 0; i < tableSize; i++)
+	    if (table[i].inUse)
+            printf("%s\n", table[i].name);
 }
 
 //----------------------------------------------------------------------

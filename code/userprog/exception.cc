@@ -205,7 +205,11 @@ void WriteHandler()
     int bufferIdx = machine->ReadRegister(4);
     int size = machine->ReadRegister(5);
     OpenFileId openFileId =  machine->ReadRegister(6);
-    char* buffer = machine->mainMemory + bufferIdx;
+
+    char* buffer = new char[size];
+    memset(buffer, 0, sizeof(char) * size);
+    for(int i = 0; i < size; i++)
+        machine->ReadMemChar(bufferIdx + i, buffer + i);
 
     if(openFileId == ConsoleOutput)
     {
@@ -237,14 +241,28 @@ void JoinHandler()
 void ExecHandler()
 {
     int nameIdx = machine->ReadRegister(4);
-    char* name = machine->mainMemory + nameIdx;
-    OpenFile* executable = fileSystem->Open(name);
+    char name[100];
+
+    int i = 0;
+    do{
+        machine->ReadMem(nameIdx + i, 1, (int*)&name[i]);
+    }while(name[i++] != '\0');
+
+    char execName[MAX_PATH_LENGTH];
+
+#ifdef FILESYS
+    fileSystem->GetPath(name, execName);
+#else
+    printf("Execute %s\n", name);
+    strcpy(execName, name);
+#endif
+
+    OpenFile* executable = fileSystem->Open(execName);
     if(executable != NULL)
     {
-        printf("Execute %s\n", name);
         Thread *thread = createThread("ExecThread");
         machine->WriteRegister(2,thread->getTid());
-        AddrSpace *space = new AddrSpace(executable,name);
+        AddrSpace *space = new AddrSpace(executable,execName);
         thread->space = space;
         thread->Fork(ExecFunc,(void*)1);
         delete executable;
@@ -333,12 +351,20 @@ void MvHandler()
 
 void CpHandler()
 {
-
+    int srcIdx = machine->ReadRegister(4);
+    char* src = machine->mainMemory + srcIdx;
+    int dstIdx = machine->ReadRegister(5);
+    char* dst = machine->mainMemory + dstIdx;
+    fileSystem->cp(src, dst);
+    machine->PcPlus4();
 }
 
 void RmHandler()
 {
-    
+    int srcIdx = machine->ReadRegister(4);
+    char* src = machine->mainMemory + srcIdx;
+    fileSystem->rm(src);
+    machine->PcPlus4();
 }
 
 void MkdirHandler()

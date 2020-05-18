@@ -12,8 +12,7 @@
 
 #include "syscall.h"
 
-int
-main()
+int main()
 {
-    Ps();
+    Write("HelloWorld!\n", 12, ConsoleOutput);
 }

@@ -87,6 +87,7 @@ main()
             src = buffer + 5;
             for(strlen = 0; src[strlen] != '\0'; strlen++);
             Write(src, strlen, output);
+            Write("\n", 1, output);
         }
         else if(cmp(buffer, "mkdir", 5) == 1)
         {
@@ -106,19 +107,15 @@ main()
         {
             Ps();
         }
-        else if(cmp(buffer, "kill", 4) == 1)
-        {
-            
-        }
         else if(cmp(buffer, "exit", 4) == 1)
         {
             Exit(0);
         }
-
-	    // if( i > 0 ) {
-	    // 	newProc = Exec(buffer);
-	    // 	Join(newProc);
-    	// }
+        else
+        {
+            newProc = Exec(buffer);
+	    	Join(newProc);
+        }
     }
 }
 
