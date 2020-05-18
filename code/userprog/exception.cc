@@ -128,40 +128,70 @@ ExceptionHandler(ExceptionType which)
 void CreateHandler()
 {
     int nameIdx = machine->ReadRegister(4);
-#ifdef FILESYS
-    fileSystem->touch(machine->mainMemory + nameIdx);
-#else
-    printf("Create %s\n", machine->mainMemory + nameIdx);
-    fileSystem->Create(machine->mainMemory + nameIdx, 0);
+
+    int i = 0;
+    char buffer[100];
+    do{
+        machine->ReadMem(nameIdx + i, 1, (int*)&buffer[i]);
+    }while(buffer[i++] != '\0');
+
+#ifdef SHOWTRACE
+    printf("Create %s\n", buffer);
 #endif
+
+#ifdef FILESYS
+    fileSystem->touch(buffer);
+#else
+    fileSystem->Create(buffer, 0);
+#endif
+
     machine->PcPlus4();
 }
 
 void OpenHandler()
 {
     int nameIdx = machine->ReadRegister(4);
-    printf("Open %s\n", machine->mainMemory + nameIdx);
-    OpenFile* openFile = fileSystem->Open(machine->mainMemory + nameIdx);
+    
+    int i = 0;
+    char buffer[100];
+    do{
+        machine->ReadMem(nameIdx + i, 1, (int*)&buffer[i]);
+    }while(buffer[i++] != '\0');
+
+#ifdef SHOWTRACE
+    printf("Open %s\n", buffer);
+#endif
+
+    OpenFile* openFile = fileSystem->Open(buffer);
     if(openFile != NULL)
     {
+#ifdef SHOWTRACE
         printf("Open succeed!\n");
+#endif
         OpenFileId openFileId = currentThread->OpenFileTableAdd((void*)openFile);
         machine->WriteRegister(2,openFileId);
     }
     else
         printf("Open fail!\n");
+        
     machine->PcPlus4();
 }
 
 void CloseHandler()
 {
     int openFileId = machine->ReadRegister(4);
+
+#ifdef SHOWTRACE
     printf("Close file with id %d\n", openFileId);
+#endif
+
     OpenFile* openFile = currentThread->OpenFileTableFind(openFileId);
     currentThread->OpenFileTableRemove(openFileId);
     if(openFile != NULL)
     {
+#ifdef SHOWTRACE
         printf("Close succeed!\n");
+#endif
         delete openFile;
     }
     else
@@ -174,7 +204,12 @@ void ReadHandler()
     int bufferIdx = machine->ReadRegister(4);
     int size = machine->ReadRegister(5);
     OpenFileId openFileId =  machine->ReadRegister(6);
-    char* buffer = machine->mainMemory + bufferIdx;
+
+    int i = 0;
+    char buffer[100];
+    do{
+        machine->ReadMem(bufferIdx + i, 1, (int*)&buffer[i]);
+    }while(buffer[i++] != '\0');
 
     if(openFileId == ConsoleInput)
     {
@@ -188,11 +223,13 @@ void ReadHandler()
     OpenFile* openFile = currentThread->OpenFileTableFind(openFileId);
     if(openFile != NULL)
     {
-        printf("Read succeed!\n");
         int readSize = openFile->Read(buffer,size);
+#ifdef SHOWTRACE
+        printf("Read succeed!\n");
         for(int i = 0; i < size; i++)
             printf("%c",buffer[i]);
         printf("\n");
+#endif
         machine->WriteRegister(2,readSize);
     }
     else
@@ -206,11 +243,10 @@ void WriteHandler()
     int size = machine->ReadRegister(5);
     OpenFileId openFileId =  machine->ReadRegister(6);
 
-    char* buffer = new char[size];
-    memset(buffer, 0, sizeof(char) * size);
+    char* buffer = new char[size + 4];
     for(int i = 0; i < size; i++)
-        machine->ReadMemChar(bufferIdx + i, buffer + i);
-
+        machine->ReadMem(bufferIdx + i, 1, (int*)&buffer[i]);
+        
     if(openFileId == ConsoleOutput)
     {
         for(int i = 0; i < size; i++)
@@ -222,13 +258,17 @@ void WriteHandler()
     OpenFile* openFile = currentThread->OpenFileTableFind(openFileId);
     if(openFile != NULL)
     {
-        printf("Write succeed!\n");
         openFile->Write(buffer,size);
+#ifdef SHOWTRACE 
+        printf("Write succeed!\n");
         printf("%s\n",buffer);
+#endif
     }
     else
         printf("Write fail!\n");
     machine->PcPlus4();
+
+    delete buffer;
 }
 
 void JoinHandler()
@@ -242,7 +282,7 @@ void ExecHandler()
 {
     int nameIdx = machine->ReadRegister(4);
     char name[100];
-
+    
     int i = 0;
     do{
         machine->ReadMem(nameIdx + i, 1, (int*)&name[i]);
@@ -253,8 +293,11 @@ void ExecHandler()
 #ifdef FILESYS
     fileSystem->GetPath(name, execName);
 #else
-    printf("Execute %s\n", name);
     strcpy(execName, name);
+#endif
+
+#ifdef SHOWTRACE
+    printf("Execute %s\n", execName);
 #endif
 
     OpenFile* executable = fileSystem->Open(execName);
@@ -342,9 +385,22 @@ void LsHandler()
 void MvHandler()
 {
     int srcIdx = machine->ReadRegister(4);
-    char* src = machine->mainMemory + srcIdx;
     int dstIdx = machine->ReadRegister(5);
-    char* dst = machine->mainMemory + dstIdx;
+    int i;
+    
+    char src[MAX_PATH_LENGTH];
+    char dst[MAX_PATH_LENGTH];
+
+    i = 0;
+    do{
+        machine->ReadMem(srcIdx + i, 1, (int*)&src[i]);
+    }while(src[i++] != '\0');
+
+    i = 0;
+    do{
+        machine->ReadMem(dstIdx + i, 1, (int*)&dst[i]);
+    }while(dst[i++] != '\0');
+
     fileSystem->mv(src, dst);
     machine->PcPlus4();
 }
@@ -352,9 +408,22 @@ void MvHandler()
 void CpHandler()
 {
     int srcIdx = machine->ReadRegister(4);
-    char* src = machine->mainMemory + srcIdx;
     int dstIdx = machine->ReadRegister(5);
-    char* dst = machine->mainMemory + dstIdx;
+    int i;
+    
+    char src[MAX_PATH_LENGTH];
+    char dst[MAX_PATH_LENGTH];
+
+    i = 0;
+    do{
+        machine->ReadMem(srcIdx + i, 1, (int*)&src[i]);
+    }while(src[i++] != '\0');
+
+    i = 0;
+    do{
+        machine->ReadMem(dstIdx + i, 1, (int*)&dst[i]);
+    }while(dst[i++] != '\0');
+
     fileSystem->cp(src, dst);
     machine->PcPlus4();
 }
@@ -362,7 +431,15 @@ void CpHandler()
 void RmHandler()
 {
     int srcIdx = machine->ReadRegister(4);
-    char* src = machine->mainMemory + srcIdx;
+    int i;
+    
+    char src[MAX_PATH_LENGTH];
+
+    i = 0;
+    do{
+        machine->ReadMem(srcIdx + i, 1, (int*)&src[i]);
+    }while(src[i++] != '\0');
+
     fileSystem->rm(src);
     machine->PcPlus4();
 }
@@ -370,7 +447,13 @@ void RmHandler()
 void MkdirHandler()
 {
     int nameIdx = machine->ReadRegister(4);
-    char* name = machine->mainMemory + nameIdx;
+    char name[100];
+    
+    int i = 0;
+    do{
+        machine->ReadMem(nameIdx + i, 1, (int*)&name[i]);
+    }while(name[i++] != '\0');
+
     if(strlen(name) == 0)
         printf("mkdir: missing operand\n");
     if(fileSystem->mkdir(name) == false)
@@ -393,7 +476,13 @@ void PwdHandler()
 void CdHandler()
 {
     int nameIdx = machine->ReadRegister(4);
-    char* name = machine->mainMemory + nameIdx;
+    char name[100];
+    
+    int i = 0;
+    do{
+        machine->ReadMem(nameIdx + i, 1, (int*)&name[i]);
+    }while(name[i++] != '\0');
+
     fileSystem->ChangeCurrentPath(name);
     machine->PcPlus4();
 }

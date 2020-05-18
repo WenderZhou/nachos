@@ -14,5 +14,17 @@
 
 int main()
 {
-    Write("HelloWorld!\n", 12, ConsoleOutput);
+    OpenFileId fd;
+    int tid, i;
+    char result[10];
+
+    Create("data");
+
+    fd = Open("data");
+    Write("HelloWorld!", 11, fd);
+    Close(fd);
+
+    fd = Open("data");
+    Read(result,10,fd);
+    Close(fd);
 }
