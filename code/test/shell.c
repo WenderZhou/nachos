@@ -107,7 +107,7 @@ main()
         {
             Ps();
         }
-        else if(cmp(buffer, "exit", 4) == 1)
+        else if(cmp(buffer, "quit", 4) == 1)
         {
             Exit(0);
         }

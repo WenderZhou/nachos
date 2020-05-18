@@ -160,21 +160,17 @@ void OpenHandler()
     char buffer[100];
     ReadBuffer(virtualAddr, buffer);
 
-#ifdef SHOWTRACE
-    printf("Open %s\n", buffer);
-#endif
-
     OpenFile* openFile = fileSystem->Open(buffer);
     if(openFile != NULL)
     {
 #ifdef SHOWTRACE
-        printf("Open succeed!\n");
+        printf("Open %s succeed!\n", buffer);
 #endif
         OpenFileId openFileId = currentThread->OpenFileTableAdd((void*)openFile);
         machine->WriteRegister(2,openFileId);
     }
     else
-        printf("Open fail!\n");
+        printf("Open %s fail!\n", buffer);
         
     machine->PcPlus4();
 }
@@ -183,21 +179,17 @@ void CloseHandler()
 {
     int openFileId = machine->ReadRegister(4);
 
-#ifdef SHOWTRACE
-    printf("Close file with id %d\n", openFileId);
-#endif
-
     OpenFile* openFile = currentThread->OpenFileTableFind(openFileId);
     currentThread->OpenFileTableRemove(openFileId);
     if(openFile != NULL)
     {
 #ifdef SHOWTRACE
-        printf("Close succeed!\n");
+        printf("Close file with id %d succeed!\n", openFileId);
 #endif
         delete openFile;
     }
     else
-        printf("Close fail!\n");
+        printf("Close file with id %d fail!\n", openFileId);
     machine->PcPlus4();
 }
 
@@ -207,8 +199,9 @@ void ReadHandler()
     int size = machine->ReadRegister(5);
     OpenFileId openFileId =  machine->ReadRegister(6);
 
-    char buffer[100];
-    ReadBuffer(virtualAddr, buffer);
+    int physicalAddr;
+    machine->Translate(virtualAddr, &physicalAddr, 1, false);
+    char* buffer = machine->mainMemory + physicalAddr;
 
     if(openFileId == ConsoleInput)
     {
@@ -382,20 +375,12 @@ void MvHandler()
 {
     int srcIdx = machine->ReadRegister(4);
     int dstIdx = machine->ReadRegister(5);
-    int i;
     
     char src[MAX_PATH_LENGTH];
     char dst[MAX_PATH_LENGTH];
 
-    i = 0;
-    do{
-        machine->ReadMem(srcIdx + i, 1, (int*)&src[i]);
-    }while(src[i++] != '\0');
-
-    i = 0;
-    do{
-        machine->ReadMem(dstIdx + i, 1, (int*)&dst[i]);
-    }while(dst[i++] != '\0');
+    ReadBuffer(srcIdx, src);
+    ReadBuffer(dstIdx, dst);
 
     fileSystem->mv(src, dst);
     machine->PcPlus4();
@@ -405,20 +390,12 @@ void CpHandler()
 {
     int srcIdx = machine->ReadRegister(4);
     int dstIdx = machine->ReadRegister(5);
-    int i;
     
     char src[MAX_PATH_LENGTH];
     char dst[MAX_PATH_LENGTH];
 
-    i = 0;
-    do{
-        machine->ReadMem(srcIdx + i, 1, (int*)&src[i]);
-    }while(src[i++] != '\0');
-
-    i = 0;
-    do{
-        machine->ReadMem(dstIdx + i, 1, (int*)&dst[i]);
-    }while(dst[i++] != '\0');
+    ReadBuffer(srcIdx, src);
+    ReadBuffer(dstIdx, dst);
 
     fileSystem->cp(src, dst);
     machine->PcPlus4();
@@ -427,14 +404,10 @@ void CpHandler()
 void RmHandler()
 {
     int srcIdx = machine->ReadRegister(4);
-    int i;
     
     char src[MAX_PATH_LENGTH];
 
-    i = 0;
-    do{
-        machine->ReadMem(srcIdx + i, 1, (int*)&src[i]);
-    }while(src[i++] != '\0');
+    ReadBuffer(srcIdx, src);
 
     fileSystem->rm(src);
     machine->PcPlus4();
@@ -443,12 +416,10 @@ void RmHandler()
 void MkdirHandler()
 {
     int nameIdx = machine->ReadRegister(4);
+    
     char name[100];
     
-    int i = 0;
-    do{
-        machine->ReadMem(nameIdx + i, 1, (int*)&name[i]);
-    }while(name[i++] != '\0');
+    ReadBuffer(nameIdx, name);
 
     if(strlen(name) == 0)
         printf("mkdir: missing operand\n");
@@ -472,12 +443,10 @@ void PwdHandler()
 void CdHandler()
 {
     int nameIdx = machine->ReadRegister(4);
+    
     char name[100];
     
-    int i = 0;
-    do{
-        machine->ReadMem(nameIdx + i, 1, (int*)&name[i]);
-    }while(name[i++] != '\0');
+    ReadBuffer(nameIdx, name);
 
     fileSystem->ChangeCurrentPath(name);
     machine->PcPlus4();

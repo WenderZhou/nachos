@@ -14,17 +14,23 @@
 
 int main()
 {
-    OpenFileId fd;
-    int tid, i;
-    char result[10];
+    Write("HelloWorld!\n", 12, ConsoleOutput);
 
-    Create("data");
+    // OpenFileId fd;
+    // int tid, i;
+    // char result[10];
 
-    fd = Open("data");
-    Write("HelloWorld!", 11, fd);
-    Close(fd);
+    // Create("data");
 
-    fd = Open("data");
-    Read(result,10,fd);
-    Close(fd);
+    // fd = Open("data");
+    // Write("HelloWorld!", 11, fd);
+    // Close(fd);
+
+    // fd = Open("data");
+    // Read(result,10,fd);
+    // Close(fd);
+
+    // int tid;
+    // tid = Exec("matmult");
+    // Join(tid);
 }
