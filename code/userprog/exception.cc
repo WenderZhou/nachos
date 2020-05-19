@@ -56,6 +56,12 @@ void PwdHandler();
 void CdHandler();
 #endif
 
+#ifdef MSGQUEUE
+void MsggetHandler();
+void MsgsndHandler();
+void MsgrcvHandler();
+#endif
+
 
 void ExecFunc(int which);
 void ForkFunc(int which);
@@ -116,6 +122,11 @@ ExceptionHandler(ExceptionType which)
                 case SC_PS:PsHandler();break;
                 case SC_PWD:PwdHandler();break;
                 case SC_CD:CdHandler();break;
+#endif
+#ifdef MSGQUEUE
+                case SC_MSGGET:MsggetHandler();break;
+                case SC_MSGSND:MsgsndHandler();break;
+                case SC_MSGRCV:MsgrcvHandler();break;
 #endif
                 default:
                     printf("Undefined System Call with #%d!\n",type);
@@ -452,6 +463,43 @@ void CdHandler()
     machine->PcPlus4();
 }
 
+#endif
+
+#ifdef MSGQUEUE
+void MsggetHandler()
+{
+    int key = machine->ReadRegister(4);
+    int id = machine->msgQueueManager->CreateQueue(key);
+    ASSERT(id != -1);
+    machine->WriteRegister(2,id);
+    machine->PcPlus4();
+}
+
+void MsgsndHandler()
+{
+    int msgid = machine->ReadRegister(4);
+    int bufferIdx = machine->ReadRegister(5);
+    char buffer[100];
+    ReadBuffer(bufferIdx, buffer);
+    int msgsz = machine->ReadRegister(6);
+    int msgtyp = machine->ReadRegister(7);
+    machine->msgQueueManager->Snd(msgid, buffer, msgsz, msgtyp);
+    machine->PcPlus4();
+}
+
+void MsgrcvHandler()
+{
+    int msgid = machine->ReadRegister(4);
+    int bufferIdx = machine->ReadRegister(5);
+    char buffer[100];
+    memset(buffer, 0, sizeof(buffer));
+    int msgsz = machine->ReadRegister(6);
+    int msgtyp = machine->ReadRegister(7);
+    machine->msgQueueManager->Rcv(msgid, buffer, msgsz, msgtyp);
+    for(int i = 0; i < msgsz; i++)
+        machine->WriteMem(bufferIdx + i, 1, (int)buffer[i]);
+    machine->PcPlus4();
+}
 #endif
 
 void PageFaultExceptionHandler()

@@ -38,6 +38,10 @@
 #define SC_PWD      17
 #define SC_CD       18
 
+#define SC_MSGGET   19
+#define SC_MSGSND   20
+#define SC_MSGRCV   21
+
 #ifndef IN_ASM
 
 /* The system call interface.  These are the operations the Nachos
@@ -156,6 +160,10 @@ void Pwd();
 // change to directory
 void Cd(char *name);
 
+// msg functions
+int msgget(int key);
+int msgsnd(int msgid, char* msgp, int msgsz, int msgtyp);
+int msgrcv(int msgid, char* msgp, int msgsz, int msgtyp);
 
 #endif /* IN_ASM */
 

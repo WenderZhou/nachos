@@ -86,6 +86,10 @@ Machine::Machine(bool debug)
     swapPosition = 0;
 #endif
 
+#ifdef MSGQUEUE
+    msgQueueManager = new MsgQueueManager();
+#endif
+
     for(i = 0; i < NumPhysPages; i++)
         pageOwner[i] = NULL;
 

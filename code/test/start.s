@@ -194,6 +194,30 @@ Cd:
 	j	$31
 	.end Cd
 
+	.globl msgget
+	.ent	msgget
+msgget:
+	addiu $2,$0,SC_MSGGET
+	syscall
+	j	$31
+	.end msgget
+
+	.globl msgsnd
+	.ent	msgsnd
+msgsnd:
+	addiu $2,$0,SC_MSGSND
+	syscall
+	j	$31
+	.end msgsnd
+	
+	.globl msgrcv
+	.ent	msgrcv
+msgrcv:
+	addiu $2,$0,SC_MSGRCV
+	syscall
+	j	$31
+	.end msgrcv
+
 /* dummy function to keep gcc happy */
         .globl  __main
         .ent    __main

@@ -50,9 +50,9 @@ main.o: ../threads/main.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../threads/system.h ../threads/thread.h \
  ../machine/machine.h ../threads/utility.h ../machine/translate.h \
  ../machine/tlb.h ../machine/disk.h ../userprog/bitmap.h \
- ../filesys/openfile.h ../machine/swapspace.h ../userprog/addrspace.h \
- ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
- /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_algobase.h \
+ ../filesys/openfile.h ../machine/swapspace.h ../machine/msg.h \
+ /usr/include/c++/7/queue /usr/include/c++/7/deque \
+ /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -82,15 +82,22 @@ main.o: ../threads/main.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/synch.h \
- ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
- ../network/post.h ../machine/network.h ../threads/synchlist.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
+ ../threads/list.h ../machine/stats.h ../machine/timer.h \
+ ../threads/synch.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../threads/synch.h ../network/post.h ../machine/network.h \
+ ../threads/synchlist.h
 list.o: ../threads/list.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../threads/list.h ../threads/utility.h \
  ../threads/bool.h ../machine/sysdep.h ../threads/copyright.h \
@@ -139,9 +146,8 @@ scheduler.o: ../threads/scheduler.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../threads/thread.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/tlb.h \
  ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
- ../machine/swapspace.h ../userprog/addrspace.h ../filesys/filesys.h \
- ../filesys/openfile.h ../filesys/directory.h /usr/include/c++/7/vector \
- /usr/include/c++/7/bits/stl_algobase.h \
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -171,15 +177,21 @@ scheduler.o: ../threads/scheduler.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/system.h \
- ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
- ../machine/timer.h ../threads/synch.h ../filesys/synchdisk.h \
- ../machine/disk.h ../threads/synch.h ../network/post.h \
- ../machine/network.h ../threads/synchlist.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/system.h ../machine/interrupt.h ../threads/list.h \
+ ../machine/stats.h ../machine/timer.h ../threads/synch.h \
+ ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
+ ../network/post.h ../machine/network.h ../threads/synchlist.h
 synch.o: ../threads/synch.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../threads/synch.h ../threads/thread.h \
  ../threads/utility.h ../threads/bool.h ../machine/sysdep.h \
@@ -205,8 +217,7 @@ synch.o: ../threads/synch.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../machine/machine.h ../threads/utility.h \
  ../machine/translate.h ../machine/tlb.h ../machine/disk.h \
  ../userprog/bitmap.h ../filesys/openfile.h ../machine/swapspace.h \
- ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
- ../filesys/directory.h /usr/include/c++/7/vector \
+ ../machine/msg.h /usr/include/c++/7/queue /usr/include/c++/7/deque \
  /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
@@ -237,15 +248,22 @@ synch.o: ../threads/synch.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/list.h ../threads/system.h \
- ../threads/scheduler.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../filesys/synchdisk.h \
- ../machine/disk.h ../threads/synch.h ../network/post.h \
- ../machine/network.h ../threads/synchlist.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/list.h ../threads/system.h ../threads/scheduler.h \
+ ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
+ ../machine/timer.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../threads/synch.h ../network/post.h ../machine/network.h \
+ ../threads/synchlist.h
 synchlist.o: ../threads/synchlist.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../threads/synchlist.h ../threads/list.h \
  ../threads/utility.h ../threads/bool.h ../machine/sysdep.h \
@@ -271,9 +289,9 @@ synchlist.o: ../threads/synchlist.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../threads/synch.h ../threads/thread.h \
  ../machine/machine.h ../threads/utility.h ../machine/translate.h \
  ../machine/tlb.h ../machine/disk.h ../userprog/bitmap.h \
- ../filesys/openfile.h ../machine/swapspace.h ../userprog/addrspace.h \
- ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
- /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_algobase.h \
+ ../filesys/openfile.h ../machine/swapspace.h ../machine/msg.h \
+ /usr/include/c++/7/queue /usr/include/c++/7/deque \
+ /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -303,11 +321,17 @@ synchlist.o: ../threads/synchlist.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h
 system.o: ../threads/system.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../threads/system.h ../threads/utility.h \
  ../threads/bool.h ../machine/sysdep.h ../threads/copyright.h \
@@ -333,9 +357,8 @@ system.o: ../threads/system.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../threads/thread.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/tlb.h \
  ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
- ../machine/swapspace.h ../userprog/addrspace.h ../filesys/filesys.h \
- ../filesys/openfile.h ../filesys/directory.h /usr/include/c++/7/vector \
- /usr/include/c++/7/bits/stl_algobase.h \
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -365,15 +388,22 @@ system.o: ../threads/system.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/synch.h \
- ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
- ../network/post.h ../machine/network.h ../threads/synchlist.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
+ ../threads/list.h ../machine/stats.h ../machine/timer.h \
+ ../threads/synch.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../threads/synch.h ../network/post.h ../machine/network.h \
+ ../threads/synchlist.h
 thread.o: ../threads/thread.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../threads/thread.h ../threads/utility.h \
  ../threads/bool.h ../machine/sysdep.h ../threads/copyright.h \
@@ -399,8 +429,7 @@ thread.o: ../threads/thread.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../machine/machine.h ../threads/utility.h \
  ../machine/translate.h ../machine/tlb.h ../machine/disk.h \
  ../userprog/bitmap.h ../filesys/openfile.h ../machine/swapspace.h \
- ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
- ../filesys/directory.h /usr/include/c++/7/vector \
+ ../machine/msg.h /usr/include/c++/7/queue /usr/include/c++/7/deque \
  /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
@@ -431,16 +460,22 @@ thread.o: ../threads/thread.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/switch.h \
- ../threads/synch.h ../threads/list.h ../threads/system.h \
- ../threads/scheduler.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../filesys/synchdisk.h \
- ../machine/disk.h ../threads/synch.h ../network/post.h \
- ../machine/network.h ../threads/synchlist.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/switch.h ../threads/synch.h ../threads/list.h \
+ ../threads/system.h ../threads/scheduler.h ../machine/interrupt.h \
+ ../threads/list.h ../machine/stats.h ../machine/timer.h \
+ ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
+ ../network/post.h ../machine/network.h ../threads/synchlist.h
 utility.o: ../threads/utility.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../threads/utility.h ../threads/bool.h \
  ../machine/sysdep.h ../threads/copyright.h /usr/include/stdio.h \
@@ -488,8 +523,80 @@ threadtest.o: ../threads/threadtest.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../threads/thread.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/tlb.h \
  ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
- ../machine/swapspace.h ../userprog/addrspace.h ../filesys/filesys.h \
- ../filesys/openfile.h ../filesys/directory.h /usr/include/c++/7/vector \
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_algobase.h \
+ /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
+ /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
+ /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
+ /usr/include/c++/7/bits/functexcept.h \
+ /usr/include/c++/7/bits/exception_defines.h \
+ /usr/include/c++/7/bits/cpp_type_traits.h \
+ /usr/include/c++/7/ext/type_traits.h \
+ /usr/include/c++/7/ext/numeric_traits.h \
+ /usr/include/c++/7/bits/stl_pair.h /usr/include/c++/7/bits/move.h \
+ /usr/include/c++/7/bits/concept_check.h /usr/include/c++/7/type_traits \
+ /usr/include/c++/7/bits/stl_iterator_base_types.h \
+ /usr/include/c++/7/bits/stl_iterator_base_funcs.h \
+ /usr/include/c++/7/debug/assertions.h \
+ /usr/include/c++/7/bits/stl_iterator.h \
+ /usr/include/c++/7/bits/ptr_traits.h /usr/include/c++/7/debug/debug.h \
+ /usr/include/c++/7/bits/predefined_ops.h \
+ /usr/include/c++/7/bits/allocator.h \
+ /usr/include/x86_64-linux-gnu/c++/7/bits/c++allocator.h \
+ /usr/include/c++/7/ext/new_allocator.h /usr/include/c++/7/new \
+ /usr/include/c++/7/exception /usr/include/c++/7/bits/exception.h \
+ /usr/include/c++/7/bits/exception_ptr.h \
+ /usr/include/c++/7/bits/cxxabi_init_exception.h \
+ /usr/include/c++/7/typeinfo /usr/include/c++/7/bits/hash_bytes.h \
+ /usr/include/c++/7/bits/nested_exception.h \
+ /usr/include/c++/7/bits/memoryfwd.h \
+ /usr/include/c++/7/bits/stl_construct.h \
+ /usr/include/c++/7/ext/alloc_traits.h \
+ /usr/include/c++/7/bits/alloc_traits.h \
+ /usr/include/c++/7/bits/stl_uninitialized.h \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
+ /usr/include/c++/7/bits/stl_bvector.h \
+ /usr/include/c++/7/bits/functional_hash.h \
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
+ ../threads/list.h ../machine/stats.h ../machine/timer.h \
+ ../threads/synch.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../threads/synch.h ../network/post.h ../machine/network.h \
+ ../threads/synchlist.h ../machine/elevatortest.h
+interrupt.o: ../machine/interrupt.cc /usr/include/stdc-predef.h \
+ ../threads/copyright.h ../machine/interrupt.h ../threads/list.h \
+ ../threads/copyright.h ../threads/utility.h ../threads/bool.h \
+ ../machine/sysdep.h /usr/include/stdio.h \
+ /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/bits/long-double.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/7/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__FILE.h \
+ /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
+ /usr/include/x86_64-linux-gnu/bits/libio.h \
+ /usr/include/x86_64-linux-gnu/bits/_G_config.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
+ ../threads/stdarg.h /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/string.h \
+ /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
+ /usr/include/strings.h ../threads/system.h ../threads/thread.h \
+ ../machine/machine.h ../threads/utility.h ../machine/translate.h \
+ ../machine/tlb.h ../machine/disk.h ../userprog/bitmap.h \
+ ../filesys/openfile.h ../machine/swapspace.h ../machine/msg.h \
+ /usr/include/c++/7/queue /usr/include/c++/7/deque \
  /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
@@ -520,82 +627,21 @@ threadtest.o: ../threads/threadtest.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../threads/list.h \
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
  ../machine/stats.h ../machine/timer.h ../threads/synch.h \
  ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
- ../network/post.h ../machine/network.h ../threads/synchlist.h \
- ../machine/elevatortest.h
-interrupt.o: ../machine/interrupt.cc /usr/include/stdc-predef.h \
- ../threads/copyright.h ../machine/interrupt.h ../threads/list.h \
- ../threads/copyright.h ../threads/utility.h ../threads/bool.h \
- ../machine/sysdep.h /usr/include/stdio.h \
- /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
- /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
- /usr/include/x86_64-linux-gnu/bits/wordsize.h \
- /usr/include/x86_64-linux-gnu/bits/long-double.h \
- /usr/include/x86_64-linux-gnu/gnu/stubs.h \
- /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
- /usr/lib/gcc/x86_64-linux-gnu/7/include/stddef.h \
- /usr/include/x86_64-linux-gnu/bits/types.h \
- /usr/include/x86_64-linux-gnu/bits/typesizes.h \
- /usr/include/x86_64-linux-gnu/bits/types/__FILE.h \
- /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
- /usr/include/x86_64-linux-gnu/bits/libio.h \
- /usr/include/x86_64-linux-gnu/bits/_G_config.h \
- /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
- ../threads/stdarg.h /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
- /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/string.h \
- /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
- /usr/include/strings.h ../threads/system.h ../threads/thread.h \
- ../machine/machine.h ../threads/utility.h ../machine/translate.h \
- ../machine/tlb.h ../machine/disk.h ../userprog/bitmap.h \
- ../filesys/openfile.h ../machine/swapspace.h ../userprog/addrspace.h \
- ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
- /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_algobase.h \
- /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
- /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
- /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
- /usr/include/c++/7/bits/functexcept.h \
- /usr/include/c++/7/bits/exception_defines.h \
- /usr/include/c++/7/bits/cpp_type_traits.h \
- /usr/include/c++/7/ext/type_traits.h \
- /usr/include/c++/7/ext/numeric_traits.h \
- /usr/include/c++/7/bits/stl_pair.h /usr/include/c++/7/bits/move.h \
- /usr/include/c++/7/bits/concept_check.h /usr/include/c++/7/type_traits \
- /usr/include/c++/7/bits/stl_iterator_base_types.h \
- /usr/include/c++/7/bits/stl_iterator_base_funcs.h \
- /usr/include/c++/7/debug/assertions.h \
- /usr/include/c++/7/bits/stl_iterator.h \
- /usr/include/c++/7/bits/ptr_traits.h /usr/include/c++/7/debug/debug.h \
- /usr/include/c++/7/bits/predefined_ops.h \
- /usr/include/c++/7/bits/allocator.h \
- /usr/include/x86_64-linux-gnu/c++/7/bits/c++allocator.h \
- /usr/include/c++/7/ext/new_allocator.h /usr/include/c++/7/new \
- /usr/include/c++/7/exception /usr/include/c++/7/bits/exception.h \
- /usr/include/c++/7/bits/exception_ptr.h \
- /usr/include/c++/7/bits/cxxabi_init_exception.h \
- /usr/include/c++/7/typeinfo /usr/include/c++/7/bits/hash_bytes.h \
- /usr/include/c++/7/bits/nested_exception.h \
- /usr/include/c++/7/bits/memoryfwd.h \
- /usr/include/c++/7/bits/stl_construct.h \
- /usr/include/c++/7/ext/alloc_traits.h \
- /usr/include/c++/7/bits/alloc_traits.h \
- /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
- /usr/include/c++/7/bits/stl_bvector.h \
- /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../machine/stats.h \
- ../machine/timer.h ../threads/synch.h ../filesys/synchdisk.h \
- ../machine/disk.h ../threads/synch.h ../network/post.h \
- ../machine/network.h ../threads/synchlist.h
+ ../network/post.h ../machine/network.h ../threads/synchlist.h
 sysdep.o: ../machine/sysdep.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
@@ -690,9 +736,8 @@ sysdep.o: ../machine/sysdep.cc /usr/include/stdc-predef.h \
  ../threads/system.h ../threads/thread.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/tlb.h \
  ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
- ../machine/swapspace.h ../userprog/addrspace.h ../filesys/filesys.h \
- ../filesys/openfile.h ../filesys/directory.h /usr/include/c++/7/vector \
- /usr/include/c++/7/bits/stl_algobase.h \
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -722,15 +767,21 @@ sysdep.o: ../machine/sysdep.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../machine/stats.h \
- ../machine/timer.h ../threads/synch.h ../filesys/synchdisk.h \
- ../machine/disk.h ../threads/synch.h ../network/post.h \
- ../machine/network.h ../threads/synchlist.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
+ ../machine/stats.h ../machine/timer.h ../threads/synch.h \
+ ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
+ ../network/post.h ../machine/network.h ../threads/synchlist.h
 stats.o: ../machine/stats.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../threads/utility.h ../threads/copyright.h \
  ../threads/bool.h ../machine/sysdep.h /usr/include/stdio.h \
@@ -778,9 +829,9 @@ timer.o: ../machine/timer.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../threads/system.h ../threads/utility.h \
  ../threads/thread.h ../machine/machine.h ../machine/translate.h \
  ../machine/tlb.h ../machine/disk.h ../userprog/bitmap.h \
- ../filesys/openfile.h ../machine/swapspace.h ../userprog/addrspace.h \
- ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
- /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_algobase.h \
+ ../filesys/openfile.h ../machine/swapspace.h ../machine/msg.h \
+ /usr/include/c++/7/queue /usr/include/c++/7/deque \
+ /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -810,15 +861,22 @@ timer.o: ../machine/timer.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/synch.h \
- ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
- ../network/post.h ../machine/network.h ../threads/synchlist.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
+ ../threads/list.h ../machine/stats.h ../machine/timer.h \
+ ../threads/synch.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../threads/synch.h ../network/post.h ../machine/network.h \
+ ../threads/synchlist.h
 elevatortest.o: ../machine/elevatortest.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../machine/elevatortest.h ../machine/elevator.h \
  ../threads/utility.h ../threads/copyright.h ../threads/bool.h \
@@ -845,8 +903,7 @@ elevatortest.o: ../machine/elevatortest.cc /usr/include/stdc-predef.h \
  ../threads/synch.h ../threads/thread.h ../machine/machine.h \
  ../machine/translate.h ../machine/tlb.h ../machine/disk.h \
  ../userprog/bitmap.h ../filesys/openfile.h ../machine/swapspace.h \
- ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
- ../filesys/directory.h /usr/include/c++/7/vector \
+ ../machine/msg.h /usr/include/c++/7/queue /usr/include/c++/7/deque \
  /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
@@ -877,11 +934,18 @@ elevatortest.o: ../machine/elevatortest.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/list.h ../threads/thread.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/list.h ../threads/thread.h
 elevator.o: ../machine/elevator.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../machine/elevator.h ../threads/utility.h \
  ../threads/copyright.h ../threads/bool.h ../machine/sysdep.h \
@@ -908,8 +972,7 @@ elevator.o: ../machine/elevator.cc /usr/include/stdc-predef.h \
  ../threads/system.h ../threads/thread.h ../machine/machine.h \
  ../machine/translate.h ../machine/tlb.h ../machine/disk.h \
  ../userprog/bitmap.h ../filesys/openfile.h ../machine/swapspace.h \
- ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
- ../filesys/directory.h /usr/include/c++/7/vector \
+ ../machine/msg.h /usr/include/c++/7/queue /usr/include/c++/7/deque \
  /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
@@ -940,15 +1003,21 @@ elevator.o: ../machine/elevator.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../machine/stats.h \
- ../machine/timer.h ../threads/synch.h ../filesys/synchdisk.h \
- ../machine/disk.h ../threads/synch.h ../network/post.h \
- ../machine/network.h ../threads/synchlist.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
+ ../machine/stats.h ../machine/timer.h ../threads/synch.h \
+ ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
+ ../network/post.h ../machine/network.h ../threads/synchlist.h
 addrspace.o: ../userprog/addrspace.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../threads/system.h ../threads/copyright.h \
  ../threads/utility.h ../threads/bool.h ../machine/sysdep.h \
@@ -974,9 +1043,8 @@ addrspace.o: ../userprog/addrspace.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../threads/thread.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/tlb.h \
  ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
- ../machine/swapspace.h ../userprog/addrspace.h ../filesys/filesys.h \
- ../filesys/openfile.h ../filesys/directory.h /usr/include/c++/7/vector \
- /usr/include/c++/7/bits/stl_algobase.h \
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -1006,16 +1074,22 @@ addrspace.o: ../userprog/addrspace.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/synch.h \
- ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
- ../network/post.h ../machine/network.h ../threads/synchlist.h \
- ../userprog/addrspace.h ../bin/noff.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
+ ../threads/list.h ../machine/stats.h ../machine/timer.h \
+ ../threads/synch.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../threads/synch.h ../network/post.h ../machine/network.h \
+ ../threads/synchlist.h ../userprog/addrspace.h ../bin/noff.h
 bitmap.o: ../userprog/bitmap.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../userprog/bitmap.h ../threads/utility.h \
  ../threads/copyright.h ../threads/bool.h ../machine/sysdep.h \
@@ -1064,9 +1138,8 @@ exception.o: ../userprog/exception.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../threads/thread.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/tlb.h \
  ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
- ../machine/swapspace.h ../userprog/addrspace.h ../filesys/filesys.h \
- ../filesys/openfile.h ../filesys/directory.h /usr/include/c++/7/vector \
- /usr/include/c++/7/bits/stl_algobase.h \
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -1096,16 +1169,22 @@ exception.o: ../userprog/exception.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/synch.h \
- ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
- ../network/post.h ../machine/network.h ../threads/synchlist.h \
- ../userprog/syscall.h ../userprog/addrspace.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
+ ../threads/list.h ../machine/stats.h ../machine/timer.h \
+ ../threads/synch.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../threads/synch.h ../network/post.h ../machine/network.h \
+ ../threads/synchlist.h ../userprog/syscall.h ../userprog/addrspace.h
 progtest.o: ../userprog/progtest.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../threads/system.h ../threads/copyright.h \
  ../threads/utility.h ../threads/bool.h ../machine/sysdep.h \
@@ -1131,9 +1210,8 @@ progtest.o: ../userprog/progtest.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../threads/thread.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/tlb.h \
  ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
- ../machine/swapspace.h ../userprog/addrspace.h ../filesys/filesys.h \
- ../filesys/openfile.h ../filesys/directory.h /usr/include/c++/7/vector \
- /usr/include/c++/7/bits/stl_algobase.h \
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -1163,16 +1241,22 @@ progtest.o: ../userprog/progtest.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/synch.h \
- ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
- ../network/post.h ../machine/network.h ../threads/synchlist.h \
- ../machine/console.h ../userprog/addrspace.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
+ ../threads/list.h ../machine/stats.h ../machine/timer.h \
+ ../threads/synch.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../threads/synch.h ../network/post.h ../machine/network.h \
+ ../threads/synchlist.h ../machine/console.h ../userprog/addrspace.h
 console.o: ../machine/console.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../machine/console.h ../threads/utility.h \
  ../threads/copyright.h ../threads/bool.h ../machine/sysdep.h \
@@ -1198,142 +1282,8 @@ console.o: ../machine/console.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../threads/synch.h ../threads/thread.h \
  ../threads/utility.h ../machine/machine.h ../machine/translate.h \
  ../machine/tlb.h ../machine/disk.h ../userprog/bitmap.h \
- ../filesys/openfile.h ../machine/swapspace.h ../userprog/addrspace.h \
- ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
- /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_algobase.h \
- /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
- /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
- /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
- /usr/include/c++/7/bits/functexcept.h \
- /usr/include/c++/7/bits/exception_defines.h \
- /usr/include/c++/7/bits/cpp_type_traits.h \
- /usr/include/c++/7/ext/type_traits.h \
- /usr/include/c++/7/ext/numeric_traits.h \
- /usr/include/c++/7/bits/stl_pair.h /usr/include/c++/7/bits/move.h \
- /usr/include/c++/7/bits/concept_check.h /usr/include/c++/7/type_traits \
- /usr/include/c++/7/bits/stl_iterator_base_types.h \
- /usr/include/c++/7/bits/stl_iterator_base_funcs.h \
- /usr/include/c++/7/debug/assertions.h \
- /usr/include/c++/7/bits/stl_iterator.h \
- /usr/include/c++/7/bits/ptr_traits.h /usr/include/c++/7/debug/debug.h \
- /usr/include/c++/7/bits/predefined_ops.h \
- /usr/include/c++/7/bits/allocator.h \
- /usr/include/x86_64-linux-gnu/c++/7/bits/c++allocator.h \
- /usr/include/c++/7/ext/new_allocator.h /usr/include/c++/7/new \
- /usr/include/c++/7/exception /usr/include/c++/7/bits/exception.h \
- /usr/include/c++/7/bits/exception_ptr.h \
- /usr/include/c++/7/bits/cxxabi_init_exception.h \
- /usr/include/c++/7/typeinfo /usr/include/c++/7/bits/hash_bytes.h \
- /usr/include/c++/7/bits/nested_exception.h \
- /usr/include/c++/7/bits/memoryfwd.h \
- /usr/include/c++/7/bits/stl_construct.h \
- /usr/include/c++/7/ext/alloc_traits.h \
- /usr/include/c++/7/bits/alloc_traits.h \
- /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
- /usr/include/c++/7/bits/stl_bvector.h \
- /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/list.h ../threads/system.h \
- ../threads/scheduler.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/synch.h \
- ../filesys/synchdisk.h ../machine/disk.h ../network/post.h \
- ../machine/network.h ../threads/synchlist.h
-machine.o: ../machine/machine.cc /usr/include/stdc-predef.h \
- ../threads/copyright.h ../machine/machine.h ../threads/utility.h \
- ../threads/copyright.h ../threads/bool.h ../machine/sysdep.h \
- /usr/include/stdio.h \
- /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
- /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
- /usr/include/x86_64-linux-gnu/bits/wordsize.h \
- /usr/include/x86_64-linux-gnu/bits/long-double.h \
- /usr/include/x86_64-linux-gnu/gnu/stubs.h \
- /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
- /usr/lib/gcc/x86_64-linux-gnu/7/include/stddef.h \
- /usr/include/x86_64-linux-gnu/bits/types.h \
- /usr/include/x86_64-linux-gnu/bits/typesizes.h \
- /usr/include/x86_64-linux-gnu/bits/types/__FILE.h \
- /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
- /usr/include/x86_64-linux-gnu/bits/libio.h \
- /usr/include/x86_64-linux-gnu/bits/_G_config.h \
- /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
- ../threads/stdarg.h /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
- /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/string.h \
- /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
- /usr/include/strings.h ../machine/translate.h ../machine/tlb.h \
- ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
- ../machine/swapspace.h ../threads/system.h ../threads/utility.h \
- ../threads/thread.h ../machine/machine.h ../userprog/addrspace.h \
- ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
- /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_algobase.h \
- /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
- /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
- /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
- /usr/include/c++/7/bits/functexcept.h \
- /usr/include/c++/7/bits/exception_defines.h \
- /usr/include/c++/7/bits/cpp_type_traits.h \
- /usr/include/c++/7/ext/type_traits.h \
- /usr/include/c++/7/ext/numeric_traits.h \
- /usr/include/c++/7/bits/stl_pair.h /usr/include/c++/7/bits/move.h \
- /usr/include/c++/7/bits/concept_check.h /usr/include/c++/7/type_traits \
- /usr/include/c++/7/bits/stl_iterator_base_types.h \
- /usr/include/c++/7/bits/stl_iterator_base_funcs.h \
- /usr/include/c++/7/debug/assertions.h \
- /usr/include/c++/7/bits/stl_iterator.h \
- /usr/include/c++/7/bits/ptr_traits.h /usr/include/c++/7/debug/debug.h \
- /usr/include/c++/7/bits/predefined_ops.h \
- /usr/include/c++/7/bits/allocator.h \
- /usr/include/x86_64-linux-gnu/c++/7/bits/c++allocator.h \
- /usr/include/c++/7/ext/new_allocator.h /usr/include/c++/7/new \
- /usr/include/c++/7/exception /usr/include/c++/7/bits/exception.h \
- /usr/include/c++/7/bits/exception_ptr.h \
- /usr/include/c++/7/bits/cxxabi_init_exception.h \
- /usr/include/c++/7/typeinfo /usr/include/c++/7/bits/hash_bytes.h \
- /usr/include/c++/7/bits/nested_exception.h \
- /usr/include/c++/7/bits/memoryfwd.h \
- /usr/include/c++/7/bits/stl_construct.h \
- /usr/include/c++/7/ext/alloc_traits.h \
- /usr/include/c++/7/bits/alloc_traits.h \
- /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
- /usr/include/c++/7/bits/stl_bvector.h \
- /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/synch.h \
- ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
- ../network/post.h ../machine/network.h ../threads/synchlist.h \
- ../bin/noff.h
-mipssim.o: ../machine/mipssim.cc /usr/include/stdc-predef.h \
- ../threads/copyright.h ../machine/machine.h ../threads/utility.h \
- ../threads/copyright.h ../threads/bool.h ../machine/sysdep.h \
- /usr/include/stdio.h \
- /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
- /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
- /usr/include/x86_64-linux-gnu/bits/wordsize.h \
- /usr/include/x86_64-linux-gnu/bits/long-double.h \
- /usr/include/x86_64-linux-gnu/gnu/stubs.h \
- /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
- /usr/lib/gcc/x86_64-linux-gnu/7/include/stddef.h \
- /usr/include/x86_64-linux-gnu/bits/types.h \
- /usr/include/x86_64-linux-gnu/bits/typesizes.h \
- /usr/include/x86_64-linux-gnu/bits/types/__FILE.h \
- /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
- /usr/include/x86_64-linux-gnu/bits/libio.h \
- /usr/include/x86_64-linux-gnu/bits/_G_config.h \
- /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
- ../threads/stdarg.h /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
- /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/string.h \
- /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
- /usr/include/strings.h ../machine/translate.h ../machine/tlb.h \
- ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
- ../machine/swapspace.h ../machine/mipssim.h ../threads/system.h \
- ../threads/utility.h ../threads/thread.h ../machine/machine.h \
- ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
- ../filesys/directory.h /usr/include/c++/7/vector \
+ ../filesys/openfile.h ../machine/swapspace.h ../machine/msg.h \
+ /usr/include/c++/7/queue /usr/include/c++/7/deque \
  /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
@@ -1364,11 +1314,162 @@ mipssim.o: ../machine/mipssim.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/list.h ../threads/system.h ../threads/scheduler.h \
+ ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
+ ../machine/timer.h ../threads/synch.h ../filesys/synchdisk.h \
+ ../machine/disk.h ../network/post.h ../machine/network.h \
+ ../threads/synchlist.h
+machine.o: ../machine/machine.cc /usr/include/stdc-predef.h \
+ ../threads/copyright.h ../machine/machine.h ../threads/utility.h \
+ ../threads/copyright.h ../threads/bool.h ../machine/sysdep.h \
+ /usr/include/stdio.h \
+ /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/bits/long-double.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/7/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__FILE.h \
+ /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
+ /usr/include/x86_64-linux-gnu/bits/libio.h \
+ /usr/include/x86_64-linux-gnu/bits/_G_config.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
+ ../threads/stdarg.h /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/string.h \
+ /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
+ /usr/include/strings.h ../machine/translate.h ../machine/tlb.h \
+ ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_algobase.h \
+ /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
+ /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
+ /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
+ /usr/include/c++/7/bits/functexcept.h \
+ /usr/include/c++/7/bits/exception_defines.h \
+ /usr/include/c++/7/bits/cpp_type_traits.h \
+ /usr/include/c++/7/ext/type_traits.h \
+ /usr/include/c++/7/ext/numeric_traits.h \
+ /usr/include/c++/7/bits/stl_pair.h /usr/include/c++/7/bits/move.h \
+ /usr/include/c++/7/bits/concept_check.h /usr/include/c++/7/type_traits \
+ /usr/include/c++/7/bits/stl_iterator_base_types.h \
+ /usr/include/c++/7/bits/stl_iterator_base_funcs.h \
+ /usr/include/c++/7/debug/assertions.h \
+ /usr/include/c++/7/bits/stl_iterator.h \
+ /usr/include/c++/7/bits/ptr_traits.h /usr/include/c++/7/debug/debug.h \
+ /usr/include/c++/7/bits/predefined_ops.h \
+ /usr/include/c++/7/bits/allocator.h \
+ /usr/include/x86_64-linux-gnu/c++/7/bits/c++allocator.h \
+ /usr/include/c++/7/ext/new_allocator.h /usr/include/c++/7/new \
+ /usr/include/c++/7/exception /usr/include/c++/7/bits/exception.h \
+ /usr/include/c++/7/bits/exception_ptr.h \
+ /usr/include/c++/7/bits/cxxabi_init_exception.h \
+ /usr/include/c++/7/typeinfo /usr/include/c++/7/bits/hash_bytes.h \
+ /usr/include/c++/7/bits/nested_exception.h \
+ /usr/include/c++/7/bits/memoryfwd.h \
+ /usr/include/c++/7/bits/stl_construct.h \
+ /usr/include/c++/7/ext/alloc_traits.h \
+ /usr/include/c++/7/bits/alloc_traits.h \
+ /usr/include/c++/7/bits/stl_uninitialized.h \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
+ /usr/include/c++/7/bits/stl_bvector.h \
+ /usr/include/c++/7/bits/functional_hash.h \
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../threads/system.h \
+ ../threads/utility.h ../threads/thread.h ../machine/machine.h \
+ ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
+ ../filesys/directory.h ../threads/scheduler.h ../threads/list.h \
+ ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
+ ../machine/timer.h ../threads/synch.h ../filesys/synchdisk.h \
+ ../machine/disk.h ../threads/synch.h ../network/post.h \
+ ../machine/network.h ../threads/synchlist.h ../bin/noff.h
+mipssim.o: ../machine/mipssim.cc /usr/include/stdc-predef.h \
+ ../threads/copyright.h ../machine/machine.h ../threads/utility.h \
+ ../threads/copyright.h ../threads/bool.h ../machine/sysdep.h \
+ /usr/include/stdio.h \
+ /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/bits/long-double.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/7/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types.h \
+ /usr/include/x86_64-linux-gnu/bits/typesizes.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__FILE.h \
+ /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
+ /usr/include/x86_64-linux-gnu/bits/libio.h \
+ /usr/include/x86_64-linux-gnu/bits/_G_config.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
+ ../threads/stdarg.h /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/string.h \
+ /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
+ /usr/include/strings.h ../machine/translate.h ../machine/tlb.h \
+ ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_algobase.h \
+ /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
+ /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
+ /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
+ /usr/include/c++/7/bits/functexcept.h \
+ /usr/include/c++/7/bits/exception_defines.h \
+ /usr/include/c++/7/bits/cpp_type_traits.h \
+ /usr/include/c++/7/ext/type_traits.h \
+ /usr/include/c++/7/ext/numeric_traits.h \
+ /usr/include/c++/7/bits/stl_pair.h /usr/include/c++/7/bits/move.h \
+ /usr/include/c++/7/bits/concept_check.h /usr/include/c++/7/type_traits \
+ /usr/include/c++/7/bits/stl_iterator_base_types.h \
+ /usr/include/c++/7/bits/stl_iterator_base_funcs.h \
+ /usr/include/c++/7/debug/assertions.h \
+ /usr/include/c++/7/bits/stl_iterator.h \
+ /usr/include/c++/7/bits/ptr_traits.h /usr/include/c++/7/debug/debug.h \
+ /usr/include/c++/7/bits/predefined_ops.h \
+ /usr/include/c++/7/bits/allocator.h \
+ /usr/include/x86_64-linux-gnu/c++/7/bits/c++allocator.h \
+ /usr/include/c++/7/ext/new_allocator.h /usr/include/c++/7/new \
+ /usr/include/c++/7/exception /usr/include/c++/7/bits/exception.h \
+ /usr/include/c++/7/bits/exception_ptr.h \
+ /usr/include/c++/7/bits/cxxabi_init_exception.h \
+ /usr/include/c++/7/typeinfo /usr/include/c++/7/bits/hash_bytes.h \
+ /usr/include/c++/7/bits/nested_exception.h \
+ /usr/include/c++/7/bits/memoryfwd.h \
+ /usr/include/c++/7/bits/stl_construct.h \
+ /usr/include/c++/7/ext/alloc_traits.h \
+ /usr/include/c++/7/bits/alloc_traits.h \
+ /usr/include/c++/7/bits/stl_uninitialized.h \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
+ /usr/include/c++/7/bits/stl_bvector.h \
+ /usr/include/c++/7/bits/functional_hash.h \
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../machine/mipssim.h \
+ ../threads/system.h ../threads/utility.h ../threads/thread.h \
+ ../machine/machine.h ../userprog/addrspace.h ../filesys/filesys.h \
+ ../filesys/openfile.h ../filesys/directory.h ../threads/scheduler.h \
  ../threads/list.h ../machine/interrupt.h ../threads/list.h \
  ../machine/stats.h ../machine/timer.h ../threads/synch.h \
  ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
@@ -1397,9 +1498,8 @@ translate.o: ../machine/translate.cc /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
  /usr/include/strings.h ../machine/translate.h ../machine/tlb.h \
  ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
- ../machine/swapspace.h ../userprog/addrspace.h ../filesys/filesys.h \
- ../filesys/openfile.h ../filesys/directory.h /usr/include/c++/7/vector \
- /usr/include/c++/7/bits/stl_algobase.h \
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -1429,17 +1529,23 @@ translate.o: ../machine/translate.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/system.h \
- ../threads/utility.h ../threads/thread.h ../machine/machine.h \
- ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
- ../threads/list.h ../machine/stats.h ../machine/timer.h \
- ../threads/synch.h ../filesys/synchdisk.h ../machine/disk.h \
- ../threads/synch.h ../network/post.h ../machine/network.h \
- ../threads/synchlist.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/system.h ../threads/utility.h ../threads/thread.h \
+ ../machine/machine.h ../threads/scheduler.h ../threads/list.h \
+ ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
+ ../machine/timer.h ../threads/synch.h ../filesys/synchdisk.h \
+ ../machine/disk.h ../threads/synch.h ../network/post.h \
+ ../machine/network.h ../threads/synchlist.h
 tlb.o: ../machine/tlb.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../machine/machine.h ../threads/utility.h \
  ../threads/copyright.h ../threads/bool.h ../machine/sysdep.h \
@@ -1464,10 +1570,8 @@ tlb.o: ../machine/tlb.cc /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
  /usr/include/strings.h ../machine/translate.h ../machine/tlb.h \
  ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
- ../machine/swapspace.h ../threads/system.h ../threads/utility.h \
- ../threads/thread.h ../machine/machine.h ../userprog/addrspace.h \
- ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
- /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_algobase.h \
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -1497,15 +1601,23 @@ tlb.o: ../machine/tlb.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/synch.h \
- ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
- ../network/post.h ../machine/network.h ../threads/synchlist.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../threads/system.h \
+ ../threads/utility.h ../threads/thread.h ../machine/machine.h \
+ ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
+ ../filesys/directory.h ../threads/scheduler.h ../threads/list.h \
+ ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
+ ../machine/timer.h ../threads/synch.h ../filesys/synchdisk.h \
+ ../machine/disk.h ../threads/synch.h ../network/post.h \
+ ../machine/network.h ../threads/synchlist.h
 swapspace.o: ../machine/swapspace.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../threads/system.h ../threads/copyright.h \
  ../threads/utility.h ../threads/bool.h ../machine/sysdep.h \
@@ -1531,9 +1643,8 @@ swapspace.o: ../machine/swapspace.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../threads/thread.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/tlb.h \
  ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
- ../machine/swapspace.h ../userprog/addrspace.h ../filesys/filesys.h \
- ../filesys/openfile.h ../filesys/directory.h /usr/include/c++/7/vector \
- /usr/include/c++/7/bits/stl_algobase.h \
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -1563,15 +1674,74 @@ swapspace.o: ../machine/swapspace.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/synch.h \
- ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
- ../network/post.h ../machine/network.h ../threads/synchlist.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
+ ../threads/list.h ../machine/stats.h ../machine/timer.h \
+ ../threads/synch.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../threads/synch.h ../network/post.h ../machine/network.h \
+ ../threads/synchlist.h
+msg.o: ../machine/msg.cc /usr/include/stdc-predef.h ../machine/msg.h \
+ /usr/include/c++/7/queue /usr/include/c++/7/deque \
+ /usr/include/c++/7/bits/stl_algobase.h \
+ /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
+ /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/bits/long-double.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
+ /usr/include/c++/7/bits/functexcept.h \
+ /usr/include/c++/7/bits/exception_defines.h \
+ /usr/include/c++/7/bits/cpp_type_traits.h \
+ /usr/include/c++/7/ext/type_traits.h \
+ /usr/include/c++/7/ext/numeric_traits.h \
+ /usr/include/c++/7/bits/stl_pair.h /usr/include/c++/7/bits/move.h \
+ /usr/include/c++/7/bits/concept_check.h /usr/include/c++/7/type_traits \
+ /usr/include/c++/7/bits/stl_iterator_base_types.h \
+ /usr/include/c++/7/bits/stl_iterator_base_funcs.h \
+ /usr/include/c++/7/debug/assertions.h \
+ /usr/include/c++/7/bits/stl_iterator.h \
+ /usr/include/c++/7/bits/ptr_traits.h /usr/include/c++/7/debug/debug.h \
+ /usr/include/c++/7/bits/predefined_ops.h \
+ /usr/include/c++/7/bits/allocator.h \
+ /usr/include/x86_64-linux-gnu/c++/7/bits/c++allocator.h \
+ /usr/include/c++/7/ext/new_allocator.h /usr/include/c++/7/new \
+ /usr/include/c++/7/exception /usr/include/c++/7/bits/exception.h \
+ /usr/include/c++/7/bits/exception_ptr.h \
+ /usr/include/c++/7/bits/cxxabi_init_exception.h \
+ /usr/lib/gcc/x86_64-linux-gnu/7/include/stddef.h \
+ /usr/include/c++/7/typeinfo /usr/include/c++/7/bits/hash_bytes.h \
+ /usr/include/c++/7/bits/nested_exception.h \
+ /usr/include/c++/7/bits/memoryfwd.h \
+ /usr/include/c++/7/bits/stl_construct.h \
+ /usr/include/c++/7/ext/alloc_traits.h \
+ /usr/include/c++/7/bits/alloc_traits.h \
+ /usr/include/c++/7/bits/stl_uninitialized.h \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
+ /usr/include/c++/7/bits/stl_bvector.h \
+ /usr/include/c++/7/bits/functional_hash.h \
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h /usr/include/string.h \
+ /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
+ /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
+ /usr/include/strings.h
 directory.o: ../filesys/directory.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../threads/utility.h ../threads/copyright.h \
  ../threads/bool.h ../machine/sysdep.h /usr/include/stdio.h \
@@ -1631,9 +1801,8 @@ filehdr.o: ../filesys/filehdr.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../threads/thread.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/tlb.h \
  ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
- ../machine/swapspace.h ../userprog/addrspace.h ../filesys/filesys.h \
- ../filesys/openfile.h ../filesys/directory.h /usr/include/c++/7/vector \
- /usr/include/c++/7/bits/stl_algobase.h \
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -1663,16 +1832,22 @@ filehdr.o: ../filesys/filehdr.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/synch.h \
- ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
- ../network/post.h ../machine/network.h ../threads/synchlist.h \
- ../filesys/filehdr.h /usr/include/time.h \
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
+ ../threads/list.h ../machine/stats.h ../machine/timer.h \
+ ../threads/synch.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../threads/synch.h ../network/post.h ../machine/network.h \
+ ../threads/synchlist.h ../filesys/filehdr.h /usr/include/time.h \
  /usr/include/x86_64-linux-gnu/bits/time.h \
  /usr/include/x86_64-linux-gnu/bits/timex.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h \
@@ -1755,11 +1930,18 @@ filesys.o: ../filesys/filesys.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/bits/vector.tcc ../threads/system.h \
  ../threads/utility.h ../threads/thread.h ../machine/machine.h \
  ../machine/translate.h ../machine/tlb.h ../machine/disk.h \
- ../machine/swapspace.h ../userprog/addrspace.h ../filesys/filesys.h \
- ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
- ../threads/list.h ../machine/stats.h ../machine/timer.h \
- ../threads/synch.h ../filesys/synchdisk.h ../threads/synch.h \
- ../network/post.h ../machine/network.h ../threads/synchlist.h
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_deque.h \
+ /usr/include/c++/7/bits/deque.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../threads/scheduler.h ../threads/list.h \
+ ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
+ ../machine/timer.h ../threads/synch.h ../filesys/synchdisk.h \
+ ../threads/synch.h ../network/post.h ../machine/network.h \
+ ../threads/synchlist.h
 fstest.o: ../filesys/fstest.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../threads/utility.h ../threads/copyright.h \
  ../threads/bool.h ../machine/sysdep.h /usr/include/stdio.h \
@@ -1821,12 +2003,18 @@ fstest.o: ../filesys/fstest.cc /usr/include/stdc-predef.h \
  ../threads/utility.h ../threads/thread.h ../machine/machine.h \
  ../machine/translate.h ../machine/tlb.h ../machine/disk.h \
  ../userprog/bitmap.h ../filesys/openfile.h ../machine/swapspace.h \
- ../userprog/addrspace.h ../filesys/filesys.h ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/synch.h \
- ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
- ../network/post.h ../machine/network.h ../threads/synchlist.h \
- ../threads/thread.h
+ ../machine/msg.h /usr/include/c++/7/queue /usr/include/c++/7/deque \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../threads/scheduler.h ../threads/list.h \
+ ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
+ ../machine/timer.h ../threads/synch.h ../filesys/synchdisk.h \
+ ../machine/disk.h ../threads/synch.h ../network/post.h \
+ ../machine/network.h ../threads/synchlist.h ../threads/thread.h
 openfile.o: ../filesys/openfile.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../filesys/filehdr.h ../machine/disk.h \
  ../threads/utility.h ../threads/copyright.h ../threads/bool.h \
@@ -1863,8 +2051,8 @@ openfile.o: ../filesys/openfile.cc /usr/include/stdc-predef.h \
  ../filesys/openfile.h ../threads/system.h ../threads/utility.h \
  ../threads/thread.h ../machine/machine.h ../machine/translate.h \
  ../machine/tlb.h ../machine/disk.h ../machine/swapspace.h \
- ../userprog/addrspace.h ../filesys/filesys.h ../filesys/directory.h \
- /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_algobase.h \
+ ../machine/msg.h /usr/include/c++/7/queue /usr/include/c++/7/deque \
+ /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -1894,11 +2082,17 @@ openfile.o: ../filesys/openfile.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/directory.h ../threads/scheduler.h \
  ../threads/list.h ../machine/interrupt.h ../threads/list.h \
  ../machine/stats.h ../machine/timer.h ../threads/synch.h \
  ../filesys/synchdisk.h ../threads/synch.h ../network/post.h \
@@ -1928,9 +2122,9 @@ synchdisk.o: ../filesys/synchdisk.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../threads/synch.h ../threads/thread.h \
  ../threads/utility.h ../machine/machine.h ../machine/translate.h \
  ../machine/tlb.h ../machine/disk.h ../userprog/bitmap.h \
- ../filesys/openfile.h ../machine/swapspace.h ../userprog/addrspace.h \
- ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
- /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_algobase.h \
+ ../filesys/openfile.h ../machine/swapspace.h ../machine/msg.h \
+ /usr/include/c++/7/queue /usr/include/c++/7/deque \
+ /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -1960,11 +2154,18 @@ synchdisk.o: ../filesys/synchdisk.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/list.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/list.h
 disk.o: ../machine/disk.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../machine/disk.h ../threads/utility.h \
  ../threads/copyright.h ../threads/bool.h ../machine/sysdep.h \
@@ -1990,9 +2191,8 @@ disk.o: ../machine/disk.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../threads/system.h ../threads/utility.h \
  ../threads/thread.h ../machine/machine.h ../machine/translate.h \
  ../machine/tlb.h ../userprog/bitmap.h ../filesys/openfile.h \
- ../machine/swapspace.h ../userprog/addrspace.h ../filesys/filesys.h \
- ../filesys/openfile.h ../filesys/directory.h /usr/include/c++/7/vector \
- /usr/include/c++/7/bits/stl_algobase.h \
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -2022,15 +2222,22 @@ disk.o: ../machine/disk.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/synch.h \
- ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
- ../network/post.h ../machine/network.h ../threads/synchlist.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
+ ../threads/list.h ../machine/stats.h ../machine/timer.h \
+ ../threads/synch.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../threads/synch.h ../network/post.h ../machine/network.h \
+ ../threads/synchlist.h
 nettest.o: ../network/nettest.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../threads/system.h ../threads/copyright.h \
  ../threads/utility.h ../threads/bool.h ../machine/sysdep.h \
@@ -2056,9 +2263,8 @@ nettest.o: ../network/nettest.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../threads/thread.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/tlb.h \
  ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
- ../machine/swapspace.h ../userprog/addrspace.h ../filesys/filesys.h \
- ../filesys/openfile.h ../filesys/directory.h /usr/include/c++/7/vector \
- /usr/include/c++/7/bits/stl_algobase.h \
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -2088,16 +2294,22 @@ nettest.o: ../network/nettest.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/synch.h \
- ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
- ../network/post.h ../machine/network.h ../threads/synchlist.h \
- ../network/post.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
+ ../threads/list.h ../machine/stats.h ../machine/timer.h \
+ ../threads/synch.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../threads/synch.h ../network/post.h ../machine/network.h \
+ ../threads/synchlist.h ../network/post.h
 post.o: ../network/post.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../network/post.h ../machine/network.h \
  ../threads/utility.h ../threads/copyright.h ../threads/bool.h \
@@ -2124,9 +2336,8 @@ post.o: ../network/post.cc /usr/include/stdc-predef.h \
  ../threads/utility.h ../threads/synch.h ../threads/thread.h \
  ../machine/machine.h ../machine/translate.h ../machine/tlb.h \
  ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
- ../machine/swapspace.h ../userprog/addrspace.h ../filesys/filesys.h \
- ../filesys/openfile.h ../filesys/directory.h /usr/include/c++/7/vector \
- /usr/include/c++/7/bits/stl_algobase.h \
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -2156,11 +2367,17 @@ post.o: ../network/post.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h
 network.o: ../machine/network.cc /usr/include/stdc-predef.h \
  ../threads/copyright.h ../threads/system.h ../threads/copyright.h \
  ../threads/utility.h ../threads/bool.h ../machine/sysdep.h \
@@ -2186,9 +2403,8 @@ network.o: ../machine/network.cc /usr/include/stdc-predef.h \
  /usr/include/strings.h ../threads/thread.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/tlb.h \
  ../machine/disk.h ../userprog/bitmap.h ../filesys/openfile.h \
- ../machine/swapspace.h ../userprog/addrspace.h ../filesys/filesys.h \
- ../filesys/openfile.h ../filesys/directory.h /usr/include/c++/7/vector \
- /usr/include/c++/7/bits/stl_algobase.h \
+ ../machine/swapspace.h ../machine/msg.h /usr/include/c++/7/queue \
+ /usr/include/c++/7/deque /usr/include/c++/7/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/7/bits/cpu_defines.h \
@@ -2218,15 +2434,22 @@ network.o: ../machine/network.cc /usr/include/stdc-predef.h \
  /usr/include/c++/7/ext/alloc_traits.h \
  /usr/include/c++/7/bits/alloc_traits.h \
  /usr/include/c++/7/bits/stl_uninitialized.h \
- /usr/include/c++/7/bits/stl_vector.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/stl_deque.h /usr/include/c++/7/initializer_list \
+ /usr/include/c++/7/bits/range_access.h /usr/include/c++/7/bits/deque.tcc \
+ /usr/include/c++/7/vector /usr/include/c++/7/bits/stl_vector.h \
  /usr/include/c++/7/bits/stl_bvector.h \
  /usr/include/c++/7/bits/functional_hash.h \
- /usr/include/c++/7/bits/range_access.h \
- /usr/include/c++/7/bits/vector.tcc ../threads/scheduler.h \
- ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/synch.h \
- ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
- ../network/post.h ../machine/network.h ../threads/synchlist.h
+ /usr/include/c++/7/bits/vector.tcc /usr/include/c++/7/bits/stl_heap.h \
+ /usr/include/c++/7/bits/stl_function.h \
+ /usr/include/c++/7/backward/binders.h \
+ /usr/include/c++/7/bits/stl_queue.h \
+ /usr/include/c++/7/bits/uses_allocator.h ../userprog/addrspace.h \
+ ../filesys/filesys.h ../filesys/openfile.h ../filesys/directory.h \
+ ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
+ ../threads/list.h ../machine/stats.h ../machine/timer.h \
+ ../threads/synch.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../threads/synch.h ../network/post.h ../machine/network.h \
+ ../threads/synchlist.h
 # DEPENDENCIES MUST END AT END OF FILE
 # IF YOU PUT STUFF HERE IT WILL GO AWAY
 # see make depend above

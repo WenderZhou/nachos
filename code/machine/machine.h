@@ -28,6 +28,7 @@
 #include "disk.h"
 #include "bitmap.h"
 #include "swapspace.h"
+#include "msg.h"
 
 // Definitions related to the size, and format of user memory
 
@@ -202,6 +203,10 @@ class Machine {
 
 #ifdef INVERTED_PAGETABLE
 	InvertedPageTableEntry *ipt;
+#endif
+
+#ifdef MSGQUEUE
+	MsgQueueManager* msgQueueManager;
 #endif
 
   private:

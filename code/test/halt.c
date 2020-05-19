@@ -12,9 +12,22 @@
 
 #include "syscall.h"
 
+void Receiver()
+{
+    int fd;
+    char buffer[12];
+    fd = msgget(1);
+    msgrcv(fd, buffer, 12, 1);
+    Write(buffer, 12, ConsoleOutput);
+    Exit(0);
+}
+
 int main()
 {
-    Write("HelloWorld!\n", 12, ConsoleOutput);
+    int fd;
+    fd = msgget(1);
+    msgsnd(fd, "HelloWorld!\n", 12, 1);
+    Fork(Receiver);
 
     // OpenFileId fd;
     // int tid, i;
